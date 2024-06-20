@@ -1,92 +1,62 @@
-getgenv().Settings = {
-    AutoCrystalKey = false,
-    AutoTechKey = false,
-    AutoVoidKey = false,
-    AutoPrisonKey = false,
-    AutoGoldenPrisonKey = false,
-    AutoFish = false,
-    Autoconvertsec = false,
-    AutoBuyMisc = false,
-    AutoClaimDaily = false,
-    AutoEquipSlots = false,
-    AutoPurchaseNextZone = false
-}
+-- ModuleScript named "UILibrary" in ReplicatedStorage
+local UILibrary = {}
 
--- Services
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Network = ReplicatedStorage:WaitForChild("Network")
-local LocalPlayer = Players.LocalPlayer
-local LocalPlayerCharacter = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-local HRP = LocalPlayerCharacter:WaitForChild("HumanoidRootPart")
-local TimedRewards, VendingMachines
-
-if ReplicatedStorage:FindFirstChild("__DIRECTORY") then
-    TimedRewards = ReplicatedStorage.__DIRECTORY:WaitForChild("TimedRewards")
-    VendingMachines = ReplicatedStorage.__DIRECTORY:WaitForChild("VendingMachines")
-else
-    warn("ReplicatedStorage.__DIRECTORY not found")
+local function createScreenGui()
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "HubGui"
+    screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    return screenGui
 end
 
--- Create ScreenGui
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "HubGui"
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local function createMainFrame(parent)
+    local mainFrame = Instance.new("Frame")
+    mainFrame.Name = "MainFrame"
+    mainFrame.Parent = parent
+    mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    mainFrame.Size = UDim2.new(0, 800, 0, 500)
+    mainFrame.Position = UDim2.new(0.5, -400, 0.5, -250)
 
--- Main Frame
-local mainFrame = Instance.new("Frame")
-mainFrame.Name = "MainFrame"
-mainFrame.Parent = screenGui
-mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-mainFrame.Size = UDim2.new(0, 800, 0, 500)
-mainFrame.Position = UDim2.new(0.5, -400, 0.5, -250)
+    local mainUICorner = Instance.new("UICorner")
+    mainUICorner.CornerRadius = UDim.new(0, 10)
+    mainUICorner.Parent = mainFrame
 
--- UI Corner for rounded edges
-local mainUICorner = Instance.new("UICorner")
-mainUICorner.CornerRadius = UDim.new(0, 10)
-mainUICorner.Parent = mainFrame
+    return mainFrame
+end
 
--- Left Panel
-local leftPanel = Instance.new("Frame")
-leftPanel.Name = "LeftPanel"
-leftPanel.Parent = mainFrame
-leftPanel.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-leftPanel.Size = UDim2.new(0, 200, 0, 500)
-leftPanel.Position = UDim2.new(0, 0, 0, 0)
+local function createLeftPanel(parent)
+    local leftPanel = Instance.new("Frame")
+    leftPanel.Name = "LeftPanel"
+    leftPanel.Parent = parent
+    leftPanel.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    leftPanel.Size = UDim2.new(0, 200, 0, 500)
+    leftPanel.Position = UDim2.new(0, 0, 0, 0)
 
-local leftUICorner = Instance.new("UICorner")
-leftUICorner.CornerRadius = UDim.new(0, 10)
-leftUICorner.Parent = leftPanel
+    local leftUICorner = Instance.new("UICorner")
+    leftUICorner.CornerRadius = UDim.new(0, 10)
+    leftUICorner.Parent = leftPanel
 
--- Hub Name Label
-local hubNameLabel = Instance.new("TextLabel")
-hubNameLabel.Name = "HubNameLabel"
-hubNameLabel.Parent = leftPanel
-hubNameLabel.Text = "Hub Name"
-hubNameLabel.Font = Enum.Font.GothamBold
-hubNameLabel.TextSize = 24
-hubNameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-hubNameLabel.BackgroundTransparency = 1
-hubNameLabel.Position = UDim2.new(0, 10, 0, 10)
-hubNameLabel.Size = UDim2.new(0, 180, 0, 30)
+    return leftPanel
+end
 
--- Game Name Label
-local gameNameLabel = Instance.new("TextLabel")
-gameNameLabel.Name = "GameNameLabel"
-gameNameLabel.Parent = leftPanel
-gameNameLabel.Text = "Game Name"
-gameNameLabel.Font = Enum.Font.Gotham
-gameNameLabel.TextSize = 18
-gameNameLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-gameNameLabel.BackgroundTransparency = 1
-gameNameLabel.Position = UDim2.new(0, 10, 0, 50)
-gameNameLabel.Size = UDim2.new(0, 180, 0, 30)
+local function createRightPanel(parent)
+    local rightPanel = Instance.new("Frame")
+    rightPanel.Name = "RightPanel"
+    rightPanel.Parent = parent
+    rightPanel.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    rightPanel.Size = UDim2.new(0, 580, 0, 500)
+    rightPanel.Position = UDim2.new(0, 210, 0, 0)
 
--- Tab Buttons
-local function createTabButton(name, text, posY)
+    local rightUICorner = Instance.new("UICorner")
+    rightUICorner.CornerRadius = UDim.new(0, 10)
+    rightUICorner.Parent = rightPanel
+
+    return rightPanel
+end
+
+local function createTabButton(name, parent, text, posY, onClick)
     local tabButton = Instance.new("TextButton")
     tabButton.Name = name
-    tabButton.Parent = leftPanel
+    tabButton.Parent = parent
     tabButton.Text = text
     tabButton.Font = Enum.Font.GothamBold
     tabButton.TextSize = 18
@@ -94,351 +64,32 @@ local function createTabButton(name, text, posY)
     tabButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
     tabButton.Size = UDim2.new(0, 180, 0, 30)
     tabButton.Position = UDim2.new(0, 10, 0, posY)
-    
+
     local uiCorner = Instance.new("UICorner")
     uiCorner.CornerRadius = UDim.new(0, 5)
     uiCorner.Parent = tabButton
-    
+
+    tabButton.MouseButton1Click:Connect(onClick)
+
     return tabButton
 end
 
-local tabButton = createTabButton("TabButton", "Tab", 100)
-local libraryFunctionsButton = createTabButton("LibraryFunctionsButton", "Library Functions", 140)
+function UILibrary:CreateHub()
+    local screenGui = createScreenGui()
+    local mainFrame = createMainFrame(screenGui)
+    local leftPanel = createLeftPanel(mainFrame)
+    local rightPanel = createRightPanel(mainFrame)
 
--- Right Panel Section
-local rightPanel = Instance.new("Frame")
-rightPanel.Name = "RightPanel"
-rightPanel.Parent = mainFrame
-rightPanel.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-rightPanel.Size = UDim2.new(0, 580, 0, 500)
-rightPanel.Position = UDim2.new(0, 210, 0, 0)
-
-local rightUICorner = Instance.new("UICorner")
-rightUICorner.CornerRadius = UDim.new(0, 10)
-rightUICorner.Parent = rightPanel
-
--- Section Label
-local sectionLabel = Instance.new("TextLabel")
-sectionLabel.Name = "SectionLabel"
-sectionLabel.Parent = rightPanel
-sectionLabel.Text = "Section"
-sectionLabel.Font = Enum.Font.GothamBold
-sectionLabel.TextSize = 18
-sectionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-sectionLabel.BackgroundTransparency = 1
-sectionLabel.Position = UDim2.new(0, 10, 0, 10)
-sectionLabel.Size = UDim2.new(0, 560, 0, 30)
-
--- Function to create elements
-local function createElement(name, parent, text, posY)
-    local element = Instance.new("Frame")
-    element.Name = name
-    element.Parent = parent
-    element.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    element.Position = UDim2.new(0, 10, 0, posY)
-    element.Size = UDim2.new(0, 560, 0, 40)
-    
-    local uiCorner = Instance.new("UICorner")
-    uiCorner.CornerRadius = UDim.new(0, 5)
-    uiCorner.Parent = element
-    
-    local textLabel = Instance.new("TextLabel")
-    textLabel.Name = name .. "Label"
-    textLabel.Parent = element
-    textLabel.Text = text
-    textLabel.Font = Enum.Font.Gotham
-    textLabel.TextSize = 18
-    textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    textLabel.BackgroundTransparency = 1
-    textLabel.Size = UDim2.new(1, -10, 1, 0)
-    textLabel.Position = UDim2.new(0, 5, 0, 0)
-    
-    return element
+    return {
+        ScreenGui = screenGui,
+        MainFrame = mainFrame,
+        LeftPanel = leftPanel,
+        RightPanel = rightPanel
+    }
 end
 
-createElement("Label", rightPanel, "Label", 50)
-createElement("Paragraph", rightPanel, "Paragraph\nContent", 100)
-createElement("Button", rightPanel, "Button", 150)
-local sliderElement = createElement("Slider", rightPanel, "", 200)
-createElement("Textbox", rightPanel, "Textbox", 250)
-createElement("Keybind", rightPanel, "F", 300)
-local toggleElement = createElement("Toggle", rightPanel, "", 350)
-
--- Customize Slider
-local sliderFill = Instance.new("Frame")
-sliderFill.Name = "SliderFill"
-sliderFill.Parent = sliderElement
-sliderFill.BackgroundColor3 = Color3.fromRGB(0, 122, 255)
-sliderFill.Size = UDim2.new(0.5, 0, 1, 0)
-sliderFill.Position = UDim2.new(0, 0, 0, 0)
-
--- Add a draggable knob to the slider
-local sliderKnob = Instance.new("Frame")
-sliderKnob.Name = "SliderKnob"
-sliderKnob.Parent = sliderElement
-sliderKnob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-sliderKnob.Size = UDim2.new(0, 10, 1, 0)
-sliderKnob.Position = UDim2.new(0.5, -5, 0, 0)
-
-local sliderKnobUICorner = Instance.new("UICorner")
-sliderKnobUICorner.CornerRadius = UDim.new(0.5, 0)
-sliderKnobUICorner.Parent = sliderKnob
-
--- Slider functionality
-local userInputService = game:GetService("UserInputService")
-
-local function updateSlider(input)
-    local relativePos = (input.Position.X - sliderElement.AbsolutePosition.X) / sliderElement.AbsoluteSize.X
-    relativePos = math.clamp(relativePos, 0, 1)
-    sliderFill.Size = UDim2.new(relativePos, 0, 1, 0)
-    sliderKnob.Position = UDim2.new(relativePos, -5, 0, 0)
+function UILibrary:AddTabButton(hub, name, text, posY, onClick)
+    return createTabButton(name, hub.LeftPanel, text, posY, onClick)
 end
 
-sliderKnob.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        updateSlider(input)
-        local connection
-        connection = userInputService.InputChanged:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseMovement then
-                updateSlider(input)
-            end
-        end)
-        input.InputEnded:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                connection:Disconnect()
-            end
-        end)
-    end
-end)
-
-sliderElement.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        updateSlider(input)
-    end
-end)
-
--- Customize Toggle
-local toggleCircle = Instance.new("Frame")
-toggleCircle.Name = "ToggleCircle"
-toggleCircle.Parent = toggleElement
-toggleCircle.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-toggleCircle.Size = UDim2.new(0, 30, 0, 30)
-toggleCircle.Position = UDim2.new(0.1, -15, 0.5, -15)
-
-local toggleCircleUICorner = Instance.new("UICorner")
-toggleCircleUICorner.CornerRadius = UDim.new(1, 0)
-toggleCircleUICorner.Parent = toggleCircle
-
--- Toggle functionality
-local isToggled = false
-toggleElement.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        isToggled = not isToggled
-        if isToggled then
-            toggleCircle.Position = UDim2.new(0.9, -15, 0.5, -15)
-            toggleCircle.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-        else
-            toggleCircle.Position = UDim2.new(0.1, -15, 0.5, -15)
-            toggleCircle.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-        end
-    end
-end)
-
--- Functions for each setting
-local function AutoCrystalKey()
-    while getgenv().Settings.AutoCrystalKey do
-        task.wait(0.5)
-        Network.CrystalKey_Unlock:InvokeServer()
-    end
-end
-
-local function AutoTechKey()
-    while getgenv().Settings.AutoTechKey do
-        task.wait(0.5)
-        Network.TechKey_Unlock:InvokeServer()
-    end
-end
-
-local function AutoVoidKey()
-    while getgenv().Settings.AutoVoidKey do
-        task.wait(0.5)
-        -- Add your logic for AutoVoidKey here
-    end
-end
-
-local function AutoPrisonKey()
-    while getgenv().Settings.AutoPrisonKey do
-        task.wait(0.5)
-        -- Add your logic for AutoPrisonKey here
-    end
-end
-
-local function AutoGoldenPrisonKey()
-    while getgenv().Settings.AutoGoldenPrisonKey do
-        task.wait(0.5)
-        -- Add your logic for AutoGoldenPrisonKey here
-    end
-end
-
-local function AutoFish()
-    while getgenv().Settings.AutoFish do
-        task.wait(0.5)
-        -- Add your logic for AutoFish here
-    end
-end
-
-local function Autoconvertsec()
-    while getgenv().Settings.Autoconvertsec do
-        task.wait(0.5)
-        Network.SecretRoom_Unlock:InvokeServer("Crystal Key Castle")
-        Network["Spinny Wheel: Request Spin"]:InvokeServer("CrystalKeyWheel")
-    end
-end
-
-local function AutoBuyMisc()
-    while getgenv().Settings.AutoBuyMisc do
-        task.wait(0.5)
-        for _, machine in ipairs(VendingMachines:GetChildren()) do
-            local machineName = machine.Name:gsub("VendingMachine | ", "")
-            Network.VendingMachines_Purchase:InvokeServer(machineName, 1)
-        end
-    end
-end
-
-local function AutoClaimDaily()
-    while getgenv().Settings.AutoClaimDaily do
-        task.wait(3600)
-        Network.DailyRewards_Redeem:InvokeServer("DailyPotions1")
-        for _, reward in ipairs(TimedRewards:GetChildren()) do
-            local rewardName = reward.Name:gsub("TimedReward | ", "")
-            Network.DailyRewards_Redeem:InvokeServer(rewardName)
-        end
-    end
-end
-
-local function AutoEquipSlots()
-    local purchaseCount = 1
-    while purchaseCount <= 99 and getgenv().Settings.AutoEquipSlots do
-        local args = {
-            [1] = purchaseCount
-        }
-        game:GetService("ReplicatedStorage").Network.EquipSlotsMachine_RequestPurchase:InvokeServer(unpack(args))
-        purchaseCount = purchaseCount + 1
-        task.wait(0.1)
-    end
-end
-
-local function AutoPurchaseNextZone()
-    while getgenv().Settings.AutoPurchaseNextZone do
-        task.wait(0.5)
-        local ZoneCmds = require(ReplicatedStorage.Library.Client.ZoneCmds)
-        local NZ = ZoneCmds.GetNextZone()
-        
-        if NZ then
-            local args = {
-                [1] = NZ
-            }
-            Network.Zones_RequestPurchase:InvokeServer(unpack(args))
-            
-            local ZoneName, ZoneFolder, ZoneNumber = GetMaxUnlockedZone()
-            if ZoneFolder and ZoneFolder:FindFirstChild("PERSISTENT") and ZoneFolder.PERSISTENT:FindFirstChild("Teleport") then
-                local targetCFrame = ZoneFolder.PERSISTENT.Teleport:GetPivot()
-                local distance = (HRP.Position - targetCFrame.Position).Magnitude
-                
-                if distance > 20 then
-                    HRP:PivotTo(targetCFrame)
-                    repeat task.wait(0.05) until ZoneFolder:FindFirstChild("INTERACT")
-                    
-                    local interactCFrame = ZoneFolder.INTERACT["BREAK_ZONES"]["BREAK_ZONE"]:GetPivot()
-                    local interactDistance = (HRP.Position - interactCFrame.Position).Magnitude
-
-                    if interactDistance > 20 then
-                        HRP:PivotTo(interactCFrame)
-                    end
-                else
-                    warn("Already within 20 studs of the target location, no teleport needed.")
-                end
-            else
-                warn("Teleport or INTERACT part not found in ZoneFolder.")
-            end
-        end
-    end
-end
-
--- Create toggles for each setting
-local function createToggle(parent, settingName, callback)
-    local toggle = Instance.new("TextButton")
-    toggle.Name = settingName .. "Toggle"
-    toggle.Parent = parent
-    toggle.Text = settingName
-    toggle.Font = Enum.Font.GothamBold
-    toggle.TextSize = 18
-    toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    toggle.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    toggle.Size = UDim2.new(0, 180, 0, 30)
-    toggle.Position = UDim2.new(0, 10, 0, (#parent:GetChildren() - 1) * 40)
-    
-    local uiCorner = Instance.new("UICorner")
-    uiCorner.CornerRadius = UDim.new(0, 5)
-    uiCorner.Parent = toggle
-    
-    local toggleState = false
-    toggle.MouseButton1Click:Connect(function()
-        toggleState = not toggleState
-        getgenv().Settings[settingName] = toggleState
-        toggle.BackgroundColor3 = toggleState and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
-        if toggleState then
-            task.spawn(callback)
-        end
-    end)
-    
-    return toggle
-end
-
--- Create right panel sections
-local function createSection(name, parent)
-    local section = Instance.new("Frame")
-    section.Name = name .. "Section"
-    section.Parent = parent
-    section.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    section.Size = UDim2.new(1, -20, 0, 300)
-    section.Position = UDim2.new(0, 10, 0, (#parent:GetChildren() - 1) * 320)
-    
-    local uiCorner = Instance.new("UICorner")
-    uiCorner.CornerRadius = UDim.new(0, 10)
-    uiCorner.Parent = section
-    
-    local sectionLabel = Instance.new("TextLabel")
-    sectionLabel.Name = name .. "Label"
-    sectionLabel.Parent = section
-    sectionLabel.Text = name
-    sectionLabel.Font = Enum.Font.GothamBold
-    sectionLabel.TextSize = 18
-    sectionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    sectionLabel.BackgroundTransparency = 1
-    sectionLabel.Position = UDim2.new(0, 10, 0, 10)
-    sectionLabel.Size = UDim2.new(0, 560, 0, 30)
-    
-    return section
-end
-
-local keySection = createSection("Key Features", rightPanel)
-local miscSection = createSection("Misc", rightPanel)
-local minigamesSection = createSection("Minigames", rightPanel)
-local farmingSection = createSection("Auto Farming", rightPanel)
-
--- Add toggles to sections
-createToggle(keySection, 'AutoCrystalKey', AutoCrystalKey)
-createToggle(keySection, 'AutoTechKey', AutoTechKey)
-createToggle(keySection, 'AutoVoidKey', AutoVoidKey)
-createToggle(keySection, 'AutoPrisonKey', AutoPrisonKey)
-createToggle(keySection, 'AutoGoldenPrisonKey', AutoGoldenPrisonKey)
-createToggle(miscSection, 'AutoBuyMisc', AutoBuyMisc)
-createToggle(miscSection, 'AutoClaimDaily', AutoClaimDaily)
-createToggle(minigamesSection, 'AutoFish', AutoFish)
-createToggle(farmingSection, 'AutoEquipSlots', AutoEquipSlots)
-createToggle(farmingSection, 'AutoPurchaseNextZone', AutoPurchaseNextZone)
-createToggle(keySection, 'Autoconvertsec', Autoconvertsec)
-
--- Finalize UI
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+return UILibrary
