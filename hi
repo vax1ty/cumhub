@@ -12,8 +12,9 @@ function UILibrary:CreateHub()
     rightPanel.Size = UDim2.new(0.7, 0, 1, 0)
     rightPanel.Position = UDim2.new(0.3, 0, 0, 0)
 
-    hub.RightPanel = rightPanel
-    return hub
+    hub.RightPanel = rightPanel -- Removed this line as it's unnecessary
+
+    return hub, rightPanel -- Return rightPanel for easy reference
 end
 
 function UILibrary:AddElement(parent, element)
