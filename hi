@@ -74,6 +74,52 @@ local function createTabButton(name, parent, text, posY, onClick)
     return tabButton
 end
 
+local function createToggle(name, parent, text, posY, callback)
+    local toggle = Instance.new("Frame")
+    toggle.Name = name
+    toggle.Parent = parent
+    toggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    toggle.Position = UDim2.new(0, 10, 0, posY)
+    toggle.Size = UDim2.new(0, 560, 0, 40)
+
+    local uiCorner = Instance.new("UICorner")
+    uiCorner.CornerRadius = UDim.new(0, 5)
+    uiCorner.Parent = toggle
+
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Name = name .. "Label"
+    textLabel.Parent = toggle
+    textLabel.Text = text
+    textLabel.Font = Enum.Font.Gotham
+    textLabel.TextSize = 18
+    textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    textLabel.BackgroundTransparency = 1
+    textLabel.Size = UDim2.new(1, -50, 1, 0)
+    textLabel.Position = UDim2.new(0, 5, 0, 0)
+
+    local toggleButton = Instance.new("TextButton")
+    toggleButton.Name = name .. "Button"
+    toggleButton.Parent = toggle
+    toggleButton.Text = ""
+    toggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    toggleButton.Size = UDim2.new(0, 30, 0, 30)
+    toggleButton.Position = UDim2.new(1, -40, 0.5, -15)
+
+    local buttonUICorner = Instance.new("UICorner")
+    buttonUICorner.CornerRadius = UDim.new(1, 0)
+    buttonUICorner.Parent = toggleButton
+
+    local isToggled = false
+
+    toggleButton.MouseButton1Click:Connect(function()
+        isToggled = not isToggled
+        toggleButton.BackgroundColor3 = isToggled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+        callback(isToggled)
+    end)
+
+    return toggle
+end
+
 function UILibrary:CreateHub()
     local screenGui = createScreenGui()
     local mainFrame = createMainFrame(screenGui)
@@ -90,6 +136,10 @@ end
 
 function UILibrary:AddTabButton(hub, name, text, posY, onClick)
     return createTabButton(name, hub.LeftPanel, text, posY, onClick)
+end
+
+function UILibrary:AddToggle(hub, name, text, posY, callback)
+    return createToggle(name, hub.RightPanel, text, posY, callback)
 end
 
 return UILibrary
