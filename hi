@@ -12,17 +12,14 @@ function UILibrary:CreateHub()
     rightPanel.Size = UDim2.new(0.7, 0, 1, 0)
     rightPanel.Position = UDim2.new(0.3, 0, 0, 0)
 
-    hub.RightPanel = rightPanel -- Removed this line as it's unnecessary
-
-    return hub, rightPanel -- Return rightPanel for easy reference
+    return hub, rightPanel
 end
 
 function UILibrary:AddElement(parent, element)
-    if not parent.Layout then
+    if not parent:FindFirstChildOfClass("UIListLayout") then
         local layout = Instance.new("UIListLayout")
         layout.Parent = parent
         layout.Padding = UDim.new(0, 10)
-        parent.Layout = layout
     end
     element.Parent = parent
 end
