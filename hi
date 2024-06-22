@@ -1,216 +1,166 @@
-local UILibrary = {}
+-- Main Library Table
+local VisualUILib = {}
 
-function UILibrary:CreateHub()
-    local hub = Instance.new("ScreenGui")
-    hub.Name = "Hub"
-    hub.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
 
-    local rightPanel = Instance.new("Frame")
-    rightPanel.Name = "RightPanel"
-    rightPanel.Parent = hub
-    rightPanel.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    rightPanel.Size = UDim2.new(0.7, 0, 1, 0)
-    rightPanel.Position = UDim2.new(0.3, 0, 0, 0)
+local ConfigF = "YourConfigFolder"  -- Replace with the folder name you want to use for saving
+local player = Players.LocalPlayer
 
-    -- Add UIListLayout to manage the layout of elements
-    local layout = Instance.new("UIListLayout")
-    layout.Parent = rightPanel
-    layout.Padding = UDim.new(0, 10)
-    layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-    layout.SortOrder = Enum.SortOrder.LayoutOrder
-
-    return hub, rightPanel
+local function saveConfig(config, name)
+	local json = HttpService:JSONEncode(config)
+	writefile(ConfigF..'/'..name..'.json', json)
+	print('Saved Config: Successfully saved your config with the name, \''..name..'.json\'.')
 end
 
-function UILibrary:AddElement(parent, element)
-    element.Parent = parent
+local function loadConfig(name)
+	local success, result = pcall(function()
+		local json = readfile(ConfigF..'/'..name..'.json')
+		return HttpService:JSONDecode(json)
+	end)
+	if success then
+		return result
+	else
+		warn("Failed to load config: " .. result)
+		return {}
+	end
 end
 
-function UILibrary:AddTabButton(hub, name, text, size, callback)
-    local tabButton = Instance.new("TextButton")
-    tabButton.Name = name
-    tabButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    tabButton.Size = UDim2.new(0, size, 0, 50)
-    tabButton.Text = text
-    tabButton.MouseButton1Click:Connect(callback)
-    self:AddElement(hub, tabButton)
-    return tabButton
+-- Function to create a new window
+function VisualUILib:CreateWindow(title, configName)
+	local window = {}
+	window.config = loadConfig(configName)
+	window.elements = {}
+
+	-- Instances
+	local ScreenGui = Instance.new("ScreenGui")
+	local MainFrame = Instance.new("Frame")
+	local UICorner = Instance.new("UICorner")
+	local TitleLabel = Instance.new("TextLabel")
+	local Sidebar = Instance.new("Frame")
+	local UIListLayoutSidebar = Instance.new("UIListLayout")
+	local ContentFrame = Instance.new("ScrollingFrame")
+	local UIPadding = Instance.new("UIPadding")
+	local UIListLayout = Instance.new("UIListLayout")
+
+	-- Properties
+	ScreenGui.Parent = player:WaitForChild("PlayerGui")
+	ScreenGui.ResetOnSpawn = false
+
+	MainFrame.Parent = ScreenGui
+	MainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+	MainFrame.Position = UDim2.new(0.5, -300, 0.5, -200)
+	MainFrame.Size = UDim2.new(0, 600, 0, 400)
+	MainFrame.ClipsDescendants = true
+
+	UICorner.CornerRadius = UDim.new(0, 15)
+	UICorner.Parent = MainFrame
+
+	TitleLabel.Parent = MainFrame
+	TitleLabel.BackgroundTransparency = 1.000
+	TitleLabel.Position = UDim2.new(0.5, -50, 0, 10)
+	TitleLabel.Size = UDim2.new(0, 100, 0, 40)
+	TitleLabel.Font = Enum.Font.GothamBold
+	TitleLabel.Text = title
+	TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+	TitleLabel.TextSize = 28.000
+	TitleLabel.TextXAlignment = Enum.TextXAlignment.Center
+
+	Sidebar.Parent = MainFrame
+	Sidebar.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+	Sidebar.Position = UDim2.new(0, 10, 0, 60)
+	Sidebar.Size = UDim2.new(0, 140, 1, -70)
+
+	local sidebarCorner = Instance.new("UICorner")
+	sidebarCorner.CornerRadius = UDim.new(0, 10)
+	sidebarCorner.Parent = Sidebar
+
+	UIListLayoutSidebar.Parent = Sidebar
+	UIListLayoutSidebar.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayoutSidebar.Padding = UDim.new(0, 10)
+
+	ContentFrame.Parent = MainFrame
+	ContentFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+	ContentFrame.Position = UDim2.new(0, 160, 0, 60)
+	ContentFrame.Size = UDim2.new(1, -170, 1, -70)
+	ContentFrame.CanvasSize = UDim2.new(0, 0, 2, 0)
+	ContentFrame.ScrollBarThickness = 8
+	ContentFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+	ContentFrame.ClipsDescendants = true
+
+	UIPadding.Parent = ContentFrame
+	UIPadding.PaddingBottom = UDim.new(0, 10)
+	UIPadding.PaddingLeft = UDim.new(0, 10)
+	UIPadding.PaddingRight = UDim.new(0, 10)
+	UIPadding.PaddingTop = UDim.new(0, 10)
+
+	UIListLayout.Parent = ContentFrame
+	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout.Padding = UDim.new(0, 10)
+
+	-- Method to add a tab button to the sidebar
+	function window:AddTab(text, contentFunction)
+		local TabButton = Instance.new("TextButton")
+		local UICornerSidebar = Instance.new("UICorner")
+
+		TabButton.Parent = Sidebar
+		TabButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+		TabButton.Size = UDim2.new(1, 0, 0, 40)
+		TabButton.Font = Enum.Font.GothamBold
+		TabButton.Text = text
+		TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+		TabButton.TextSize = 18.000
+		TabButton.AutoButtonColor = true
+
+		UICornerSidebar.CornerRadius = UDim.new(0, 10)
+		UICornerSidebar.Parent = TabButton
+
+		TabButton.MouseEnter:Connect(function()
+			TabButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+		end)
+
+		TabButton.MouseLeave:Connect(function()
+			TabButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+		end)
+
+		TabButton.MouseButton1Click:Connect(function()
+			-- Clear the current content
+			for _, child in pairs(ContentFrame:GetChildren()) do
+				if child:IsA("Frame") or child:IsA("TextButton") then
+					child:Destroy()
+				end
+			end
+			-- Load the content for the selected tab
+			contentFunction()
+		end)
+	end
+
+	-- Method to add a button to the window
+	function window:AddButton(text, callback)
+		-- Implementation here
+	end
+
+	-- Method to add a toggle to the window
+	function window:AddToggle(text, default, callback)
+		-- Implementation here
+	end
+
+	-- Method to add a slider to the window
+	function window:AddSlider(text, min, max, default, callback)
+		-- Implementation here
+	end
+
+	-- Method to add a dropdown to the window
+	function window:AddDropdown(text, items, callback)
+		-- Implementation here
+	end
+
+	-- Method to add a notification
+	function window:AddNotification(text, duration)
+		-- Implementation here
+	end
+
+	return window
 end
 
-function UILibrary:AddToggle(parent, name, text, callback)
-    local toggle = Instance.new("TextButton")
-    toggle.Name = name
-    toggle.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    toggle.Size = UDim2.new(0.8, 0, 0.1, 0)
-    toggle.Text = text
-    local state = false
-    toggle.MouseButton1Click:Connect(function()
-        state = not state
-        callback(state)
-    end)
-    self:AddElement(parent, toggle)
-    return toggle
-end
-
-function UILibrary:AddSlider(parent, name, text, min, max, callback)
-    local slider = Instance.new("TextButton")
-    slider.Name = name
-    slider.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    slider.Size = UDim2.new(0.8, 0, 0.1, 0)
-    slider.Text = text
-    slider.MouseButton1Click:Connect(function()
-        local value = math.random(min, max)
-        callback(value)
-    end)
-    self:AddElement(parent, slider)
-    return slider
-end
-
-function UILibrary:AddButton(parent, name, text, callback)
-    local button = Instance.new("TextButton")
-    button.Name = name
-    button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    button.Size = UDim2.new(0.8, 0, 0.1, 0)
-    button.Text = text
-    button.MouseButton1Click:Connect(function()
-        callback()
-    end)
-    self:AddElement(parent, button)
-    return button
-end
-
-function UILibrary:AddColorPicker(parent, name, text, callback)
-    local colorPicker = Instance.new("TextButton")
-    colorPicker.Name = name
-    colorPicker.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    colorPicker.Size = UDim2.new(0.8, 0, 0.1, 0)
-    colorPicker.Text = text
-    colorPicker.MouseButton1Click:Connect(function()
-        local color = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
-        callback(color)
-    end)
-    self:AddElement(parent, colorPicker)
-    return colorPicker
-end
-
-function UILibrary:AddTextBox(parent, name, text, callback)
-    local textBox = Instance.new("TextBox")
-    textBox.Name = name
-    textBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    textBox.Size = UDim2.new(0.8, 0, 0.1, 0)
-    textBox.PlaceholderText = text
-    textBox.FocusLost:Connect(function(enterPressed)
-        if enterPressed then
-            callback(textBox.Text)
-        end
-    end)
-    self:AddElement(parent, textBox)
-    return textBox
-end
-
-function UILibrary:AddComboBox(parent, name, text, options, callback)
-    local comboBox = Instance.new("TextButton")
-    comboBox.Name = name
-    comboBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    comboBox.Size = UDim2.new(0.8, 0, 0.1, 0)
-    comboBox.Text = text
-    comboBox.MouseButton1Click:Connect(function()
-        local selected = options[math.random(1, #options)]
-        callback(selected)
-    end)
-    self:AddElement(parent, comboBox)
-    return comboBox
-end
-
-function UILibrary:AddMultiSelect(parent, name, text, options, callback)
-    local multiSelect = Instance.new("TextButton")
-    multiSelect.Name = name
-    multiSelect.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    multiSelect.Size = UDim2.new(0.8, 0, 0.1, 0)
-    multiSelect.Text = text
-    multiSelect.MouseButton1Click:Connect(function()
-        local selectedOptions = {}
-        for _, option in ipairs(options) do
-            if math.random(0, 1) == 1 then
-                table.insert(selectedOptions, option)
-            end
-        end
-        callback(selectedOptions)
-    end)
-    self:AddElement(parent, multiSelect)
-    return multiSelect
-end
-
-function UILibrary:AddLabel(parent, name, text)
-    local label = Instance.new("TextLabel")
-    label.Name = name
-    label.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    label.Size = UDim2.new(0.8, 0, 0.1, 0)
-    label.Text = text
-    label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    label.Font = Enum.Font.SourceSans
-    label.TextSize = 14
-    self:AddElement(parent, label)
-    return label
-end
-
-function UILibrary:AddHotkey(parent, name, text, keyCode, callback)
-    local hotkey = Instance.new("TextButton")
-    hotkey.Name = name
-    hotkey.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    hotkey.Size = UDim2.new(0.8, 0, 0.1, 0)
-    hotkey.Text = text
-    hotkey.MouseButton1Click:Connect(function()
-        print("Press the key")
-    end)
-    game:GetService("UserInputService").InputBegan:Connect(function(input)
-        if input.KeyCode == keyCode then
-            callback()
-        end
-    end)
-    self:AddElement(parent, hotkey)
-    return hotkey
-end
-
-function UILibrary:AddCheckbox(parent, name, text, callback)
-    local checkbox = Instance.new("TextButton")
-    checkbox.Name = name
-    checkbox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    checkbox.Size = UDim2.new(0.8, 0, 0.1, 0)
-    checkbox.Text = text
-    local state = false
-    checkbox.MouseButton1Click:Connect(function()
-        state = not state
-        callback(state)
-    end)
-    self:AddElement(parent, checkbox)
-    return checkbox
-end
-
-function UILibrary:AddListBox(parent, name, text, items, callback)
-    local listBox = Instance.new("TextButton")
-    listBox.Name = name
-    listBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    listBox.Size = UDim2.new(0.8, 0, 0.1, 0)
-    listBox.Text = text
-    listBox.MouseButton1Click:Connect(function()
-        local selectedItem = items[math.random(1, #items)]
-        callback(selectedItem)
-    end)
-    self:AddElement(parent, listBox)
-    return listBox
-end
-
-function UILibrary:AddString(name, value)
-    local stringObject = {
-        Name = name,
-        Value = value or ""
-    }
-    return stringObject
-end
-
-function UILibrary:SetMenuVisible(menu, visible)
-    menu.Visible = visible
-end
-
-return UILibrary
+return VisualUILib
