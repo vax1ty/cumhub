@@ -777,12 +777,3 @@ function VisualUILib:CreateWindow(title)
 
     return window
 end
-
-local window = VisualUILib:CreateWindow("My GUI")
-
-window:AddNotification("This is a notification!", 3)
-
-return VisualUILib
-]]
-
-local VisualUILib = loadstring(scriptSource)()
