@@ -791,6 +791,3 @@ function VisualUILib:CreateWindow(title)
 
     return window
 end
-
--- Example Usage
-local window = VisualUILib:CreateWindow("My GUI")
