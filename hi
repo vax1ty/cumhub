@@ -4,15 +4,17 @@ local VisualUILib = {}
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 
-local ConfigF = "YourConfigFolder"  -- Replace with the folder name you want to use for saving
+local ConfigF = "YourConfigFolder"  -- Folder name for saving configs
 local player = Players.LocalPlayer
 
+-- Save configuration to file
 local function saveConfig(config, name)
 	local json = HttpService:JSONEncode(config)
 	writefile(ConfigF..'/'..name..'.json', json)
 	print('Saved Config: Successfully saved your config with the name, \''..name..'.json\'.')
 end
 
+-- Load configuration from file
 local function loadConfig(name)
 	local success, result = pcall(function()
 		local json = readfile(ConfigF..'/'..name..'.json')
@@ -135,29 +137,328 @@ function VisualUILib:CreateWindow(title, configName)
 		end)
 	end
 
-	-- Method to add a button to the window
+	-- Placeholder method to add a button to the window
 	function window:AddButton(text, callback)
-		-- Implementation here
+		local Button = Instance.new("TextButton")
+		local UICorner_3 = Instance.new("UICorner")
+
+		Button.Parent = ContentFrame
+		Button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+		Button.Size = UDim2.new(1, -20, 0, 40)
+		Button.Font = Enum.Font.GothamBold
+		Button.Text = text
+		Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+		Button.TextSize = 18.000
+		Button.LayoutOrder = #ContentFrame:GetChildren()
+
+		UICorner_3.CornerRadius = UDim.new(0, 10)
+		UICorner_3.Parent = Button
+
+		Button.MouseEnter:Connect(function()
+			Button.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+		end)
+
+		Button.MouseLeave:Connect(function()
+			Button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+		end)
+
+		Button.MouseButton1Click:Connect(function()
+			if callback then
+				callback()
+			end
+			window.config[text] = true
+			saveConfig(window.config, configName)
+		end)
+
+		-- Load saved state
+		if window.config[text] then
+			callback()
+		end
 	end
 
-	-- Method to add a toggle to the window
+	-- Placeholder method to add a toggle to the window
 	function window:AddToggle(text, default, callback)
-		-- Implementation here
+		local ToggleFrame = Instance.new("Frame")
+		local ToggleButton = Instance.new("TextButton")
+		local ToggleText = Instance.new("TextLabel")
+		local UICorner_4 = Instance.new("UICorner")
+		local UICorner_5 = Instance.new("UICorner")
+
+		ToggleFrame.Parent = ContentFrame
+		ToggleFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+		ToggleFrame.Size = UDim2.new(1, -20, 0, 50)
+		ToggleFrame.LayoutOrder = #ContentFrame:GetChildren()
+
+		UICorner_4.CornerRadius = UDim.new(0, 10)
+		UICorner_4.Parent = ToggleFrame
+
+		ToggleText.Parent = ToggleFrame
+		ToggleText.BackgroundTransparency = 1.000
+		ToggleText.Position = UDim2.new(0, 10, 0, 0)
+		ToggleText.Size = UDim2.new(0.8, -10, 1, 0)
+		ToggleText.Font = Enum.Font.GothamBold
+		ToggleText.Text = text
+		ToggleText.TextColor3 = Color3.fromRGB(255, 255, 255)
+		ToggleText.TextSize = 18.000
+		ToggleText.TextXAlignment = Enum.TextXAlignment.Left
+
+		ToggleButton.Parent = ToggleFrame
+		ToggleButton.BackgroundColor3 = default and Color3.fromRGB(0, 170, 255) or Color3.fromRGB(80, 80, 80)
+		ToggleButton.Size = UDim2.new(0.2, -10, 0.8, 0)
+		ToggleButton.Position = UDim2.new(0.8, 0, 0.1, 0)
+		ToggleButton.Font = Enum.Font.GothamBold
+		ToggleButton.Text = ""
+		ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+		ToggleButton.TextSize = 18.000
+
+		UICorner_5.CornerRadius = UDim.new(0, 10)
+		UICorner_5.Parent = ToggleButton
+
+		local switched = window.config[text] ~= nil and window.config[text] or default
+
+		local function handleClick()
+			switched = not switched
+			ToggleButton.BackgroundColor3 = switched and Color3.fromRGB(0, 170, 255) or Color3.fromRGB(80, 80, 80)
+			window.config[text] = switched
+			saveConfig(window.config, configName)
+			if callback then
+				callback(switched)
+			end
+		end
+
+		ToggleButton.MouseButton1Click:Connect(handleClick)
+
+		-- Set initial state based on config
+		ToggleButton.BackgroundColor3 = switched and Color3.fromRGB(0, 170, 255) or Color3.fromRGB(80, 80, 80)
+		if callback then
+			callback(switched)
+		end
 	end
 
-	-- Method to add a slider to the window
+	-- Placeholder method to add a slider to the window
 	function window:AddSlider(text, min, max, default, callback)
-		-- Implementation here
+		local SliderFrame = Instance.new("Frame")
+		local SliderText = Instance.new("TextLabel")
+		local SliderBar = Instance.new("Frame")
+		local SliderFill = Instance.new("Frame")
+		local SliderHandle = Instance.new("Frame")
+		local UICorner_6 = Instance.new("UICorner")
+		local UICorner_7 = Instance.new("UICorner")
+		local UICorner_8 = Instance.new("UICorner")
+
+		SliderFrame.Parent = ContentFrame
+		SliderFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+		SliderFrame.Size = UDim2.new(1, -20, 0, 60)
+		SliderFrame.LayoutOrder = #ContentFrame:GetChildren()
+
+		SliderText.Parent = SliderFrame
+		SliderText.BackgroundTransparency = 1.000
+		SliderText.Position = UDim2.new(0, 10, 0, 5)
+		SliderText.Size = UDim2.new(1, -20, 0, 20)
+		SliderText.Font = Enum.Font.GothamBold
+		SliderText.Text = text
+		SliderText.TextColor3 = Color3.fromRGB(255, 255, 255)
+		SliderText.TextSize = 18.000
+		SliderText.TextXAlignment = Enum.TextXAlignment.Left
+
+		SliderBar.Parent = SliderFrame
+		SliderBar.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+		SliderBar.Position = UDim2.new(0, 10, 0, 30)
+		SliderBar.Size = UDim2.new(1, -20, 0, 10)
+
+		UICorner_6.CornerRadius = UDim.new(0, 5)
+		UICorner_6.Parent = SliderBar
+
+		SliderFill.Parent = SliderBar
+		SliderFill.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+		SliderFill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
+
+		UICorner_8.CornerRadius = UDim.new(0, 5)
+		UICorner_8.Parent = SliderFill
+
+		SliderHandle.Parent = SliderBar
+		SliderHandle.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+		SliderHandle.Size = UDim2.new(0, 20, 0, 20)
+		SliderHandle.Position = UDim2.new((default - min) / (max - min), -10, -0.5, 0)
+
+		UICorner_7.CornerRadius = UDim.new(1, 0)
+		UICorner_7.Parent = SliderHandle
+
+		local dragging = false
+		local currentValue = window.config[text] or default
+
+		local function updateSlider(input)
+			local delta = input.Position.X - SliderBar.AbsolutePosition.X
+			local percent = math.clamp(delta / SliderBar.AbsoluteSize.X, 0, 1)
+			SliderFill.Size = UDim2.new(percent, 0, 1, 0)
+			SliderHandle.Position = UDim2.new(percent, -10, -0.5, 0)
+			local value = math.floor(min + ((max - min) * percent))
+			currentValue = value
+			window.config[text] = value
+			saveConfig(window.config, configName)
+			if callback then
+				callback(value)
+			end
+		end
+
+		SliderHandle.InputBegan:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+				dragging = true
+			end
+		end)
+
+		SliderHandle.InputEnded:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+				dragging = false
+			end
+		end)
+
+		game:GetService("UserInputService").InputChanged:Connect(function(input)
+			if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+				updateSlider(input)
+			end
+		end)
+
+		-- Set initial slider value
+		local percent = (currentValue - min) / (max - min)
+		SliderFill.Size = UDim2.new(percent, 0, 1, 0)
+		SliderHandle.Position = UDim2.new(percent, -10, -0.5, 0)
+		if callback then
+			callback(currentValue)
+		end
 	end
 
-	-- Method to add a dropdown to the window
+	-- Placeholder method to add a dropdown to the window
 	function window:AddDropdown(text, items, callback)
-		-- Implementation here
+		local DropdownFrame = Instance.new("Frame")
+		local DropdownText = Instance.new("TextLabel")
+		local DropdownButton = Instance.new("TextButton")
+		local UICorner_8 = Instance.new("UICorner")
+		local DropdownItems = Instance.new("Frame")
+		local UIPadding_2 = Instance.new("UIPadding")
+
+		DropdownFrame.Parent = ContentFrame
+		DropdownFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+		DropdownFrame.Size = UDim2.new(1, -20, 0, 40)
+		DropdownFrame.LayoutOrder = #ContentFrame:GetChildren()
+
+		DropdownText.Parent = DropdownFrame
+		DropdownText.BackgroundTransparency = 1.000
+		DropdownText.Position = UDim2.new(0, 10, 0, 0)
+		DropdownText.Size = UDim2.new(0.5, -10, 1, 0)
+		DropdownText.Font = Enum.Font.GothamBold
+		DropdownText.Text = text
+		DropdownText.TextColor3 = Color3.fromRGB(255, 255, 255)
+		DropdownText.TextSize = 18.000
+		DropdownText.TextXAlignment = Enum.TextXAlignment.Left
+
+		DropdownButton.Parent = DropdownFrame
+		DropdownButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+		DropdownButton.Position = UDim2.new(0.5, 10, 0.1, 0)
+		DropdownButton.Size = UDim2.new(0.4, 0, 0.8, 0)
+		DropdownButton.Font = Enum.Font.GothamBold
+		DropdownButton.Text = "Select"
+		DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+		DropdownButton.TextSize = 18.000
+
+		UICorner_8.CornerRadius = UDim.new(0, 10)
+		UICorner_8.Parent = DropdownButton
+
+		DropdownItems.Parent = DropdownFrame
+		DropdownItems.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+		DropdownItems.Position = UDim2.new(0, 0, 1, 0)
+		DropdownItems.Size = UDim2.new(1, 0, 0, 0)
+		DropdownItems.Visible = false
+		DropdownItems.ClipsDescendants = true
+
+		UIPadding_2.Parent = DropdownItems
+		UIPadding_2.PaddingBottom = UDim.new(0, 5)
+		UIPadding_2.PaddingLeft = UDim.new(0, 5)
+		UIPadding_2.PaddingRight = UDim.new(0, 5)
+		UIPadding_2.PaddingTop = UDim.new(0, 5)
+
+		local selectedItem = window.config[text] or ""
+
+		local function updateDropdown()
+			DropdownItems:ClearAllChildren()
+			local itemCount = #items
+			DropdownItems.Size = UDim2.new(1, 0, 0, itemCount * 30)
+			for i, item in ipairs(items) do
+				local ItemButton = Instance.new("TextButton")
+				local UICorner_10 = Instance.new("UICorner")
+				ItemButton.Parent = DropdownItems
+				ItemButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+				ItemButton.Size = UDim2.new(1, -10, 0, 30)
+				ItemButton.Position = UDim2.new(0, 5, 0, (i - 1) * 30)
+				ItemButton.Font = Enum.Font.GothamBold
+				ItemButton.Text = item
+				ItemButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+				ItemButton.TextSize = 18.000
+
+				UICorner_10.CornerRadius = UDim.new(0, 10)
+				UICorner_10.Parent = ItemButton
+
+				ItemButton.MouseEnter:Connect(function()
+					ItemButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+				end)
+
+				ItemButton.MouseLeave:Connect(function()
+					ItemButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+				end)
+
+				ItemButton.MouseButton1Click:Connect(function()
+					DropdownButton.Text = item
+					selectedItem = item
+					window.config[text] = item
+					saveConfig(window.config, configName)
+					DropdownItems.Visible = false
+					if callback then
+						callback(item)
+					end
+				end)
+			end
+		end
+
+		updateDropdown()
+
+		DropdownButton.MouseButton1Click:Connect(function()
+			DropdownItems.Visible = not DropdownItems.Visible
+		end)
+
+		-- Set initial state based on config
+		DropdownButton.Text = selectedItem
+		if callback then
+			callback(selectedItem)
+		end
 	end
 
-	-- Method to add a notification
+	-- Placeholder method to add a notification
 	function window:AddNotification(text, duration)
-		-- Implementation here
+		local NotificationFrame = Instance.new("TextButton")
+		local UICorner_11 = Instance.new("UICorner")
+
+		NotificationFrame.Parent = ScreenGui
+		NotificationFrame.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+		NotificationFrame.Size = UDim2.new(0, 250, 0, 40)
+		NotificationFrame.Position = UDim2.new(1, -260, 1, -50)
+		NotificationFrame.AnchorPoint = Vector2.new(1, 1)
+		NotificationFrame.Font = Enum.Font.GothamBold
+		NotificationFrame.Text = text
+		NotificationFrame.TextColor3 = Color3.fromRGB(255, 255, 255)
+		NotificationFrame.TextSize = 18.000
+
+		UICorner_11.CornerRadius = UDim.new(0, 10)
+		UICorner_11.Parent = NotificationFrame
+
+		NotificationFrame.MouseButton1Click:Connect(function()
+			NotificationFrame:Destroy()
+		end)
+
+		delay(duration or 2, function()
+			if NotificationFrame and NotificationFrame.Parent then
+				NotificationFrame:Destroy()
+			end
+		end)
 	end
 
 	return window
