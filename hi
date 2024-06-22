@@ -1,4 +1,4 @@
-local scriptSource = [[
+-- Define the VisualUILib
 local VisualUILib = {}
 
 local function makeDraggable(topBarObject, object)
