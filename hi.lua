@@ -1,5 +1,5 @@
 -- Define the VisualUILib
-local VisualUILib = {}
+VisualUILib = {}
 
 local function makeDraggable(topBarObject, object)
     local UserInputService = game:GetService("UserInputService")
