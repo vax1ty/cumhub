@@ -131,9 +131,10 @@ function VisualUILib:CreateWindow(title)
         end
     end)
 
-    function window:AddTab(text, contentFunction)
+    function window:AddTab(text)
         local TabButton = Instance.new("TextButton")
         local UICornerSidebar = Instance.new("UICorner")
+        local tab = {}
 
         TabButton.Parent = Sidebar
         TabButton.BackgroundColor3 = defaultColors.buttonColor
@@ -147,6 +148,17 @@ function VisualUILib:CreateWindow(title)
         UICornerSidebar.CornerRadius = UDim.new(0, 10)
         UICornerSidebar.Parent = TabButton
 
+        local tabContentFrame = Instance.new("Frame")
+        tabContentFrame.Parent = ContentFrame
+        tabContentFrame.BackgroundColor3 = defaultColors.backgroundColor
+        tabContentFrame.Size = UDim2.new(1, 0, 1, 0)
+        tabContentFrame.Visible = false
+
+        local UIListLayoutTab = Instance.new("UIListLayout")
+        UIListLayoutTab.Parent = tabContentFrame
+        UIListLayoutTab.SortOrder = Enum.SortOrder.LayoutOrder
+        UIListLayoutTab.Padding = UDim.new(0, 10)
+
         TabButton.MouseEnter:Connect(function()
             TabButton.BackgroundColor3 = defaultColors.hoverColor
         end)
@@ -156,274 +168,280 @@ function VisualUILib:CreateWindow(title)
         end)
 
         TabButton.MouseButton1Click:Connect(function()
-            for _, child in pairs(ContentFrame:GetChildren()) do
-                if child:IsA("Frame") or child:IsA("TextButton") then
-                    child:Destroy()
+            for _, frame in pairs(ContentFrame:GetChildren()) do
+                if frame:IsA("Frame") then
+                    frame.Visible = false
                 end
             end
-            contentFunction()
-        end)
-    end
-
-    function window:AddButton(text, callback)
-        local Button = Instance.new("TextButton")
-        local UICorner_3 = Instance.new("UICorner")
-
-        Button.Parent = ContentFrame
-        Button.BackgroundColor3 = defaultColors.buttonColor
-        Button.Size = UDim2.new(1, -20, 0, 40)
-        Button.Font = Enum.Font.GothamBold
-        Button.Text = text
-        Button.TextColor3 = defaultColors.textColor
-        Button.TextSize = 18.000
-        Button.LayoutOrder = #ContentFrame:GetChildren()
-
-        UICorner_3.CornerRadius = UDim.new(0, 10)
-        UICorner_3.Parent = Button
-
-        Button.MouseEnter:Connect(function()
-            Button.BackgroundColor3 = defaultColors.hoverColor
+            tabContentFrame.Visible = true
         end)
 
-        Button.MouseLeave:Connect(function()
+        function tab:AddButton(text, callback)
+            local Button = Instance.new("TextButton")
+            local UICorner_3 = Instance.new("UICorner")
+
+            Button.Parent = tabContentFrame
             Button.BackgroundColor3 = defaultColors.buttonColor
-        end)
+            Button.Size = UDim2.new(1, -20, 0, 40)
+            Button.Font = Enum.Font.GothamBold
+            Button.Text = text
+            Button.TextColor3 = defaultColors.textColor
+            Button.TextSize = 18.000
+            Button.LayoutOrder = #tabContentFrame:GetChildren()
 
-        Button.MouseButton1Click:Connect(function()
-            if callback then
-                callback()
-            end
-        end)
-    end
+            UICorner_3.CornerRadius = UDim.new(0, 10)
+            UICorner_3.Parent = Button
 
-    function window:AddToggle(text, default, callback)
-        local ToggleFrame = Instance.new("Frame")
-        local ToggleButton = Instance.new("TextButton")
-        local ToggleText = Instance.new("TextLabel")
-        local UICorner_4 = Instance.new("UICorner")
-        local UICorner_5 = Instance.new("UICorner")
+            Button.MouseEnter:Connect(function()
+                Button.BackgroundColor3 = defaultColors.hoverColor
+            end)
 
-        ToggleFrame.Parent = ContentFrame
-        ToggleFrame.BackgroundColor3 = defaultColors.buttonColor
-        ToggleFrame.Size = UDim2.new(1, -20, 0, 50)
-        ToggleFrame.LayoutOrder = #ContentFrame:GetChildren()
+            Button.MouseLeave:Connect(function()
+                Button.BackgroundColor3 = defaultColors.buttonColor
+            end)
 
-        UICorner_4.CornerRadius = UDim.new(0, 10)
-        UICorner_4.Parent = ToggleFrame
-
-        ToggleText.Parent = ToggleFrame
-        ToggleText.BackgroundTransparency = 1.000
-        ToggleText.Position = UDim2.new(0, 10, 0, 0)
-        ToggleText.Size = UDim2.new(0.8, -10, 1, 0)
-        ToggleText.Font = Enum.Font.GothamBold
-        ToggleText.Text = text
-        ToggleText.TextColor3 = defaultColors.textColor
-        ToggleText.TextSize = 18.000
-        ToggleText.TextXAlignment = Enum.TextXAlignment.Left
-
-        ToggleButton.Parent = ToggleFrame
-        ToggleButton.BackgroundColor3 = default and defaultColors.accentColor or Color3.fromRGB(80, 80, 80)
-        ToggleButton.Size = UDim2.new(0.2, -10, 0.8, 0)
-        ToggleButton.Position = UDim2.new(0.8, 0, 0.1, 0)
-        ToggleButton.Font = Enum.Font.GothamBold
-        ToggleButton.Text = ""
-        ToggleButton.TextColor3 = defaultColors.textColor
-        ToggleButton.TextSize = 18.000
-
-        UICorner_5.CornerRadius = UDim.new(0, 10)
-        UICorner_5.Parent = ToggleButton
-
-        local switched = default
-
-        local function handleClick()
-            switched = not switched
-            ToggleButton.BackgroundColor3 = switched and defaultColors.accentColor or Color3.fromRGB(80, 80, 80)
-            if callback then
-                callback(switched)
-            end
+            Button.MouseButton1Click:Connect(function()
+                if callback then
+                    callback()
+                end
+            end)
         end
 
-        ToggleButton.MouseButton1Click:Connect(handleClick)
-    end
+        function tab:AddToggle(text, default, callback)
+            local ToggleFrame = Instance.new("Frame")
+            local ToggleButton = Instance.new("TextButton")
+            local ToggleText = Instance.new("TextLabel")
+            local UICorner_4 = Instance.new("UICorner")
+            local UICorner_5 = Instance.new("UICorner")
 
-    function window:AddSlider(text, min, max, default, callback)
-        local SliderFrame = Instance.new("Frame")
-        local SliderText = Instance.new("TextLabel")
-        local SliderBar = Instance.new("Frame")
-        local SliderFill = Instance.new("Frame")
-        local SliderHandle = Instance.new("Frame")
-        local UICorner_6 = Instance.new("UICorner")
-        local UICorner_7 = Instance.new("UICorner")
-        local UICorner_8 = Instance.new("UICorner")
-        local UICorner_9 = Instance.new("UICorner")
+            ToggleFrame.Parent = tabContentFrame
+            ToggleFrame.BackgroundColor3 = defaultColors.buttonColor
+            ToggleFrame.Size = UDim2.new(1, -20, 0, 50)
+            ToggleFrame.LayoutOrder = #tabContentFrame:Get
 
-        SliderFrame.Parent = ContentFrame
-        SliderFrame.BackgroundColor3 = defaultColors.buttonColor
-        SliderFrame.Size = UDim2.new(1, -20, 0, 60)
-        SliderFrame.LayoutOrder = #ContentFrame:GetChildren()
+Children()
 
-        SliderText.Parent = SliderFrame
-        SliderText.BackgroundTransparency = 1.000
-        SliderText.Position = UDim2.new(0, 10, 0, 5)
-        SliderText.Size = UDim2.new(1, -20, 0, 20)
-        SliderText.Font = Enum.Font.GothamBold
-        SliderText.Text = text
-        SliderText.TextColor3 = defaultColors.textColor
-        SliderText.TextSize = 18.000
-        SliderText.TextXAlignment = Enum.TextXAlignment.Left
+            UICorner_4.CornerRadius = UDim.new(0, 10)
+            UICorner_4.Parent = ToggleFrame
 
-        SliderBar.Parent = SliderFrame
-        SliderBar.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-        SliderBar.Position = UDim2.new(0, 10, 0, 30)
-        SliderBar.Size = UDim2.new(1, -20, 0, 10)
+            ToggleText.Parent = ToggleFrame
+            ToggleText.BackgroundTransparency = 1.000
+            ToggleText.Position = UDim2.new(0, 10, 0, 0)
+            ToggleText.Size = UDim2.new(0.8, -10, 1, 0)
+            ToggleText.Font = Enum.Font.GothamBold
+            ToggleText.Text = text
+            ToggleText.TextColor3 = defaultColors.textColor
+            ToggleText.TextSize = 18.000
+            ToggleText.TextXAlignment = Enum.TextXAlignment.Left
 
-        UICorner_6.CornerRadius = UDim.new(0, 5)
-        UICorner_6.Parent = SliderBar
+            ToggleButton.Parent = ToggleFrame
+            ToggleButton.BackgroundColor3 = default and defaultColors.accentColor or Color3.fromRGB(80, 80, 80)
+            ToggleButton.Size = UDim2.new(0.2, -10, 0.8, 0)
+            ToggleButton.Position = UDim2.new(0.8, 0, 0.1, 0)
+            ToggleButton.Font = Enum.Font.GothamBold
+            ToggleButton.Text = ""
+            ToggleButton.TextColor3 = defaultColors.textColor
+            ToggleButton.TextSize = 18.000
 
-        SliderFill.Parent = SliderBar
-        SliderFill.BackgroundColor3 = defaultColors.accentColor
-        SliderFill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
+            UICorner_5.CornerRadius = UDim.new(0, 10)
+            UICorner_5.Parent = ToggleButton
 
-        UICorner_9.CornerRadius = UDim.new(0, 5)
-        UICorner_9.Parent = SliderFill
+            local switched = default
 
-        SliderHandle.Parent = SliderBar
-        SliderHandle.BackgroundColor3 = defaultColors.accentColor
-        SliderHandle.Size = UDim2.new(0, 20, 0, 20)
-        SliderHandle.Position = UDim2.new((default - min) / (max - min), -10, -0.5, 0)
-
-        UICorner_7.CornerRadius = UDim.new(1, 0)
-        UICorner_7.Parent = SliderHandle
-
-        local SliderValueLabel = Instance.new("TextLabel")
-        SliderValueLabel.Parent = SliderFrame
-        SliderValueLabel.BackgroundTransparency = 1
-        SliderValueLabel.Position = UDim2.new(1, -70, 0, 5)
-        SliderValueLabel.Size = UDim2.new(0, 60, 0, 20)
-        SliderValueLabel.Font = Enum.Font.GothamBold
-        SliderValueLabel.TextColor3 = defaultColors.textColor
-        SliderValueLabel.TextSize = 18
-        SliderValueLabel.Text = tostring(default)
-
-        local dragging = false
-
-        local function updateSlider(input)
-            local delta = input.Position.X - SliderBar.AbsolutePosition.X
-            local percent = math.clamp(delta / SliderBar.AbsoluteSize.X, 0, 1)
-            SliderFill.Size = UDim2.new(percent, 0, 1, 0)
-            SliderHandle.Position = UDim2.new(percent, -10, -0.5, 0)
-            local value = math.floor(min + ((max - min) * percent))
-            SliderValueLabel.Text = tostring(value)
-            if callback then
-                callback(value)
+            local function handleClick()
+                switched = not switched
+                ToggleButton.BackgroundColor3 = switched and defaultColors.accentColor or Color3.fromRGB(80, 80, 80)
+                if callback then
+                    callback(switched)
+                end
             end
+
+            ToggleButton.MouseButton1Click:Connect(handleClick)
         end
 
-        SliderHandle.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                dragging = true
+        function tab:AddSlider(text, min, max, default, callback)
+            local SliderFrame = Instance.new("Frame")
+            local SliderText = Instance.new("TextLabel")
+            local SliderBar = Instance.new("Frame")
+            local SliderFill = Instance.new("Frame")
+            local SliderHandle = Instance.new("Frame")
+            local UICorner_6 = Instance.new("UICorner")
+            local UICorner_7 = Instance.new("UICorner")
+            local UICorner_8 = Instance.new("UICorner")
+            local UICorner_9 = Instance.new("UICorner")
+
+            SliderFrame.Parent = tabContentFrame
+            SliderFrame.BackgroundColor3 = defaultColors.buttonColor
+            SliderFrame.Size = UDim2.new(1, -20, 0, 60)
+            SliderFrame.LayoutOrder = #tabContentFrame:GetChildren()
+
+            SliderText.Parent = SliderFrame
+            SliderText.BackgroundTransparency = 1.000
+            SliderText.Position = UDim2.new(0, 10, 0, 5)
+            SliderText.Size = UDim2.new(1, -20, 0, 20)
+            SliderText.Font = Enum.Font.GothamBold
+            SliderText.Text = text
+            SliderText.TextColor3 = defaultColors.textColor
+            SliderText.TextSize = 18.000
+            SliderText.TextXAlignment = Enum.TextXAlignment.Left
+
+            SliderBar.Parent = SliderFrame
+            SliderBar.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+            SliderBar.Position = UDim2.new(0, 10, 0, 30)
+            SliderBar.Size = UDim2.new(1, -20, 0, 10)
+
+            UICorner_6.CornerRadius = UDim.new(0, 5)
+            UICorner_6.Parent = SliderBar
+
+            SliderFill.Parent = SliderBar
+            SliderFill.BackgroundColor3 = defaultColors.accentColor
+            SliderFill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
+
+            UICorner_9.CornerRadius = UDim.new(0, 5)
+            UICorner_9.Parent = SliderFill
+
+            SliderHandle.Parent = SliderBar
+            SliderHandle.BackgroundColor3 = defaultColors.accentColor
+            SliderHandle.Size = UDim2.new(0, 20, 0, 20)
+            SliderHandle.Position = UDim2.new((default - min) / (max - min), -10, -0.5, 0)
+
+            UICorner_7.CornerRadius = UDim.new(1, 0)
+            UICorner_7.Parent = SliderHandle
+
+            local SliderValueLabel = Instance.new("TextLabel")
+            SliderValueLabel.Parent = SliderFrame
+            SliderValueLabel.BackgroundTransparency = 1
+            SliderValueLabel.Position = UDim2.new(1, -70, 0, 5)
+            SliderValueLabel.Size = UDim2.new(0, 60, 0, 20)
+            SliderValueLabel.Font = Enum.Font.GothamBold
+            SliderValueLabel.TextColor3 = defaultColors.textColor
+            SliderValueLabel.TextSize = 18
+            SliderValueLabel.Text = tostring(default)
+
+            local dragging = false
+
+            local function updateSlider(input)
+                local delta = input.Position.X - SliderBar.AbsolutePosition.X
+                local percent = math.clamp(delta / SliderBar.AbsoluteSize.X, 0, 1)
+                SliderFill.Size = UDim2.new(percent, 0, 1, 0)
+                SliderHandle.Position = UDim2.new(percent, -10, -0.5, 0)
+                local value = math.floor(min + ((max - min) * percent))
+                SliderValueLabel.Text = tostring(value)
+                if callback then
+                    callback(value)
+                end
             end
-        end)
 
-        SliderHandle.InputEnded:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType.Touch then
-                dragging = false
-            end
-        end)
+            SliderHandle.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                    dragging = true
+                end
+            end)
 
-        game:GetService("UserInputService").InputChanged:Connect(function(input)
-            if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType.Touch) then
-                updateSlider(input)
-            end
-        end)
-    end
+            SliderHandle.InputEnded:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType.Touch then
+                    dragging = false
+                end
+            end)
 
-    function window:AddDropdown(text, items, callback)
-        local DropdownFrame = Instance.new("Frame")
-        local DropdownText = Instance.new("TextLabel")
-        local DropdownButton = Instance.new("TextButton")
-        local UICorner_8 = Instance.new("UICorner")
-        local DropdownItems = Instance.new("Frame")
-        local UIPadding_2 = Instance.new("UIPadding")
-        local UICorner_9 = Instance.new("UICorner")
-
-        DropdownFrame.Parent = ContentFrame
-        DropdownFrame.BackgroundColor3 = defaultColors.buttonColor
-        DropdownFrame.Size = UDim2.new(1, -20, 0, 40)
-        DropdownFrame.LayoutOrder = #ContentFrame:GetChildren()
-
-        DropdownText.Parent = DropdownFrame
-        DropdownText.BackgroundTransparency = 1.000
-        DropdownText.Position = UDim2.new(0, 10, 0, 0)
-        DropdownText.Size = UDim2.new(0.5, -10, 1, 0)
-        DropdownText.Font = Enum.Font.GothamBold
-        DropdownText.Text = text
-        DropdownText.TextColor3 = defaultColors.textColor
-        DropdownText.TextSize = 18.000
-        DropdownText.TextXAlignment = Enum.TextXAlignment.Left
-
-        DropdownButton.Parent = DropdownFrame
-        DropdownButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-        DropdownButton.Position = UDim2.new(0.5, 10, 0.1, 0)
-        DropdownButton.Size = UDim2.new(0.4, 0, 0.8, 0)
-        DropdownButton.Font = Enum.Font.GothamBold
-        DropdownButton.Text = "Select"
-        DropdownButton.TextColor3 = defaultColors.textColor
-        DropdownButton.TextSize = 18.000
-
-        UICorner_8.CornerRadius = UDim.new(0, 10)
-        UICorner_8.Parent = DropdownButton
-
-        DropdownItems.Parent = DropdownFrame
-        DropdownItems.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-        DropdownItems.Position = UDim2.new(0, 0, 1, 0)
-        DropdownItems.Size = UDim2.new(1, 0, 0, 0)
-        DropdownItems.Visible = false
-        DropdownItems.ClipsDescendants = true
-
-        UIPadding_2.Parent = DropdownItems
-        UIPadding_2.PaddingBottom = UDim.new(0, 5)
-        UIPadding_2.PaddingLeft = UDim.new(0, 5)
-        UIPadding_2.PaddingRight = UDim.new(0, 5)
-        UIPadding_2.PaddingTop = UDim.new(0, 5)
-
-        UICorner_9.CornerRadius = UDim.new(0, 10)
-        UICorner_9.Parent = DropdownItems
-
-        local function updateDropdown()
-            DropdownItems:ClearAllChildren()
-            local itemCount = #items
-            DropdownItems.Size = UDim2.new(1, 0, 0, itemCount * 30)
-            for i, item in ipairs(items) do
-                local ItemButton = Instance.new("TextButton")
-                local UICorner_10 = Instance.new("UICorner")
-                ItemButton.Parent = DropdownItems
-                ItemButton.BackgroundColor3 = defaultColors.buttonColor
-                ItemButton.Size = UDim2.new(1, -10, 0, 30)
-                ItemButton.Position = UDim2.new(0, 5, 0, (i - 1) * 30)
-                ItemButton.Font = Enum.Font.GothamBold
-                ItemButton.Text = item
-                ItemButton.TextColor3 = defaultColors.textColor
-                ItemButton.TextSize = 18.000
-
-                UICorner_10.CornerRadius = UDim.new(0, 10)
-                UICorner_10.Parent = ItemButton
-
-                ItemButton.MouseButton1Click:Connect(function()
-                    DropdownButton.Text = item
-                    DropdownItems.Visible = false
-                    if callback then
-                        callback(item)
-                    end
-                end)
-            end
+            game:GetService("UserInputService").InputChanged:Connect(function(input)
+                if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType.Touch) then
+                    updateSlider(input)
+                end
+            end)
         end
 
-        updateDropdown()
+        function tab:AddDropdown(text, items, callback)
+            local DropdownFrame = Instance.new("Frame")
+            local DropdownText = Instance.new("TextLabel")
+            local DropdownButton = Instance.new("TextButton")
+            local UICorner_8 = Instance.new("UICorner")
+            local DropdownItems = Instance.new("Frame")
+            local UIPadding_2 = Instance.new("UIPadding")
+            local UICorner_9 = Instance.new("UICorner")
 
-        DropdownButton.MouseButton1Click:Connect(function()
-            DropdownItems.Visible = not DropdownItems.Visible
-        end)
+            DropdownFrame.Parent = tabContentFrame
+            DropdownFrame.BackgroundColor3 = defaultColors.buttonColor
+            DropdownFrame.Size = UDim2.new(1, -20, 0, 40)
+            DropdownFrame.LayoutOrder = #tabContentFrame:GetChildren()
+
+            DropdownText.Parent = DropdownFrame
+            DropdownText.BackgroundTransparency = 1.000
+            DropdownText.Position = UDim2.new(0, 10, 0, 0)
+            DropdownText.Size = UDim2.new(0.5, -10, 1, 0)
+            DropdownText.Font = Enum.Font.GothamBold
+            DropdownText.Text = text
+            DropdownText.TextColor3 = defaultColors.textColor
+            DropdownText.TextSize = 18.000
+            DropdownText.TextXAlignment = Enum.TextXAlignment.Left
+
+            DropdownButton.Parent = DropdownFrame
+            DropdownButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+            DropdownButton.Position = UDim2.new(0.5, 10, 0.1, 0)
+            DropdownButton.Size = UDim2.new(0.4, 0, 0.8, 0)
+            DropdownButton.Font = Enum.Font.GothamBold
+            DropdownButton.Text = "Select"
+            DropdownButton.TextColor3 = defaultColors.textColor
+            DropdownButton.TextSize = 18.000
+
+            UICorner_8.CornerRadius = UDim.new(0, 10)
+            UICorner_8.Parent = DropdownButton
+
+            DropdownItems.Parent = DropdownFrame
+            DropdownItems.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+            DropdownItems.Position = UDim2.new(0, 0, 1, 0)
+            DropdownItems.Size = UDim2.new(1, 0, 0, 0)
+            DropdownItems.Visible = false
+            DropdownItems.ClipsDescendants = true
+
+            UIPadding_2.Parent = DropdownItems
+            UIPadding_2.PaddingBottom = UDim.new(0, 5)
+            UIPadding_2.PaddingLeft = UDim.new(0, 5)
+            UIPadding_2.PaddingRight = UDim.new(0, 5)
+            UIPadding_2.PaddingTop = UDim.new(0, 5)
+
+            UICorner_9.CornerRadius = UDim.new(0, 10)
+            UICorner_9.Parent = DropdownItems
+
+            local function updateDropdown()
+                DropdownItems:ClearAllChildren()
+                local itemCount = #items
+                DropdownItems.Size = UDim2.new(1, 0, 0, itemCount * 30)
+                for i, item in ipairs(items) do
+                    local ItemButton = Instance.new("TextButton")
+                    local UICorner_10 = Instance.new
+
+("UICorner")
+                    ItemButton.Parent = DropdownItems
+                    ItemButton.BackgroundColor3 = defaultColors.buttonColor
+                    ItemButton.Size = UDim2.new(1, -10, 0, 30)
+                    ItemButton.Position = UDim2.new(0, 5, 0, (i - 1) * 30)
+                    ItemButton.Font = Enum.Font.GothamBold
+                    ItemButton.Text = item
+                    ItemButton.TextColor3 = defaultColors.textColor
+                    ItemButton.TextSize = 18.000
+
+                    UICorner_10.CornerRadius = UDim.new(0, 10)
+                    UICorner_10.Parent = ItemButton
+
+                    ItemButton.MouseButton1Click:Connect(function()
+                        DropdownButton.Text = item
+                        DropdownItems.Visible = false
+                        if callback then
+                            callback(item)
+                        end
+                    end)
+                end
+            end
+
+            updateDropdown()
+
+            DropdownButton.MouseButton1Click:Connect(function()
+                DropdownItems.Visible = not DropdownItems.Visible
+            end)
+        end
+
+        return tab
     end
 
     function window:AddNotification(text, duration)
@@ -590,7 +608,9 @@ function VisualUILib:CreateWindow(title)
                     Handle.Position = UDim2.new(percent, -5, 0, 0)
                     local value = math.floor(255 * percent)
                     if onChange then
-                        onChange(value)
+                        onChange(value
+
+)
                     end
                 end
 
