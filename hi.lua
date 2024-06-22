@@ -217,9 +217,7 @@ function VisualUILib:CreateWindow(title)
             ToggleFrame.Parent = tabContentFrame
             ToggleFrame.BackgroundColor3 = defaultColors.buttonColor
             ToggleFrame.Size = UDim2.new(1, -20, 0, 50)
-            ToggleFrame.LayoutOrder = #tabContentFrame:Get
-
-Children()
+            ToggleFrame.LayoutOrder = #tabContentFrame:GetChildren()
 
             UICorner_4.CornerRadius = UDim.new(0, 10)
             UICorner_4.Parent = ToggleFrame
@@ -409,9 +407,7 @@ Children()
                 DropdownItems.Size = UDim2.new(1, 0, 0, itemCount * 30)
                 for i, item in ipairs(items) do
                     local ItemButton = Instance.new("TextButton")
-                    local UICorner_10 = Instance.new
-
-("UICorner")
+                    local UICorner_10 = Instance.new("UICorner")
                     ItemButton.Parent = DropdownItems
                     ItemButton.BackgroundColor3 = defaultColors.buttonColor
                     ItemButton.Size = UDim2.new(1, -10, 0, 30)
@@ -608,9 +604,7 @@ Children()
                     Handle.Position = UDim2.new(percent, -5, 0, 0)
                     local value = math.floor(255 * percent)
                     if onChange then
-                        onChange(value
-
-)
+                        onChange(value)
                     end
                 end
 
@@ -797,3 +791,6 @@ Children()
 
     return window
 end
+
+-- Example Usage
+local window = VisualUILib:CreateWindow("My GUI")
