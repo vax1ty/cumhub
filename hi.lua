@@ -1,5 +1,5 @@
 -- Main Library Table
-local VisualUILib = {}
+local CumhubLib = {}
 
 -- Utility function to make UI elements draggable
 local function makeDraggable(topBarObject, object)
@@ -35,11 +35,12 @@ local function makeDraggable(topBarObject, object)
 end
 
 -- Function to create a new window
-function VisualUILib:CreateWindow(title)
+function CumhubLib:CreateWindow(title)
+	print("Creating window with title:", title)
 	local window = {}
 	local HttpService = game:GetService("HttpService")
 	local Config = {}
-	local ConfigF = "VisualUIConfig"
+	local ConfigF = "CumhubConfig"
 	local FileName = "default"
 
 	-- Default Colors
@@ -394,9 +395,7 @@ function VisualUILib:CreateWindow(title)
 			UIPadding_2.PaddingBottom = UDim.new(0, 5)
 			UIPadding_2.PaddingLeft = UDim.new(0, 5)
 			UIPadding_2.PaddingRight = UDim.new(0, 5)
-			UIPadding_2.PaddingTop = U
-
-Dim.new(0, 5)
+			UIPadding_2.PaddingTop = UDim.new(0, 5)
 
 			UICorner_9.CornerRadius = UDim.new(0, 10)
 			UICorner_9.Parent = DropdownItems
@@ -796,6 +795,9 @@ Dim.new(0, 5)
 		end
 	end
 
+	_G.window = window -- Ensure window is globally accessible
+
 	return window
 end
-local window = VisualUILib:CreateWindow("Cumhub")
+
+return CumhubLib
