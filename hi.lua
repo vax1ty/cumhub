@@ -1,5 +1,5 @@
 -- Main Library Table
-local VisualUILib = {}
+local CumhubLib = {}
 
 -- Utility function to make UI elements draggable
 local function makeDraggable(topBarObject, object)
@@ -35,11 +35,11 @@ local function makeDraggable(topBarObject, object)
 end
 
 -- Function to create a new window
-function VisualUILib:CreateWindow(title)
+function CumhubLib:CreateWindow(title)
 	local window = {}
 	local HttpService = game:GetService("HttpService")
 	local Config = {}
-	local ConfigF = "VisualUIConfig"
+	local ConfigF = "CumhubConfig"
 	local FileName = "default"
 
 	-- Default Colors
@@ -217,9 +217,7 @@ function VisualUILib:CreateWindow(title)
 			UICorner_4.CornerRadius = UDim.new(0, 10)
 			UICorner_4.Parent = ToggleFrame
 
-			Toggle
-
-Text.Parent = ToggleFrame
+			ToggleText.Parent = ToggleFrame
 			ToggleText.BackgroundTransparency = 1.000
 			ToggleText.Position = UDim2.new(0, 10, 0, 0)
 			ToggleText.Size = UDim2.new(0.8, -10, 1, 0)
@@ -398,7 +396,7 @@ Text.Parent = ToggleFrame
 			UIPadding_2.PaddingRight = UDim.new(0, 5)
 			UIPadding_2.PaddingTop = U
 
-Dim.new(0, 5)
+			Dim.new(0, 5)
 
 			UICorner_9.CornerRadius = UDim.new(0, 10)
 			UICorner_9.Parent = DropdownItems
@@ -588,9 +586,7 @@ Dim.new(0, 5)
 					end)
 
 					Handle.InputEnded:Connect(function(input)
-						if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInput
-
-Type == Enum.UserInputType.Touch then
+						if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 							dragging = false
 						end
 					end)
@@ -799,151 +795,5 @@ Type == Enum.UserInputType.Touch then
 			window:AddNotification("Config Not Found: " .. name, 2)
 		end
 	end
-
-	-- Load default Home tab
-	local homeTab = window:AddTab("Home")
-	homeTab:AddButton("
-
-Welcome", function()
-		print("Welcome to the Home tab!")
-	end)
-
-	-- Load default Settings tab
-	local settingsTab = window:AddTab("Settings")
-	settingsTab:AddColorPicker("Background Color", defaultColors.backgroundColor, function(color)
-		defaultColors.backgroundColor = color
-		MainFrame.BackgroundColor3 = color
-	end)
-
-	settingsTab:AddColorPicker("Button Color", defaultColors.buttonColor, function(color)
-		defaultColors.buttonColor = color
-		for _, button in pairs(Sidebar:GetChildren()) do
-			if button:IsA("TextButton") then
-				button.BackgroundColor3 = color
-			end
-		end
-		for _, button in pairs(ContentFrame:GetChildren()) do
-			if button:IsA("TextButton") then
-				button.BackgroundColor3 = color
-			end
-		end
-	end)
-
-	settingsTab:AddColorPicker("Text Color", defaultColors.textColor, function(color)
-		defaultColors.textColor = color
-		TitleLabel.TextColor3 = color
-		for _, button in pairs(Sidebar:GetChildren()) do
-			if button:IsA("TextButton") then
-				button.TextColor3 = color
-			end
-		end
-		for _, label in pairs(ContentFrame:GetChildren()) do
-			if label:IsA("TextLabel") or label:IsA("TextButton") then
-				label.TextColor3 = color
-			end
-		end
-	end)
-
-	settingsTab:AddTextInput("Config Name", "default", function(name)
-		FileName = name
-	end)
-
-	settingsTab:AddButton("Save Config", function()
-		window:SaveConfig(FileName)
-	end)
-
-	settingsTab:AddButton("Load Config", function()
-		window:LoadConfig(FileName)
-	end)
-
 	return window
 end
-
--- Example Usage
-local window = VisualUILib:CreateWindow("My GUI")
-
--- Add tabs
-local tab1 = window:AddTab("Tab 1")
-tab1:AddButton("Click Me", function()
-	print("Button Clicked!")
-end)
-tab1:AddToggle("Enable Feature", false, function(state)
-	print("Toggle State:", state)
-	_G.Teleport = state
-end)
-tab1:AddSlider("Adjust Volume", 0, 100, 50, function(value)
-	print("Slider Value:", value)
-end)
-tab1:AddDropdown("Select Option", {"Option 1", "Option 2", "Option 3"}, function(selected)
-	print("Selected Option:", selected)
-end)
-
-local tab2 = window:AddTab("Tab 2")
-tab2:AddButton("Another Button", function()
-	print("Another Button Clicked!")
-end)
-tab2:AddToggle("Another Toggle", true, function(state)
-	print("Another Toggle State:", state)
-end)
-tab2:AddSlider("Another Slider", 0, 50, 25, function(value)
-	print("Another Slider Value:", value)
-end)
-tab2:AddDropdown("Another Dropdown", {"Choice 1", "Choice 2", "Choice 3"}, function(selected)
-	print("Selected Choice:", selected)
-end)
-
-local tab3 = window:AddTab("Tab 3")
-tab3:AddColorPicker("Pick a Color", Color3.fromRGB(255, 0, 0), function(color)
-	print("Selected Color:", color)
-end)
-
-local tab4 = window:AddTab("Tab 4")
-tab4:AddTextInput("Enter Text", "Type here...", function(input)
-	print("Text Input:", input)
-end)
-
-local tab5 = window:AddTab("Tab 5")
-tab5:AddCheckbox("Accept Terms", false, function(checked)
-	print("Checkbox State:", checked)
-end)
-
-local allElementsTab = window:AddTab("All Elements")
-allElementsTab:AddButton("Sample Button", function()
-	print("Sample Button Clicked!")
-end)
-allElementsTab:AddToggle("Sample Toggle", false, function(state)
-	print("Sample Toggle State:", state)
-end)
-
--- Create a TextLabel to display the slider value
-local SliderValueLabel = Instance.new("TextLabel")
-SliderValueLabel.Parent = allElementsTab
-SliderValueLabel.BackgroundTransparency = 1
-SliderValueLabel.Position = UDim2.new(1, -70, 0, 5) -- Adjusted position for top right of the slider
-SliderValueLabel.Size = UDim2.new(0, 60, 0, 20)
-SliderValueLabel.Font = Enum.Font.GothamBold
-SliderValueLabel.TextColor3 = defaultColors.textColor
-SliderValueLabel.TextSize = 18
-SliderValueLabel.Text = tostring(50)  -- Default value
-
-allElementsTab:AddSlider("Sample Slider", 0, 100, 50, function(value)
-	print("Sample Slider Value:", value)
-	SliderValueLabel.Text = tostring(value)
-end)
-
-allElementsTab:AddDropdown("Sample Dropdown", {"Option 1", "Option 2", "Option 3"}, function(selected)
-	print("Selected Option:", selected)
-end)
-allElementsTab:AddColorPicker("Sample Color Picker", Color3.fromRGB(0, 255, 0), function(color)
-	print("Sample Color:", color)
-end)
-allElementsTab:AddTextInput("Sample Text Input", "Enter text...", function(input)
-	print("Sample Text:", input)
-end)
-allElementsTab:AddCheckbox("Sample Checkbox", true, function(state)
-	print("Sample Checkbox State:", state)
-end)
-
-window:AddNotification("This is a notification!", 3)
-
-return VisualUILib
