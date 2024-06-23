@@ -798,5 +798,4 @@ function CumhubLib:CreateWindow(title)
 end
 end 
 -- Example Usage
-local window = CumhubLib:CreateWindow("My GUI")
 return CumhubLib
