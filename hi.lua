@@ -47,7 +47,7 @@ function CumhubLib:CreateWindow(title)
     }
 
     local ScreenGui = Instance.new("ScreenGui")
-    local MainFrame = Instance.new("Frame")
+    local MainFrame = Instance.new("ScrollingFrame")
     local UICorner = Instance.new("UICorner")
     local TitleLabel = Instance.new("TextLabel")
     local Sidebar = Instance.new("ScrollingFrame")
