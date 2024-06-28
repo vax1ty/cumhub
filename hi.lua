@@ -8,9 +8,9 @@ function UILibrary:Create(instanceType, properties)
     return instance
 end
 
-function UILibrary:CreateWindow(name)
+function UILibrary:CreateWindow(title)
     local screenGui = self:Create("ScreenGui", {
-        Name = name,
+        Name = "Confirmation",
         Parent = game:GetService("CoreGui")
     })
 
@@ -53,17 +53,6 @@ function UILibrary:CreateWindow(name)
         Parent = topBar
     })
 
-    local titleLabel = self:Create("TextLabel", {
-        Name = "TitleLabel",
-        Parent = topBar,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(1, -60, 1, 0),
-        Font = Enum.Font.GothamBold,
-        Text = name,
-        TextColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 24
-    })
-
     local closeButton = self:Create("TextButton", {
         Name = "CloseButton",
         Parent = topBar,
@@ -92,6 +81,51 @@ function UILibrary:CreateWindow(name)
         screenGui:Destroy()
     end)
 
+    local minimizeButton = self:Create("TextButton", {
+        Name = "MinimizeButton",
+        Parent = topBar,
+        BackgroundColor3 = Color3.fromRGB(60, 60, 60),
+        BorderSizePixel = 0,
+        Position = UDim2.new(1, -90, 0, 5),
+        Size = UDim2.new(0, 40, 0, 40),
+        Font = Enum.Font.GothamBold,
+        Text = "-",
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextSize = 24
+    })
+
+    self:Create("UICorner", {
+        CornerRadius = UDim.new(0, 10),
+        Parent = minimizeButton
+    })
+
+    self:Create("UIStroke", {
+        Color = Color3.fromRGB(0, 0, 0),
+        Thickness = 2,
+        Parent = minimizeButton
+    })
+
+    minimizeButton.MouseButton1Click:Connect(function()
+        if mainFrame.Visible then
+            mainFrame.Visible = false
+            minimizeButton.Text = "+"
+        else
+            mainFrame.Visible = true
+            minimizeButton.Text = "-"
+        end
+    end)
+
+    local windowTitle = self:Create("TextLabel", {
+        Name = "WindowTitle",
+        Parent = topBar,
+        BackgroundTransparency = 1,
+        Size = UDim2.new(1, -100, 1, 0),
+        Font = Enum.Font.GothamBold,
+        Text = title,
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextSize = 24
+    })
+
     local tabHolder = self:Create("Frame", {
         Name = "TabHolder",
         Parent = mainFrame,
@@ -101,27 +135,45 @@ function UILibrary:CreateWindow(name)
         Size = UDim2.new(1, 0, 0.0616666675, 0)
     })
 
-    return {
+    local contentHolder = self:Create("ScrollingFrame", {
+        Name = "ContentHolder",
+        Parent = mainFrame,
+        BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+        BackgroundTransparency = 1,
+        Position = UDim2.new(0.0250000004, 0, 0.200000003, 0),
+        Size = UDim2.new(0.935000002, 0, 0.800000012, 0),
+        CanvasSize = UDim2.new(0, 0, 1.2, 0),
+        ScrollBarThickness = 0,
+        ScrollingEnabled = false
+    })
+
+    local window = {
         screenGui = screenGui,
         mainFrame = mainFrame,
         topBar = topBar,
+        closeButton = closeButton,
+        minimizeButton = minimizeButton,
+        windowTitle = windowTitle,
         tabHolder = tabHolder,
+        contentHolder = contentHolder,
         tabs = {}
     }
+
+    setmetatable(window, { __index = UILibrary })
+
+    return window
 end
 
-function UILibrary:CreateTab(window, name)
+function UILibrary:CreateTab(name)
     local tabButton = self:Create("TextButton", {
         Name = name .. "Button",
-        Parent = window.tabHolder,
+        Parent = self.tabHolder,
         BackgroundColor3 = Color3.fromRGB(48, 48, 53),
-        Position = UDim2.new(#window.tabHolder:GetChildren() * 0.15, 0, 0.1, 0),
-        Size = UDim2.new(0.15, 0, 0.8, 0),
+        Size = UDim2.new(0, 100, 0.8, 0),
         Font = Enum.Font.FredokaOne,
         Text = name,
         TextColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 24,
-        AutomaticSize = Enum.AutomaticSize.X
+        TextSize = 24
     })
 
     self:Create("UICorner", {
@@ -137,381 +189,431 @@ function UILibrary:CreateTab(window, name)
 
     local tabContent = self:Create("ScrollingFrame", {
         Name = name .. "Content",
-        Parent = window.mainFrame,
-        BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+        Parent = self.contentHolder,
         BackgroundTransparency = 1,
-        Position = UDim2.new(0.025, 0, 0.2, 0),
-        Size = UDim2.new(0.935, 0, 0.8, 0),
-        CanvasSize = UDim2.new(0, 0, 1.2, 0),
-        ScrollBarThickness = 0,
-        ScrollingEnabled = false,
+        Size = UDim2.new(1, 0, 1, 0),
+        CanvasSize = UDim2.new(0, 0, 1, 0),
+        ScrollBarThickness = 6,
         Visible = false
     })
 
+    self.tabs[#self.tabs + 1] = {
+        button = tabButton,
+        content = tabContent
+    }
+
     tabButton.MouseButton1Click:Connect(function()
-        for _, sibling in pairs(window.mainFrame:GetChildren()) do
-            if sibling:IsA("ScrollingFrame") then
-                sibling.Visible = false
-            end
+        for _, tab in pairs(self.tabs) do
+            tab.content.Visible = false
         end
         tabContent.Visible = true
     end)
 
-    table.insert(window.tabs, tabContent)
+    return tabContent
+end
 
-    function tabContent:CreateButton(name, callback)
-        local button = UILibrary:Create("TextButton", {
-            Name = name,
-            Parent = self,
-            BackgroundColor3 = Color3.fromRGB(35, 35, 35),
-            BorderSizePixel = 0,
-            Size = UDim2.new(0.98, 0, 0, 40),
+function UILibrary:CreateSlider(tabContent, name, callback)
+    local sliderHolder = self:Create("Frame", {
+        Name = name .. "Holder",
+        Parent = tabContent,
+        BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+        Size = UDim2.new(0.98, 0, 0, 70),
+        Position = UDim2.new(0.01, 0, tabContent.CanvasSize.Y.Scale, 0)
+    })
+
+    self:Create("UICorner", {
+        CornerRadius = UDim.new(0, 10),
+        Parent = sliderHolder
+    })
+
+    self:Create("UIStroke", {
+        Color = Color3.fromRGB(0, 0, 0),
+        Thickness = 2,
+        Parent = sliderHolder
+    })
+
+    local sliderBar = self:Create("Frame", {
+        Name = name .. "Bar",
+        Parent = sliderHolder,
+        BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+        Position = UDim2.new(0.0222514309, 0, 0.530658782, -5),
+        Size = UDim2.new(0.97, 0, 0.4, 0)
+    })
+
+    self:Create("UICorner", {
+        CornerRadius = UDim.new(0, 99),
+        Parent = sliderBar
+    })
+
+    self:Create("UIStroke", {
+        Color = Color3.fromRGB(0, 0, 0),
+        Thickness = 2,
+        Parent = sliderBar
+    })
+
+    local slider = self:Create("Frame", {
+        Name = name,
+        Parent = sliderBar,
+        BackgroundColor3 = Color3.fromRGB(0, 71, 255),
+        Position = UDim2.new(0, 0, 0.5, -20),
+        Size = UDim2.new(0, 44, 0, 40)
+    })
+
+    self:Create("UICorner", {
+        CornerRadius = UDim.new(1, 0),
+        Parent = slider
+    })
+
+    self:Create("UIStroke", {
+        Color = Color3.fromRGB(0, 0, 0),
+        Thickness = 2,
+        Parent = slider
+    })
+
+    local sliderValue = self:Create("TextLabel", {
+        Name = name .. "Value",
+        Parent = sliderHolder,
+        AnchorPoint = Vector2.new(0.5, 0.5),
+        BackgroundTransparency = 1,
+        Position = UDim2.new(0.906082153, 0, 0.247234434, 0),
+        Size = UDim2.new(0.184561253, 0, 0.440564632, 0),
+        Font = Enum.Font.GothamBold,
+        Text = "50",
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextSize = 24
+    })
+
+    local function moveSlider(input)
+        local posX = math.clamp((input.Position.X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
+        local offset = 22
+        slider.Position = UDim2.new(posX, -offset, 0.5, -20)
+        sliderValue.Text = tostring(math.floor(posX * 100))
+        if callback then callback(math.floor(posX * 100)) end
+    end
+
+    slider.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            moveSlider(input)
+            slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
+            local moveConnection, releaseConnection
+            moveConnection = game:GetService("UserInputService").InputChanged:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseMovement then
+                    moveSlider(input)
+                end
+            end)
+            releaseConnection = game:GetService("UserInputService").InputEnded:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    moveConnection:Disconnect()
+                    releaseConnection:Disconnect()
+                end
+            end)
+        end
+    end)
+
+    sliderBar.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            moveSlider(input)
+            slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
+        end
+    end)
+
+    tabContent.CanvasSize = UDim2.new(0, 0, tabContent.CanvasSize.Y.Scale + 0.14, 0)
+end
+
+function UILibrary:CreateToggle(tabContent, name, callback)
+    local toggleHolder = self:Create("Frame", {
+        Name = name .. "Holder",
+        Parent = tabContent,
+        BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+        Size = UDim2.new(0.98, 0, 0, 70),
+        Position = UDim2.new(0.01, 0, tabContent.CanvasSize.Y.Scale, 0)
+    })
+
+    self:Create("UICorner", {
+        CornerRadius = UDim.new(0, 10),
+        Parent = toggleHolder
+    })
+
+    self:Create("UIStroke", {
+        Color = Color3.fromRGB(0, 0, 0),
+        Thickness = 2,
+        Parent = toggleHolder
+    })
+
+    local toggleBar = self:Create("Frame", {
+        Name = name .. "Bar",
+        Parent = toggleHolder,
+        BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+        Position = UDim2.new(0.75, 0, 0.5, -15),
+        Size = UDim2.new(0.2, 0, 0.5, 0)
+    })
+
+    self:Create("UICorner", {
+        CornerRadius = UDim.new(0, 99),
+        Parent = toggleBar
+    })
+
+    self:Create("UIStroke", {
+        Color = Color3.fromRGB(0, 0, 0),
+        Thickness = 2,
+        Parent = toggleBar
+    })
+
+    local toggle = self:Create("Frame", {
+        Name = name,
+        Parent = toggleBar,
+        BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+        Position = UDim2.new(0, 0, 0.5, -18.5),
+        Size = UDim2.new(0, 37, 0, 37)
+    })
+
+    self:Create("UICorner", {
+        CornerRadius = UDim.new(1, 0),
+        Parent = toggle
+    })
+
+    self:Create("UIStroke", {
+        Color = Color3.fromRGB(0, 0, 0),
+        Thickness = 2,
+        Parent = toggle
+    })
+
+    local toggleLabel = self:Create("TextLabel", {
+        Name = name .. "Label",
+        Parent = toggleHolder,
+        AnchorPoint = Vector2.new(0.5, 0.5),
+        BackgroundTransparency = 1,
+        Position = UDim2.new(0.301812887, 0, 0.5, 0),
+        Size = UDim2.new(0.6, -20, 0.8, -20),
+        Font = Enum.Font.FredokaOne,
+        Text = name,
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextSize = 30,
+        TextXAlignment = Enum.TextXAlignment.Left
+    })
+
+    local toggleState = false
+
+    local function setToggleState(state)
+        if state then
+            toggle:TweenPosition(UDim2.new(1, -37, 0.5, -18.5), "Out", "Sine", 0.2, true)
+            toggle.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
+        else
+            toggle:TweenPosition(UDim2.new(0, 0, 0.5, -18.5), "Out", "Sine", 0.2, true)
+            toggle.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+        end
+        if callback then callback(state) end
+    end
+
+    toggleBar.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            toggleState = not toggleState
+            setToggleState(toggleState)
+        end
+    end)
+
+    tabContent.CanvasSize = UDim2.new(0, 0, tabContent.CanvasSize.Y.Scale + 0.14, 0)
+end
+
+function UILibrary:CreateButton(tabContent, name, callback)
+    local buttonHolder = self:Create("Frame", {
+        Name = name .. "Holder",
+        Parent = tabContent,
+        BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+        Size = UDim2.new(0.98, 0, 0, 70),
+        Position = UDim2.new(0.01, 0, tabContent.CanvasSize.Y.Scale, 0)
+    })
+
+    self:Create("UICorner", {
+        CornerRadius = UDim.new(0, 10),
+        Parent = buttonHolder
+    })
+
+    self:Create("UIStroke", {
+        Color = Color3.fromRGB(0, 0, 0),
+        Thickness = 2,
+        Parent = buttonHolder
+    })
+
+    local button = self:Create("TextButton", {
+        Name = name,
+        Parent = buttonHolder,
+        BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+        BackgroundTransparency = 1,
+        BorderSizePixel = 0,
+        Position = UDim2.new(0.0199999996, 0, 0.100000001, 0),
+        Size = UDim2.new(0.980000019, 0, 0, 70),
+        Font = Enum.Font.FredokaOne,
+        Text = name,
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextSize = 30,
+        TextXAlignment = Enum.TextXAlignment.Left
+    })
+
+    self:Create("UICorner", {
+        CornerRadius = UDim.new(0, 10),
+        Parent = button
+    })
+
+    self:Create("UIStroke", {
+        Color = Color3.fromRGB(0, 0, 0),
+        Thickness = 2,
+        Parent = button
+    })
+
+    button.MouseButton1Click:Connect(function()
+        if callback then callback() end
+    end)
+
+    tabContent.CanvasSize = UDim2.new(0, 0, tabContent.CanvasSize.Y.Scale + 0.14, 0)
+end
+
+function UILibrary:CreateDropdown(tabContent, name, items, multiSelect, callback)
+    local dropdownHolder = self:Create("Frame", {
+        Name = name .. "Holder",
+        Parent = tabContent,
+        BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+        Size = UDim2.new(0.98, 0, 0, 70),
+        Position = UDim2.new(0.01, 0, tabContent.CanvasSize.Y.Scale, 0)
+    })
+
+    self:Create("UICorner", {
+        CornerRadius = UDim.new(0, 10),
+        Parent = dropdownHolder
+    })
+
+    self:Create("UIStroke", {
+        Color = Color3.fromRGB(0, 0, 0),
+        Thickness = 2,
+        Parent = dropdownHolder
+    })
+
+    local dropdownButton = self:Create("TextButton", {
+        Name = name .. "Button",
+        Parent = dropdownHolder,
+        BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+        BackgroundTransparency = 1,
+        BorderSizePixel = 0,
+        Position = UDim2.new(0.0199999996, 0, 0.100000001, 0),
+        Size = UDim2.new(0.980000019, 0, 0, 70),
+        Font = Enum.Font.FredokaOne,
+        Text = name,
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextSize = 30,
+        TextXAlignment = Enum.TextXAlignment.Left
+    })
+
+    self:Create("UICorner", {
+        CornerRadius = UDim.new(0, 10),
+        Parent = dropdownButton
+    })
+
+    self:Create("UIStroke", {
+        Color = Color3.fromRGB(0, 0, 0),
+        Thickness = 2,
+        Parent = dropdownButton
+    })
+
+    local dropdownList = self:Create("Frame", {
+        Name = name .. "List",
+        Parent = dropdownHolder,
+        BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+        ClipsDescendants = true,
+        Position = UDim2.new(0.0199999996, 0, 0.800000012, 0),
+        Size = UDim2.new(0.959999979, 0, 0, 0),
+        Visible = false
+    })
+
+    self:Create("UICorner", {
+        CornerRadius = UDim.new(0, 10),
+        Parent = dropdownList
+    })
+
+    self:Create("UIStroke", {
+        Color = Color3.fromRGB(0, 0, 0),
+        Thickness = 2,
+        Parent = dropdownList
+    })
+
+    local selectedItems = {}
+
+    for i, item in pairs(items) do
+        local dropdownItem = self:Create("TextButton", {
+            Name = name .. "Item" .. i,
+            Parent = dropdownList,
+            BackgroundColor3 = Color3.fromRGB(45, 45, 45),
+            Size = UDim2.new(1, -10, 0, 30),
+            Position = UDim2.new(0, 5, 0, (i - 1) * 35),
             Font = Enum.Font.FredokaOne,
-            Text = name,
+            Text = item,
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextSize = 24,
             TextXAlignment = Enum.TextXAlignment.Left
         })
 
-        UILibrary:Create("UICorner", {
+        self:Create("UICorner", {
             CornerRadius = UDim.new(0, 10),
-            Parent = button
+            Parent = dropdownItem
         })
 
-        UILibrary:Create("UIStroke", {
+        self:Create("UIStroke", {
             Color = Color3.fromRGB(0, 0, 0),
             Thickness = 2,
-            Parent = button
+            Parent = dropdownItem
         })
 
-        button.MouseButton1Click:Connect(callback)
-    end
-
-    function tabContent:CreateSlider(name, callback)
-        local sliderHolder = UILibrary:Create("Frame", {
-            Name = name .. "Holder",
-            Parent = self,
-            BackgroundColor3 = Color3.fromRGB(35, 35, 35),
-            Size = UDim2.new(0.98, 0, 0, 70)
-        })
-
-        UILibrary:Create("UICorner", {
-            CornerRadius = UDim.new(0, 10),
-            Parent = sliderHolder
-        })
-
-        UILibrary:Create("UIStroke", {
-            Color = Color3.fromRGB(0, 0, 0),
-            Thickness = 2,
-            Parent = sliderHolder
-        })
-
-        local sliderBar = UILibrary:Create("Frame", {
-            Name = name .. "Bar",
-            Parent = sliderHolder,
-            BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-            Position = UDim2.new(0.0222514309, 0, 0.530658782, -5),
-            Size = UDim2.new(0.97, 0, 0.4, 0)
-        })
-
-        UILibrary:Create("UICorner", {
-            CornerRadius = UDim.new(0, 99),
-            Parent = sliderBar
-        })
-
-        UILibrary:Create("UIStroke", {
-            Color = Color3.fromRGB(0, 0, 0),
-            Thickness = 2,
-            Parent = sliderBar
-        })
-
-        local slider = UILibrary:Create("Frame", {
-            Name = name,
-            Parent = sliderBar,
-            BackgroundColor3 = Color3.fromRGB(0, 71, 255),
-            Position = UDim2.new(0, 0, 0.5, -20),
-            Size = UDim2.new(0, 44, 0, 40)
-        })
-
-        UILibrary:Create("UICorner", {
-            CornerRadius = UDim.new(1, 0),
-            Parent = slider
-        })
-
-        UILibrary:Create("UIStroke", {
-            Color = Color3.fromRGB(0, 0, 0),
-            Thickness = 2,
-            Parent = slider
-        })
-
-        local sliderValue = UILibrary:Create("TextLabel", {
-            Name = name .. "Value",
-            Parent = sliderHolder,
-            AnchorPoint = Vector2.new(0.5, 0.5),
-            BackgroundTransparency = 1.000,
-            Position = UDim2.new(0.906082153, 0, 0.247234434, 0),
-            Size = UDim2.new(0.184561253, 0, 0.440564632, 0),
-            Font = Enum.Font.GothamBold,
-            Text = "50",
-            TextColor3 = Color3.fromRGB(255, 255, 255),
-            TextSize = 24.000
-        })
-
-        local UserInputService = game:GetService("UserInputService")
-
-        local function moveSlider(input)
-            local posX = math.clamp((input.Position.X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
-            local offset = 22 -- Half the width of the slider to ensure it doesn't go off the frame
-            slider.Position = UDim2.new(posX, -offset, 0.5, -20)
-            sliderValue.Text = tostring(math.floor(posX * 100))
-            callback(math.floor(posX * 100))
-        end
-
-        slider.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                moveSlider(input)
-                slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255) -- Change color to blue after dragging
-                local moveConnection, releaseConnection
-                moveConnection = UserInputService.InputChanged:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseMovement then
-                        moveSlider(input)
-                    end
-                end)
-                releaseConnection = UserInputService.InputEnded:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                        moveConnection:Disconnect()
-                        releaseConnection:Disconnect()
-                    end
-                end)
-            end
+        dropdownItem.MouseEnter:Connect(function()
+            dropdownItem.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
         end)
 
-        sliderBar.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                moveSlider(input)
-                slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255) -- Change color to blue after dragging
-            end
+        dropdownItem.MouseLeave:Connect(function()
+            dropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
         end)
-    end
 
-    function tabContent:CreateToggle(name, callback)
-        local toggleHolder = UILibrary:Create("Frame", {
-            Name = name .. "Holder",
-            Parent = self,
-            BackgroundColor3 = Color3.fromRGB(35, 35, 35),
-            Size = UDim2.new(0.98, 0, 0, 70)
-        })
-
-        UILibrary:Create("UICorner", {
-            CornerRadius = UDim.new(0, 10),
-            Parent = toggleHolder
-        })
-
-        UILibrary:Create("UIStroke", {
-            Color = Color3.fromRGB(0, 0, 0),
-            Thickness = 2,
-            Parent = toggleHolder
-        })
-
-        local toggleBar = UILibrary:Create("Frame", {
-            Name = name .. "Bar",
-            Parent = toggleHolder,
-            BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-            Position = UDim2.new(0.75, 0, 0.5, -15),
-            Size = UDim2.new(0.2, 0, 0.5, 0)
-        })
-
-        UILibrary:Create("UICorner", {
-            CornerRadius = UDim.new(0, 99),
-            Parent = toggleBar
-        })
-
-        UILibrary:Create("UIStroke", {
-            Color = Color3.fromRGB(0, 0, 0),
-            Thickness = 2,
-            Parent = toggleBar
-        })
-
-        local toggle = UILibrary:Create("Frame", {
-            Name = name,
-            Parent = toggleBar,
-            BackgroundColor3 = Color3.fromRGB(35, 35, 35),
-            Position = UDim2.new(0, 0, 0.5, -18.5),
-            Size = UDim2.new(0, 37, 0, 37)
-        })
-
-        UILibrary:Create("UICorner", {
-            CornerRadius = UDim.new(1, 0),
-            Parent = toggle
-        })
-
-        UILibrary:Create("UIStroke", {
-            Color = Color3.fromRGB(0, 0, 0),
-            Thickness = 2,
-            Parent = toggle
-        })
-
-        local toggleState = false
-
-        local function setToggleState(state)
-            if state then
-                toggle:TweenPosition(UDim2.new(1, -37, 0.5, -18.5), "Out", "Sine", 0.2, true)
-                toggle.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
-            else
-                toggle:TweenPosition(UDim2.new(0, 0, 0.5, -18.5), "Out", "Sine", 0.2, true)
-                toggle.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            end
-        end
-
-        toggleBar.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                toggleState = not toggleState
-                setToggleState(toggleState)
-                callback(toggleState)
-            end
-        end)
-    end
-
-    function tabContent:CreateDropdown(name, items, multiSelect, callback)
-        local dropdownHolder = UILibrary:Create("Frame", {
-            Name = name .. "Holder",
-            Parent = self,
-            BackgroundColor3 = Color3.fromRGB(35, 35, 35),
-            Size = UDim2.new(0.98, 0, 0, 70)
-        })
-
-        UILibrary:Create("UICorner", {
-            CornerRadius = UDim.new(0, 10),
-            Parent = dropdownHolder
-        })
-
-        UILibrary:Create("UIStroke", {
-            Color = Color3.fromRGB(0, 0, 0),
-            Thickness = 2,
-            Parent = dropdownHolder
-        })
-
-        local dropdownButton = UILibrary:Create("TextButton", {
-            Name = name .. "Button",
-            Parent = dropdownHolder,
-            BackgroundColor3 = Color3.fromRGB(35, 35, 35),
-            BackgroundTransparency = 1.000,
-            BorderSizePixel = 0,
-            Position = UDim2.new(0.0199999996, 0, 0.100000001, 0),
-            Size = UDim2.new(0.980000019, 0, 0, 70),
-            Font = Enum.Font.FredokaOne,
-            Text = name,
-            TextColor3 = Color3.fromRGB(255, 255, 255),
-            TextSize = 30.000,
-            TextXAlignment = Enum.TextXAlignment.Left
-        })
-
-        UILibrary:Create("UICorner", {
-            CornerRadius = UDim.new(0, 10),
-            Parent = dropdownButton
-        })
-
-        UILibrary:Create("UIStroke", {
-            Color = Color3.fromRGB(0, 0, 0),
-            Thickness = 2,
-            Parent = dropdownButton
-        })
-
-        local dropdownList = UILibrary:Create("Frame", {
-            Name = name .. "List",
-            Parent = dropdownHolder,
-            BackgroundColor3 = Color3.fromRGB(35, 35, 35),
-            ClipsDescendants = true,
-            Position = UDim2.new(0.0199999996, 0, 0.800000012, 0),
-            Size = UDim2.new(0.959999979, 0, 0, #items * 35),
-            Visible = false
-        })
-
-        UILibrary:Create("UICorner", {
-            CornerRadius = UDim.new(0, 10),
-            Parent = dropdownList
-        })
-
-        UILibrary:Create("UIStroke", {
-            Color = Color3.fromRGB(0, 0, 0),
-            Thickness = 2,
-            Parent = dropdownList
-        })
-
-        local selectedItems = {}
-
-        for i, item in ipairs(items) do
-            local dropdownItem = UILibrary:Create("TextButton", {
-                Name = item .. "Item",
-                Parent = dropdownList,
-                BackgroundColor3 = Color3.fromRGB(45, 45, 45),
-                Position = UDim2.new(0, 5, 0, (i - 1) * 35),
-                Size = UDim2.new(1, -10, 0, 30),
-                Font = Enum.Font.FredokaOne,
-                Text = item,
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                TextSize = 24.000,
-                TextXAlignment = Enum.TextXAlignment.Left
-            })
-
-            UILibrary:Create("UICorner", {
-                CornerRadius = UDim.new(0, 10),
-                Parent = dropdownItem
-            })
-
-            UILibrary:Create("UIStroke", {
-                Color = Color3.fromRGB(0, 0, 0),
-                Thickness = 2,
-                Parent = dropdownItem
-            })
-
-            dropdownItem.MouseEnter:Connect(function()
-                dropdownItem.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-            end)
-
-            dropdownItem.MouseLeave:Connect(function()
-                dropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-            end)
-
-            dropdownItem.MouseButton1Click:Connect(function()
-                if multiSelect then
-                    if selectedItems[item] then
-                        selectedItems[item] = nil
-                        dropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-                    else
-                        selectedItems[item] = true
-                        dropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-                    end
+        dropdownItem.MouseButton1Click:Connect(function()
+            if multiSelect then
+                if selectedItems[item] then
+                    selectedItems[item] = nil
+                    dropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
                 else
-                    for _, sibling in pairs(dropdownList:GetChildren()) do
-                        if sibling:IsA("TextButton") then
-                            sibling.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-                            selectedItems[sibling.Text] = nil
-                        end
-                    end
                     selectedItems[item] = true
                     dropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
                 end
-
-                local selectedText = ""
-                for selectedItem, _ in pairs(selectedItems) do
-                    if selectedText == "" then
-                        selectedText = selectedItem
-                    else
-                        selectedText = selectedText .. ", " .. selectedItem
+            else
+                for _, btn in pairs(dropdownList:GetChildren()) do
+                    if btn:IsA("TextButton") then
+                        btn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+                        selectedItems[btn.Text] = nil
                     end
                 end
-                dropdownButton.Text = selectedText == "" and name or selectedText
-                callback(selectedItems)
-            end)
-        end
+                selectedItems[item] = true
+                dropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+            end
 
-        dropdownButton.MouseButton1Click:Connect(function()
-            dropdownList.Visible = not dropdownList.Visible
+            local selectedText = ""
+            for selectedItem, _ in pairs(selectedItems) do
+                if selectedText == "" then
+                    selectedText = selectedItem
+                else
+                    selectedText = selectedText .. ", " .. selectedItem
+                end
+            end
+            dropdownButton.Text = selectedText == "" and name or selectedText
+
+            if callback then callback(selectedItems) end
         end)
     end
 
-    return tabContent
+    dropdownButton.MouseButton1Click:Connect(function()
+        dropdownList.Visible = not dropdownList.Visible
+        if dropdownList.Visible then
+            dropdownList:TweenSize(UDim2.new(0.959999979, 0, 0, #items * 35), "Out", "Sine", 0.2, true)
+        else
+            dropdownList:TweenSize(UDim2.new(0.959999979, 0, 0, 0), "Out", "Sine", 0.2, true)
+        end
+    end)
+
+    tabContent.CanvasSize = UDim2.new(0, 0, tabContent.CanvasSize.Y.Scale + 0.14, 0)
 end
 
 return UILibrary
