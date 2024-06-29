@@ -3,6 +3,7 @@ local UILibrary = {}
 -- Main UI Library Module
 function UILibrary:CreateWindow(title)
     local window = {}
+    window.tabs = {}
 
     -- Instances for Window
     local Confirmation = Instance.new("ScreenGui")
@@ -126,22 +127,6 @@ function UILibrary:CreateWindow(title)
     UIStrokeContentHolder.Color = Color3.fromRGB(0, 0, 0)
     UIStrokeContentHolder.Thickness = 2
 
-    -- Close Button Functionality
-    CloseButton.MouseButton1Click:Connect(function()
-        Confirmation:Destroy()
-    end)
-
-    -- Minimize Button Functionality
-    MinimizeButton.MouseButton1Click:Connect(function()
-        if MainFrame.Visible then
-            MainFrame.Visible = false
-            MinimizeButton.Text = "+"
-        else
-            MainFrame.Visible = true
-            MinimizeButton.Text = "-"
-        end
-    end)
-
     -- Functions to Add Tabs and UI Elements
     function window:AddTab(tabName)
         local tab = {}
@@ -189,6 +174,9 @@ function UILibrary:CreateWindow(title)
         if #ContentHolder:GetChildren() == 1 then
             TabContent.Visible = true
         end
+
+        table.insert(window.tabs, TabButton)
+        window:UpdateTabSpacing()
 
         -- Functions to Add UI Elements
         function tab:CreateButton(text, callback)
@@ -604,6 +592,15 @@ function UILibrary:CreateWindow(title)
         end
 
         return tab
+    end
+
+    function window:UpdateTabSpacing()
+        local tabCount = #self.tabs
+        local tabWidth = 1 / tabCount
+        for i, tab in ipairs(self.tabs) do
+            tab.Size = UDim2.new(tabWidth, -10, 1, -10)
+            tab.Position = UDim2.new((i - 1) * tabWidth, 0, 0, 0)
+        end
     end
 
     return window
