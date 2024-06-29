@@ -1,345 +1,303 @@
 local UILibrary = {}
 
--- Helper function to create UI elements
-local function createUIElement(elementType, properties)
-    local element = Instance.new(elementType)
-    for property, value in pairs(properties) do
-        element[property] = value
-    end
-    return element
-end
+-- Main UI Library Module
+function UILibrary:CreateWindow(title)
+    local window = {}
 
-function UILibrary:CreateWindow(windowTitle)
-    local screenGui = createUIElement("ScreenGui", {
-        Name = "UILibrary",
-        Parent = game.CoreGui,
-        ResetOnSpawn = false,
-    })
+    -- Instances for Window
+    local Confirmation = Instance.new("ScreenGui")
+    local MainFrame = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local UIStrokeMainFrame = Instance.new("UIStroke")
+    local TopBar = Instance.new("Frame")
+    local UICorner_2 = Instance.new("UICorner")
+    local UIStrokeTopBar = Instance.new("UIStroke")
+    local CloseButton = Instance.new("TextButton")
+    local UICorner_3 = Instance.new("UICorner")
+    local UIStrokeCloseButton = Instance.new("UIStroke")
+    local MinimizeButton = Instance.new("TextButton")
+    local UICorner_4 = Instance.new("UICorner")
+    local UIStrokeMinimizeButton = Instance.new("UIStroke")
+    local Title = Instance.new("TextLabel")
+    local TabHolder = Instance.new("Frame")
+    local ContentHolder = Instance.new("Frame")
+    local UICorner_5 = Instance.new("UICorner")
+    local UIStrokeContentHolder = Instance.new("UIStroke")
 
-    local mainFrame = createUIElement("Frame", {
-        Name = "MainFrame",
-        Parent = screenGui,
-        AnchorPoint = Vector2.new(0.5, 0.5),
-        BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-        BorderSizePixel = 0,
-        Position = UDim2.new(0.5, 0, 0.5, 0),
-        Size = UDim2.new(0, 600, 0, 400),
-        Draggable = true,
-    })
+    -- Properties for Window
+    Confirmation.Name = "Confirmation"
+    Confirmation.Parent = game.CoreGui
 
-    createUIElement("UICorner", {
-        CornerRadius = UDim.new(0, 10),
-        Parent = mainFrame,
-    })
+    MainFrame.Name = "MainFrame"
+    MainFrame.Parent = Confirmation
+    MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    MainFrame.BorderSizePixel = 0
+    MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    MainFrame.Size = UDim2.new(0, 602, 0, 673)
+    MainFrame.Active = true
+    MainFrame.Draggable = true
 
-    createUIElement("UIStroke", {
-        Parent = mainFrame,
-        Color = Color3.fromRGB(0, 0, 0),
-        Thickness = 2,
-    })
+    UICorner.CornerRadius = UDim.new(0, 10)
+    UICorner.Parent = MainFrame
 
-    local topBar = createUIElement("Frame", {
-        Name = "TopBar",
-        Parent = mainFrame,
-        BackgroundColor3 = Color3.fromRGB(45, 45, 48),
-        Size = UDim2.new(1, 0, 0, 50),
-    })
+    UIStrokeMainFrame.Parent = MainFrame
+    UIStrokeMainFrame.Color = Color3.fromRGB(0, 0, 0)
+    UIStrokeMainFrame.Thickness = 2
 
-    createUIElement("UICorner", {
-        CornerRadius = UDim.new(0, 10),
-        Parent = topBar,
-    })
+    TopBar.Name = "TopBar"
+    TopBar.Parent = MainFrame
+    TopBar.BackgroundColor3 = Color3.fromRGB(45, 45, 48)
+    TopBar.Size = UDim2.new(1, 0, 0, 50)
 
-    createUIElement("UIStroke", {
-        Parent = topBar,
-        Color = Color3.fromRGB(0, 0, 0),
-        Thickness = 2,
-    })
+    UICorner_2.CornerRadius = UDim.new(0, 10)
+    UICorner_2.Parent = TopBar
 
-    createUIElement("TextLabel", {
-        Name = "Title",
-        Parent = topBar,
-        BackgroundTransparency = 1,
-        Position = UDim2.new(0.5, 0, 0.5, 0),
-        Size = UDim2.new(0.8, 0, 1, 0),
-        AnchorPoint = Vector2.new(0.5, 0.5),
-        Font = Enum.Font.GothamBold,
-        Text = windowTitle,
-        TextColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 24,
-    })
+    UIStrokeTopBar.Parent = TopBar
+    UIStrokeTopBar.Color = Color3.fromRGB(0, 0, 0)
+    UIStrokeTopBar.Thickness = 2
 
-    local closeButton = createUIElement("TextButton", {
-        Name = "CloseButton",
-        Parent = topBar,
-        BackgroundColor3 = Color3.fromRGB(60, 60, 60),
-        BorderSizePixel = 0,
-        Position = UDim2.new(1, -45, 0, 5),
-        Size = UDim2.new(0, 40, 0, 40),
-        Font = Enum.Font.GothamBold,
-        Text = "X",
-        TextColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 24,
-    })
+    CloseButton.Name = "CloseButton"
+    CloseButton.Parent = TopBar
+    CloseButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    CloseButton.BorderSizePixel = 0
+    CloseButton.Position = UDim2.new(1, -45, 0, 5)
+    CloseButton.Size = UDim2.new(0, 40, 0, 40)
+    CloseButton.Font = Enum.Font.GothamBold
+    CloseButton.Text = "X"
+    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CloseButton.TextSize = 24.000
 
-    createUIElement("UICorner", {
-        CornerRadius = UDim.new(0, 10),
-        Parent = closeButton,
-    })
+    UICorner_3.CornerRadius = UDim.new(0, 10)
+    UICorner_3.Parent = CloseButton
 
-    createUIElement("UIStroke", {
-        Parent = closeButton,
-        Color = Color3.fromRGB(0, 0, 0),
-        Thickness = 2,
-    })
+    UIStrokeCloseButton.Parent = CloseButton
+    UIStrokeCloseButton.Color = Color3.fromRGB(0, 0, 0)
+    UIStrokeCloseButton.Thickness = 2
 
-    closeButton.MouseButton1Click:Connect(function()
-        screenGui:Destroy()
-    end)
+    MinimizeButton.Name = "MinimizeButton"
+    MinimizeButton.Parent = TopBar
+    MinimizeButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    MinimizeButton.BorderSizePixel = 0
+    MinimizeButton.Position = UDim2.new(1, -90, 0, 5)
+    MinimizeButton.Size = UDim2.new(0, 40, 0, 40)
+    MinimizeButton.Font = Enum.Font.GothamBold
+    MinimizeButton.Text = "-"
+    MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    MinimizeButton.TextSize = 24.000
 
-    local minimizeButton = createUIElement("TextButton", {
-        Name = "MinimizeButton",
-        Parent = topBar,
-        BackgroundColor3 = Color3.fromRGB(60, 60, 60),
-        BorderSizePixel = 0,
-        Position = UDim2.new(1, -90, 0, 5),
-        Size = UDim2.new(0, 40, 0, 40),
-        Font = Enum.Font.GothamBold,
-        Text = "-",
-        TextColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 24,
-    })
+    UICorner_4.CornerRadius = UDim.new(0, 10)
+    UICorner_4.Parent = MinimizeButton
 
-    createUIElement("UICorner", {
-        CornerRadius = UDim.new(0, 10),
-        Parent = minimizeButton,
-    })
+    UIStrokeMinimizeButton.Parent = MinimizeButton
+    UIStrokeMinimizeButton.Color = Color3.fromRGB(0, 0, 0)
+    UIStrokeMinimizeButton.Thickness = 2
 
-    createUIElement("UIStroke", {
-        Parent = minimizeButton,
-        Color = Color3.fromRGB(0, 0, 0),
-        Thickness = 2,
-    })
+    Title.Name = "Title"
+    Title.Parent = TopBar
+    Title.BackgroundColor3 = Color3.fromRGB(45, 45, 48)
+    Title.BackgroundTransparency = 1.000
+    Title.Size = UDim2.new(0.8, 0, 1, 0)
+    Title.Font = Enum.Font.GothamBold
+    Title.Text = title
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title.TextSize = 24.000
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+    Title.Position = UDim2.new(0.05, 0, 0, 0)
 
-    minimizeButton.MouseButton1Click:Connect(function()
-        if mainFrame.Visible then
-            mainFrame.Visible = false
-            minimizeButton.Text = "+"
-        else
-            mainFrame.Visible = true
-            minimizeButton.Text = "-"
-        end
-    end)
+    TabHolder.Name = "TabHolder"
+    TabHolder.Parent = MainFrame
+    TabHolder.BackgroundColor3 = Color3.fromRGB(45, 45, 48)
+    TabHolder.BackgroundTransparency = 1.000
+    TabHolder.Position = UDim2.new(0, 0, 0.0933333337, 0)
+    TabHolder.Size = UDim2.new(1, 0, 0.0616666675, 0)
 
-    local tabHolder = createUIElement("Frame", {
-        Name = "TabHolder",
-        Parent = mainFrame,
-        BackgroundColor3 = Color3.fromRGB(45, 45, 48),
-        BackgroundTransparency = 1,
-        Position = UDim2.new(0, 0, 0.0933333337, 0),
-        Size = UDim2.new(1, 0, 0.0616666675, 0),
-    })
+    ContentHolder.Name = "ContentHolder"
+    ContentHolder.Parent = MainFrame
+    ContentHolder.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    ContentHolder.BackgroundTransparency = 1.000
+    ContentHolder.Position = UDim2.new(0.0250000004, 0, 0.200000003, 0)
+    ContentHolder.Size = UDim2.new(0.935000002, 0, 0.800000012, 0)
 
-    local contentHolder = createUIElement("ScrollingFrame", {
-        Name = "ContentHolder",
-        Parent = mainFrame,
-        BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-        BackgroundTransparency = 1,
-        Position = UDim2.new(0.0250000004, 0, 0.200000003, 0),
-        Size = UDim2.new(0.935000002, 0, 0.800000012, 0),
-        CanvasSize = UDim2.new(0, 0, 1.2, 0),
-        ScrollBarThickness = 6,
-    })
+    UICorner_5.CornerRadius = UDim.new(0, 10)
+    UICorner_5.Parent = ContentHolder
 
-    createUIElement("UICorner", {
-        CornerRadius = UDim.new(0, 10),
-        Parent = contentHolder,
-    })
+    UIStrokeContentHolder.Parent = ContentHolder
+    UIStrokeContentHolder.Color = Color3.fromRGB(0, 0, 0)
+    UIStrokeContentHolder.Thickness = 2
 
-    local tabs = {}
+    -- Functions to Add Tabs and UI Elements
+    function window:AddTab(tabName)
+        local tab = {}
+        local TabButton = Instance.new("TextButton")
+        local TabContent = Instance.new("Frame")
+        local UICorner_Tab = Instance.new("UICorner")
+        local UIStroke_Tab = Instance.new("UIStroke")
 
-    function UILibrary:AddTab(tabName)
-        local tab = createUIElement("TextButton", {
-            Name = tabName .. "Tab",
-            Parent = tabHolder,
-            BackgroundColor3 = Color3.fromRGB(48, 48, 53),
-            Size = UDim2.new(0.2, 0, 0.8, 0),
-            Font = Enum.Font.FredokaOne,
-            Text = tabName,
-            TextColor3 = Color3.fromRGB(255, 255, 255),
-            TextSize = 24,
-            AutomaticSize = Enum.AutomaticSize.X,
-        })
+        -- Properties for Tab Button
+        TabButton.Name = tabName
+        TabButton.Parent = TabHolder
+        TabButton.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
+        TabButton.Size = UDim2.new(0, 100, 0, 30)
+        TabButton.Font = Enum.Font.FredokaOne
+        TabButton.Text = tabName
+        TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        TabButton.TextSize = 24.000
+        TabButton.AutomaticSize = Enum.AutomaticSize.X
 
-        createUIElement("UICorner", {
-            CornerRadius = UDim.new(0, 10),
-            Parent = tab,
-        })
+        UICorner_Tab.CornerRadius = UDim.new(0, 10)
+        UICorner_Tab.Parent = TabButton
 
-        createUIElement("UIStroke", {
-            Parent = tab,
-            Color = Color3.fromRGB(0, 0, 0),
-            Thickness = 2,
-        })
+        UIStroke_Tab.Parent = TabButton
+        UIStroke_Tab.Color = Color3.fromRGB(0, 0, 0)
+        UIStroke_Tab.Thickness = 2
 
-        local tabContent = createUIElement("Frame", {
-            Name = tabName .. "Content",
-            Parent = contentHolder,
-            BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-            BackgroundTransparency = 1,
-            Size = UDim2.new(1, 0, 1, 0),
-            Visible = false,
-        })
+        -- Properties for Tab Content
+        TabContent.Name = tabName .. "_Content"
+        TabContent.Parent = ContentHolder
+        TabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        TabContent.Size = UDim2.new(1, 0, 1, 0)
+        TabContent.Visible = false
 
-        tabs[tabName] = tabContent
-
-        tab.MouseButton1Click:Connect(function()
-            for _, content in pairs(tabs) do
-                content.Visible = false
+        -- Show/Hide Tabs
+        TabButton.MouseButton1Click:Connect(function()
+            for _, child in ipairs(ContentHolder:GetChildren()) do
+                if child:IsA("Frame") then
+                    child.Visible = false
+                end
             end
-            tabContent.Visible = true
+            TabContent.Visible = true
         end)
 
-        if #tabHolder:GetChildren() == 1 then
-            tabContent.Visible = true
+        -- Default to showing the first tab
+        if #ContentHolder:GetChildren() == 1 then
+
+
+            TabContent.Visible = true
         end
 
-        local function createUIElementWrapper(elementType, properties)
-            local element = createUIElement(elementType, properties)
-            element.Parent = tabContent
-            return element
+        -- Functions to Add UI Elements
+        function tab:CreateButton(text, callback)
+            local ButtonHolder = Instance.new("Frame")
+            local Button = Instance.new("TextButton")
+            local UICorner_Button = Instance.new("UICorner")
+            local UIStroke_Button = Instance.new("UIStroke")
+
+            -- Properties for Button Holder
+            ButtonHolder.Name = "ButtonHolder"
+            ButtonHolder.Parent = TabContent
+            ButtonHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            ButtonHolder.Size = UDim2.new(0.98, 0, 0, 70)
+
+            UICorner_Button.CornerRadius = UDim.new(0, 10)
+            UICorner_Button.Parent = ButtonHolder
+
+            UIStroke_Button.Parent = ButtonHolder
+            UIStroke_Button.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_Button.Thickness = 2
+
+            -- Properties for Button
+            Button.Name = "Button"
+            Button.Parent = ButtonHolder
+            Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            Button.BackgroundTransparency = 1.000
+            Button.Size = UDim2.new(0.98, 0, 1, 0)
+            Button.Font = Enum.Font.FredokaOne
+            Button.Text = text
+            Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+            Button.TextSize = 30.000
+            Button.TextXAlignment = Enum.TextXAlignment.Left
+
+            UICorner_Button.CornerRadius = UDim.new(0, 10)
+            UICorner_Button.Parent = Button
+
+            UIStroke_Button.Parent = Button
+            UIStroke_Button.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_Button.Thickness = 2
+
+            Button.MouseButton1Click:Connect(callback)
         end
 
-        function tabContent:CreateButton(buttonName, callback)
-            local buttonHolder = createUIElementWrapper("Frame", {
-                Name = buttonName .. "Holder",
-                BackgroundColor3 = Color3.fromRGB(35, 35, 35),
-                Size = UDim2.new(0.98, 0, 0, 70),
-            })
+        function tab:CreateSlider(text, min, max, callback)
+            local SliderHolder = Instance.new("Frame")
+            local SliderBar = Instance.new("Frame")
+            local Slider = Instance.new("Frame")
+            local SliderValue = Instance.new("TextLabel")
+            local UICorner_SliderHolder = Instance.new("UICorner")
+            local UIStroke_SliderHolder = Instance.new("UIStroke")
+            local UICorner_SliderBar = Instance.new("UICorner")
+            local UIStroke_SliderBar = Instance.new("UIStroke")
+            local UICorner_Slider = Instance.new("UICorner")
+            local UIStroke_Slider = Instance.new("UIStroke")
 
-            createUIElement("UICorner", {
-                CornerRadius = UDim.new(0, 10),
-                Parent = buttonHolder,
-            })
+            -- Properties for Slider Holder
+            SliderHolder.Name = "SliderHolder"
+            SliderHolder.Parent = TabContent
+            SliderHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            SliderHolder.Size = UDim2.new(0.98, 0, 0, 70)
 
-            createUIElement("UIStroke", {
-                Parent = buttonHolder,
-                Color = Color3.fromRGB(0, 0, 0),
-                Thickness = 2,
-            })
+            UICorner_SliderHolder.CornerRadius = UDim.new(0, 10)
+            UICorner_SliderHolder.Parent = SliderHolder
 
-            local button = createUIElementWrapper("TextButton", {
-                Name = buttonName,
-                Parent = buttonHolder,
-                BackgroundColor3 = Color3.fromRGB(35, 35, 35),
-                BackgroundTransparency = 1,
-                BorderSizePixel = 0,
-                Position = UDim2.new(0.02, 0, 0.1, 0),
-                Size = UDim2.new(0.96, 0, 0.8, 0),
-                Font = Enum.Font.FredokaOne,
-                Text = buttonName,
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                TextSize = 30,
-                TextXAlignment = Enum.TextXAlignment.Left,
-            })
+            UIStroke_SliderHolder.Parent = SliderHolder
+            UIStroke_SliderHolder.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_SliderHolder.Thickness = 2
 
-            createUIElement("UICorner", {
-                CornerRadius = UDim.new(0, 10),
-                Parent = button,
-            })
+            -- Properties for Slider Bar
+            SliderBar.Name = "SliderBar"
+            SliderBar.Parent = SliderHolder
+            SliderBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            SliderBar.Position = UDim2.new(0.02, 0, 0.5, -5)
+            SliderBar.Size = UDim2.new(0.96, 0, 0.3, 0)
 
-            createUIElement("UIStroke", {
-                Parent = button,
-                Color = Color3.fromRGB(0, 0, 0),
-                Thickness = 2,
-            })
+            UICorner_SliderBar.CornerRadius = UDim.new(0, 99)
+            UICorner_SliderBar.Parent = SliderBar
 
-            button.MouseButton1Click:Connect(callback)
-        end
+            UIStroke_SliderBar.Parent = SliderBar
+            UIStroke_SliderBar.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_SliderBar.Thickness = 2
 
-        function tabContent:CreateSlider(sliderName, minValue, maxValue, callback)
-            local sliderHolder = createUIElementWrapper("Frame", {
-                Name = sliderName .. "Holder",
-                BackgroundColor3 = Color3.fromRGB(35, 35, 35),
-                Size = UDim2.new(0.98, 0, 0, 70),
-            })
+            -- Properties for Slider
+            Slider.Name = "Slider"
+            Slider.Parent = SliderBar
+            Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
+            Slider.Position = UDim2.new(0, 0, 0.5, -20)
+            Slider.Size = UDim2.new(0, 44, 0, 40)
 
-            createUIElement("UICorner", {
-                CornerRadius = UDim.new(0, 10),
-                Parent = sliderHolder,
-            })
+            UICorner_Slider.CornerRadius = UDim.new(1, 0)
+            UICorner_Slider.Parent = Slider
 
-            createUIElement("UIStroke", {
-                Parent = sliderHolder,
-                Color = Color3.fromRGB(0, 0, 0),
-                Thickness = 2,
-            })
+            UIStroke_Slider.Parent = Slider
+            UIStroke_Slider.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_Slider.Thickness = 2
 
-            local sliderBar = createUIElementWrapper("Frame", {
-                Name = sliderName .. "Bar",
-                Parent = sliderHolder,
-                BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-                Position = UDim2.new(0.02, 0, 0.6, -5),
-                Size = UDim2.new(0.96, 0, 0.4, 0),
-            })
-
-            createUIElement("UICorner", {
-                CornerRadius = UDim.new(0, 99),
-                Parent = sliderBar,
-            })
-
-            createUIElement("UIStroke", {
-                Parent = sliderBar,
-                Color = Color3.fromRGB(0, 0, 0),
-                Thickness = 2,
-            })
-
-            local slider = createUIElementWrapper("Frame", {
-                Name = sliderName,
-                Parent = sliderBar,
-                BackgroundColor3 = Color3.fromRGB(0, 71, 255),
-                Position = UDim2.new(0, 0, 0.5, -20),
-                Size = UDim2.new(0, 44, 0, 40),
-            })
-
-            createUIElement("UICorner", {
-                CornerRadius = UDim.new(1, 0),
-                Parent = slider,
-            })
-
-            createUIElement("UIStroke", {
-                Parent = slider,
-                Color = Color3.fromRGB(0, 0, 0),
-                Thickness = 2,
-            })
-
-            local sliderValue = createUIElementWrapper("TextLabel", {
-                Name = sliderName .. "Value",
-                Parent = sliderHolder,
-                AnchorPoint = Vector2.new(0.5, 0.5),
-                BackgroundTransparency = 1,
-                Position = UDim2.new(0.9, 0, 0.2, 0),
-                Size = UDim2.new(0.2, 0, 0.5, 0),
-                Font = Enum.Font.GothamBold,
-                Text = tostring(minValue),
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                TextSize = 24,
-            })
+            -- Properties for Slider Value
+            SliderValue.Name = "SliderValue"
+            SliderValue.Parent = SliderHolder
+            SliderValue.AnchorPoint = Vector2.new(0.5, 0.5)
+            SliderValue.BackgroundTransparency = 1.000
+            SliderValue.Position = UDim2.new(0.85, 0, 0.5, 0)
+            SliderValue.Size = UDim2.new(0.1, 0, 0.5, 0)
+            SliderValue.Font = Enum.Font.GothamBold
+            SliderValue.Text = tostring(min)
+            SliderValue.TextColor3 = Color3.fromRGB(255, 255, 255)
+            SliderValue.TextSize = 24.000
 
             local UserInputService = game:GetService("UserInputService")
 
             local function moveSlider(input)
-                local posX = math.clamp((input.Position.X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
-                slider.Position = UDim2.new(posX, -22, 0.5, -20)
-                local value = math.floor(posX * (maxValue - minValue) + minValue)
-                sliderValue.Text = tostring(value)
-                callback(value)
+                local posX = math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1)
+                local offset = 22  -- Half the width of the slider to ensure it doesn't go off the frame
+                Slider.Position = UDim2.new(posX, -offset, 0.5, -20)
+                local sliderValue = math.floor(min + (max - min) * posX)
+                SliderValue.Text = tostring(sliderValue)
+                callback(sliderValue)
             end
 
-            slider.InputBegan:Connect(function(input)
+            Slider.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     moveSlider(input)
-                    slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
+                    Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)  -- Change color to blue after dragging
                     local moveConnection, releaseConnection
                     moveConnection = UserInputService.InputChanged:Connect(function(input)
                         if input.UserInputType == Enum.UserInputType.MouseMovement then
@@ -355,243 +313,290 @@ function UILibrary:CreateWindow(windowTitle)
                 end
             end)
 
-            sliderBar.InputBegan:Connect(function(input)
+            SliderBar.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     moveSlider(input)
-                    slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
+                    Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)  -- Change color to blue after dragging
                 end
             end)
         end
 
-        function tabContent:CreateToggle(toggleName, initialState, callback)
-            local toggleHolder = createUIElementWrapper("Frame", {
-                Name = toggleName .. "Holder",
-                BackgroundColor3 = Color3.fromRGB(35, 35, 35),
-                Size = UDim2.new(0.98, 0, 0, 70),
-            })
+        function tab:CreateToggle(text, initialState, callback)
+            local ToggleHolder = Instance.new("Frame")
+            local ToggleBar = Instance.new("Frame")
+            local Toggle = Instance.new("Frame")
+            local ToggleLabel = Instance.new("TextLabel")
+            local UICorner_ToggleHolder = Instance.new("UICorner")
+            local UIStroke_ToggleHolder = Instance.new("UIStroke")
+            local UICorner_ToggleBar = Instance.new("UICorner")
+            local UIStroke_ToggleBar = Instance.new("UIStroke")
+            local UICorner_Toggle = Instance.new("UICorner")
+            local UIStroke_Toggle = Instance.new("UIStroke")
 
-            createUIElement("UICorner", {
-                CornerRadius = UDim.new(0, 10),
-                Parent = toggleHolder,
-            })
+            -- Properties for Toggle Holder
+            ToggleHolder.Name = "ToggleHolder"
+            ToggleHolder.Parent = TabContent
+            ToggleHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            ToggleHolder.Size = UDim2.new(0.98, 0, 0, 70)
 
-            createUIElement("UIStroke", {
-                Parent = toggleHolder,
-                Color = Color3.fromRGB(0, 0, 0),
-                Thickness = 2,
-            })
+            UICorner_ToggleHolder.CornerRadius = UDim.new(0, 10)
+            UICorner_ToggleHolder.Parent = ToggleHolder
 
-            local toggleBar = createUIElementWrapper("Frame", {
-                Name = toggleName .. "Bar",
-                Parent = toggleHolder,
-                BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-                Position = UDim2.new(0.75, 0, 0.5, -15),
-                Size = UDim2.new(0.2, 0, 0.5, 0),
-            })
+            UIStroke_ToggleHolder.Parent = ToggleHolder
+            UIStroke_ToggleHolder.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_ToggleHolder.Thickness = 2
 
-            createUIElement("UICorner", {
-                CornerRadius = UDim.new(0, 99),
-                Parent = toggleBar,
-            })
+            -- Properties for Toggle Bar
+            ToggleBar.Name = "ToggleBar"
+            ToggleBar.Parent = ToggleHolder
+            ToggleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            ToggleBar.Position = UDim2.new(0.75, 0, 0.5, -15)
+            ToggleBar.Size = UDim2.new(0.2, 0, 0.5, 0)
 
-            createUIElement("UIStroke", {
-                Parent = toggleBar,
-                Color = Color3.fromRGB(0, 0, 0),
-                Thickness = 2,
-            })
+            UICorner_ToggleBar.CornerRadius = UDim.new(0, 99)
+            UICorner_ToggleBar.Parent = ToggleBar
 
-            local toggle = createUIElementWrapper("Frame", {
-                Name = toggleName,
-                Parent = toggleBar,
-                BackgroundColor3 = initialState and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35),
-                Position = initialState and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5),
-                Size = UDim2.new(0, 37, 0, 37),
-            })
+            UIStroke_ToggleBar.Parent = ToggleBar
+            UIStroke_ToggleBar.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_ToggleBar.Thickness = 2
 
-            createUIElement("UICorner", {
-                CornerRadius = UDim.new(1, 0),
-                Parent = toggle,
-            })
+            -- Properties for Toggle
+            Toggle.Name = "Toggle"
+            Toggle.Parent = ToggleBar
+            Toggle.BackgroundColor3 = initialState and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
+            Toggle.Position = initialState and
 
-            createUIElement("UIStroke", {
-                Parent = toggle,
-                Color = Color3.fromRGB(0, 0, 0),
-                Thickness = 2,
-            })
+ UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5)
+            Toggle.Size = UDim2.new(0, 37, 0, 37)
 
-            local toggleLabel = createUIElementWrapper("TextLabel", {
-                Name = toggleName .. "Label",
-                Parent = toggleHolder,
-                AnchorPoint = Vector2.new(0.5, 0.5),
-                BackgroundTransparency = 1,
-                Position = UDim2.new(0.3, 0, 0.5, 0),
-                Size = UDim2.new(0.6, -20, 0.8, -20),
-                Font = Enum.Font.FredokaOne,
-                Text = toggleName,
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                TextSize = 30,
-                TextXAlignment = Enum.TextXAlignment.Left,
-            })
+            UICorner_Toggle.CornerRadius = UDim.new(1, 0)
+            UICorner_Toggle.Parent = Toggle
+
+            UIStroke_Toggle.Parent = Toggle
+            UIStroke_Toggle.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_Toggle.Thickness = 2
+
+            -- Properties for Toggle Label
+            ToggleLabel.Name = "ToggleLabel"
+            ToggleLabel.Parent = ToggleHolder
+            ToggleLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+            ToggleLabel.BackgroundTransparency = 1.000
+            ToggleLabel.Position = UDim2.new(0.3, 0, 0.5, 0)
+            ToggleLabel.Size = UDim2.new(0.6, -20, 0.8, -20)
+            ToggleLabel.Font = Enum.Font.FredokaOne
+            ToggleLabel.Text = text
+            ToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            ToggleLabel.TextSize = 30.000
+            ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+            -- Toggle Functionality
+            local UserInputService = game:GetService("UserInputService")
+            local toggleState = initialState
 
             local function setToggleState(state)
-                toggle:TweenPosition(state and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5), "Out", "Sine", 0.2, true)
-                toggle.BackgroundColor3 = state and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
+                toggleState = state
+                Toggle.BackgroundColor3 = state and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
+                Toggle:TweenPosition(state and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5), "Out", "Sine", 0.2, true)
                 callback(state)
             end
 
-            local toggleState = initialState
-
-            toggleBar.InputBegan:Connect(function(input)
+            ToggleBar.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                    toggleState = not toggleState
-                    setToggleState(toggleState)
+                    setToggleState(not toggleState)
                 end
             end)
+
+            return setToggleState
         end
 
-        function tabContent:CreateDropdown(dropdownName, items, multiSelect, callback)
-            local dropdownHolder = createUIElementWrapper("Frame", {
-                Name = dropdownName .. "Holder",
-                BackgroundColor3 = Color3.fromRGB(35, 35, 35),
-                Size = UDim2.new(0.98, 0, 0, 70),
-            })
+        function tab:CreateDropdown(text, items, multiSelect, callback)
+            local DropdownHolder = Instance.new("Frame")
+            local DropdownButton = Instance.new("TextButton")
+            local DropdownList = Instance.new("Frame")
+            local SearchBar = Instance.new("TextBox")
+            local UICorner_DropdownHolder = Instance.new("UICorner")
+            local UIStroke_DropdownHolder = Instance.new("UIStroke")
+            local UICorner_DropdownButton = Instance.new("UICorner")
+            local UIStroke_DropdownButton = Instance.new("UIStroke")
+            local UICorner_DropdownList = Instance.new("UICorner")
+            local UIStroke_DropdownList = Instance.new("UIStroke")
+            local UICorner_SearchBar = Instance.new("UICorner")
+            local UIStroke_SearchBar = Instance.new("UIStroke")
 
-            createUIElement("UICorner", {
-                CornerRadius = UDim.new(0, 10),
-                Parent = dropdownHolder,
-            })
+            -- Properties for Dropdown Holder
+            DropdownHolder.Name = "DropdownHolder"
+            DropdownHolder.Parent = TabContent
+            DropdownHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            DropdownHolder.Size = UDim2.new(0.98, 0, 0, 70)
 
-            createUIElement("UIStroke", {
-                Parent = dropdownHolder,
-                Color = Color3.fromRGB(0, 0, 0),
-                Thickness = 2,
-            })
+            UICorner_DropdownHolder.CornerRadius = UDim.new(0, 10)
+            UICorner_DropdownHolder.Parent = DropdownHolder
 
-            local dropdownButton = createUIElementWrapper("TextButton", {
-                Name = dropdownName .. "Button",
-                Parent = dropdownHolder,
-                BackgroundColor3 = Color3.fromRGB(35, 35, 35),
-                BackgroundTransparency = 1,
-                BorderSizePixel = 0,
-                Position = UDim2.new(0.02, 0, 0.1, 0),
-                Size = UDim2.new(0.96, 0, 0.8, 0),
-                Font = Enum.Font.FredokaOne,
-                Text = dropdownName,
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                TextSize = 30,
-                TextXAlignment = Enum.TextXAlignment.Left,
-            })
+            UIStroke_DropdownHolder.Parent = DropdownHolder
+            UIStroke_DropdownHolder.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_DropdownHolder.Thickness = 2
 
-            createUIElement("UICorner", {
-                CornerRadius = UDim.new(0, 10),
-                Parent = dropdownButton,
-            })
+            -- Properties for Dropdown Button
+            DropdownButton.Name = "DropdownButton"
+            DropdownButton.Parent = DropdownHolder
+            DropdownButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            DropdownButton.BackgroundTransparency = 1.000
+            DropdownButton.BorderSizePixel = 0
+            DropdownButton.Position = UDim2.new(0.0199999996, 0, 0.100000001, 0)
+            DropdownButton.Size = UDim2.new(0.980000019, 0, 0, 70)
+            DropdownButton.Font = Enum.Font.FredokaOne
+            DropdownButton.Text = text
+            DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+            DropdownButton.TextSize = 30.000
+            DropdownButton.TextXAlignment = Enum.TextXAlignment.Left
 
-            createUIElement("UIStroke", {
-                Parent = dropdownButton,
-                Color = Color3.fromRGB(0, 0, 0),
-                Thickness = 2,
-            })
+            UICorner_DropdownButton.CornerRadius = UDim.new(0, 10)
+            UICorner_DropdownButton.Parent = DropdownButton
 
-            local dropdownList = createUIElementWrapper("Frame", {
-                Name = dropdownName .. "List",
-                Parent = dropdownHolder,
-                BackgroundColor3 = Color3.fromRGB(35, 35, 35),
-                ClipsDescendants = true,
-                Position = UDim2.new(0.02, 0, 0.9, 0),
-                Size = UDim2.new(0.96, 0, 0, 150),
-                Visible = false,
-            })
+            UIStroke_DropdownButton.Parent = DropdownButton
+            UIStroke_DropdownButton.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_DropdownButton.Thickness = 2
 
-            createUIElement("UICorner", {
-                CornerRadius = UDim.new(0, 10),
-                Parent = dropdownList,
-            })
+            -- Properties for Dropdown List
+            DropdownList.Name = "DropdownList"
+            DropdownList.Parent = DropdownHolder
+            DropdownList.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            DropdownList.ClipsDescendants = true
+            DropdownList.Position = UDim2.new(0.0199999996, 0, 0.800000012, 0)
+            DropdownList.Size = UDim2.new(0.959999979, 0, 0, 150)
+            DropdownList.Visible = false
 
-            createUIElement("UIStroke", {
-                Parent = dropdownList,
-                Color = Color3.fromRGB(0, 0, 0),
-                Thickness = 2,
-            })
+            UICorner_DropdownList.CornerRadius = UDim.new(0, 10)
+            UICorner_DropdownList.Parent = DropdownList
 
-            local selectedItems = {}
+            UIStroke_DropdownList.Parent = DropdownList
+            UIStroke_DropdownList.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_DropdownList.Thickness = 2
 
-            for i, itemText in ipairs(items) do
-                local dropdownItem = createUIElementWrapper("TextButton", {
-                    Name = dropdownName .. "Item" .. i,
-                    Parent = dropdownList,
-                    BackgroundColor3 = Color3.fromRGB(45, 45, 45),
-                    Position = UDim2.new(0, 5, 0, (i - 1) * 35),
-                    Size = UDim2.new(1, -10, 0, 30),
-                    Font = Enum.Font.FredokaOne,
-                    Text = itemText,
-                    TextColor3 = Color3.fromRGB(255, 255, 255),
-                    TextSize = 24,
-                    TextXAlignment = Enum.TextXAlignment.Left,
-                })
+            -- Properties for Search Bar
+            SearchBar.Name = "SearchBar"
+            SearchBar.Parent = DropdownList
+            SearchBar.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+            SearchBar.Position = UDim2.new(0, 5, 0, 5)
+            SearchBar.Size = UDim2.new(1, -10, 0, 30)
+            SearchBar.Font = Enum.Font.FredokaOne
+            SearchBar.PlaceholderText = "Search..."
+            SearchBar.Text = ""
+            SearchBar.TextColor3 = Color3.fromRGB(255, 255, 255)
+            SearchBar.TextSize = 24.000
 
-                createUIElement("UICorner", {
-                    CornerRadius = UDim.new(0, 10),
-                    Parent = dropdownItem,
-                })
+            UICorner_SearchBar.CornerRadius = UDim.new(0, 10)
+            UICorner_SearchBar.Parent = SearchBar
 
-                createUIElement("UIStroke", {
-                    Parent = dropdownItem,
-                    Color = Color3.fromRGB(0, 0, 0),
-                    Thickness = 2,
-                })
+            UIStroke_SearchBar.Parent = SearchBar
+            UIStroke_SearchBar.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_SearchBar.Thickness = 2
 
-                dropdownItem.MouseEnter:Connect(function()
-                    dropdownItem.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-                end)
+            -- Dropdown Items
+            local SelectedItems = {}
+            local itemFrames = {}
 
-                dropdownItem.MouseLeave:Connect(function()
-                    dropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-                end)
-
-                dropdownItem.MouseButton1Click:Connect(function()
-                    if multiSelect then
-                        if selectedItems[dropdownItem.Text] then
-                            selectedItems[dropdownItem.Text] = nil
-                            dropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-                        else
-                            selectedItems[dropdownItem.Text] = true
-                            dropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-                        end
+            local function updateDropdown()
+                local selectedText = ""
+                for item, _ in pairs(SelectedItems) do
+                    if selectedText == "" then
+                        selectedText = item
                     else
-                        for _, item in pairs(dropdownList:GetChildren()) do
-                            if item:IsA("TextButton") then
-                                item.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-                                selectedItems[item.Text] = nil
-                            end
-                        end
-                        selectedItems[dropdownItem.Text] = true
-                        dropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+                        selectedText = selectedText .. ", " .. item
                     end
-
-                    local selectedText = ""
-                    for item, _ in pairs(selectedItems) do
-                        if selectedText == "" then
-                            selectedText = item
-                        else
-                            selectedText = selectedText .. ", " .. item
-                        end
-                    end
-                    dropdownButton.Text = selectedText == "" and dropdownName or selectedText
-                    callback(selectedText)
-                end)
+                end
+                DropdownButton.Text = selectedText == "" and text or selectedText
+                callback(SelectedItems)
             end
 
-            dropdownButton.MouseButton1Click:Connect(function()
-                dropdownList.Visible = not dropdownList.Visible
-                dropdownList.Size = UDim2.new(0.96, 0, 0, #items * 35)
+            local function createDropdownItem(itemText)
+                local DropdownItem = Instance.new("TextButton")
+                local UICorner_DropdownItem = Instance.new("UICorner")
+                local UIStroke_DropdownItem = Instance.new("UIStroke")
+
+                DropdownItem.Name = itemText
+                DropdownItem.Parent = DropdownList
+                DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+                DropdownItem.Size = UDim2.new(1, -10, 0, 30)
+                DropdownItem.Font = Enum.Font.FredokaOne
+                DropdownItem.Text = itemText
+                DropdownItem.TextColor3 = Color3.fromRGB(255, 255, 255)
+                DropdownItem.TextSize = 24.000
+                DropdownItem.TextXAlignment = Enum.TextXAlignment.Left
+
+                UICorner_DropdownItem.CornerRadius = UDim.new(0, 10)
+                UICorner_DropdownItem.Parent = DropdownItem
+
+                UIStroke_DropdownItem.Parent = DropdownItem
+                UIStroke_DropdownItem.Color = Color3.fromRGB(0, 0, 0)
+                UIStroke_DropdownItem.Thickness = 2
+
+                DropdownItem.MouseEnter:Connect(function()
+                    DropdownItem.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                end)
+                DropdownItem.MouseLeave:Connect(function()
+                    DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+                end)
+                DropdownItem.MouseButton1Click:Connect(function()
+                    if multiSelect then
+                        if SelectedItems[DropdownItem.Text] then
+                            SelectedItems[DropdownItem.Text] = nil
+                            DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+                        else
+                            SelectedItems[DropdownItem.Text] = true
+                            DropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+                        end
+                    else
+                        for _, item in pairs(DropdownList:GetChildren()) do
+                            if item:IsA("TextButton") then
+                                item.BackgroundColor3 = Color3.fromRGB
+
+(45, 45, 45)
+                                SelectedItems[item.Text] = nil
+                            end
+                        end
+                        SelectedItems[DropdownItem.Text] = true
+                        DropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+                    end
+                    updateDropdown()
+                end)
+
+                return DropdownItem
+            end
+
+            -- Populate Dropdown Items
+            for _, item in ipairs(items) do
+                local itemFrame = createDropdownItem(item)
+                table.insert(itemFrames, itemFrame)
+            end
+
+            local function filterItems(searchText)
+                local yPos = 40  -- Starting Y position for items
+                for _, itemFrame in ipairs(itemFrames) do
+                    if string.find(string.lower(itemFrame.Text), string.lower(searchText)) then
+                        itemFrame.Position = UDim2.new(0, 5, 0, yPos)
+                        itemFrame.Visible = true
+                        yPos = yPos + 35
+                    else
+                        itemFrame.Visible = false
+                    end
+                end
+                DropdownList.Size = UDim2.new(0.959999979, 0, 0, yPos + 5)
+            end
+
+            SearchBar.Changed:Connect(function()
+                filterItems(SearchBar.Text)
+            end)
+
+            DropdownButton.MouseButton1Click:Connect(function()
+                DropdownList.Visible = not DropdownList.Visible
             end)
         end
 
-        return tabContent
+        return tab
     end
 
-    return UILibrary
+    return window
 end
 
 return UILibrary
