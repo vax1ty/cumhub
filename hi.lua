@@ -1,6 +1,6 @@
--- UI Library
 local UILibrary = {}
 
+-- Main UI Library Module
 function UILibrary:CreateWindow(title)
     local window = {}
 
@@ -125,6 +125,22 @@ function UILibrary:CreateWindow(title)
     UIStrokeContentHolder.Parent = ContentHolder
     UIStrokeContentHolder.Color = Color3.fromRGB(0, 0, 0)
     UIStrokeContentHolder.Thickness = 2
+
+    -- Close Button Functionality
+    CloseButton.MouseButton1Click:Connect(function()
+        Confirmation:Destroy()
+    end)
+
+    -- Minimize Button Functionality
+    MinimizeButton.MouseButton1Click:Connect(function()
+        if MainFrame.Visible then
+            MainFrame.Visible = false
+            MinimizeButton.Text = "+"
+        else
+            MainFrame.Visible = true
+            MinimizeButton.Text = "-"
+        end
+    end)
 
     -- Functions to Add Tabs and UI Elements
     function window:AddTab(tabName)
