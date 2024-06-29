@@ -1,6 +1,6 @@
+-- UI Library
 local UILibrary = {}
 
--- Main UI Library Module
 function UILibrary:CreateWindow(title)
     local window = {}
 
@@ -185,9 +185,7 @@ function UILibrary:CreateWindow(title)
             ButtonHolder.Name = "ButtonHolder"
             ButtonHolder.Parent = TabContent
             ButtonHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            ButtonHolder.Size = UDim2.new(0.
-
-98, 0, 0, 70)
+            ButtonHolder.Size = UDim2.new(0.98, 0, 0, 70)
 
             UICorner_Button.CornerRadius = UDim.new(0, 10)
             UICorner_Button.Parent = ButtonHolder
@@ -373,8 +371,6 @@ function UILibrary:CreateWindow(title)
             UIStroke_Toggle.Parent = Toggle
             UIStroke_Toggle.Color = Color3.fromRGB(0, 0, 0)
             UIStroke_Toggle.Thickness = 2
-
-
 
             -- Properties for Toggle Label
             ToggleLabel.Name = "ToggleLabel"
@@ -569,9 +565,7 @@ function UILibrary:CreateWindow(title)
             end
 
             local function filterItems(searchText)
-                local yPos = 40  -- Starting
-
- Y position for items
+                local yPos = 40  -- Starting Y position for items
                 for _, itemFrame in ipairs(itemFrames) do
                     if string.find(string.lower(itemFrame.Text), string.lower(searchText)) then
                         itemFrame.Position = UDim2.new(0, 5, 0, yPos)
@@ -592,8 +586,6 @@ function UILibrary:CreateWindow(title)
                 DropdownList.Visible = not DropdownList.Visible
             end)
         end
-
-        -- Add more UI elements as needed...
 
         return tab
     end
