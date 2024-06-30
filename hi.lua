@@ -193,37 +193,37 @@ function UILibrary:CreateWindow(title)
             local UIStroke_Button = Instance.new("UIStroke")
 
             -- Properties for Button Holder
-            ButtonHolder.Name = "ButtonHolder"
-            ButtonHolder.Parent = TabContent
-            ButtonHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            ButtonHolder.Size = UDim2.new(0.98, 0, 0, 70)
-            ButtonHolder.Position = UDim2.new(0.01, 0, 0.01, 0)
+Holder.Name = "ButtonHolder"
+ButtonHolder.Parent = ContentHolder
+ButtonHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+ButtonHolder.Position = UDim2.new(0.01, 0, 0.23, 0)
+ButtonHolder.Size = UDim2.new(0.98, 0, 0, 70)
 
-            UICorner_Button.CornerRadius = UDim.new(0, 10)
-            UICorner_Button.Parent = ButtonHolder
+UICorner_12.CornerRadius = UDim.new(0, 10)
+UICorner_12.Parent = ButtonHolder
+UIStrokeButtonHolder.Parent = ButtonHolder
+UIStrokeButtonHolder.Color = Color3.fromRGB(0, 0, 0)
+UIStrokeButtonHolder.Thickness = 2
 
-            UIStroke_Button.Parent = ButtonHolder
-            UIStroke_Button.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_Button.Thickness = 2
+Button.Name = "Button"
+Button.Parent = ButtonHolder
+Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+Button.BackgroundTransparency = 1.000
+Button.BorderSizePixel = 0
+Button.Position = UDim2.new(0.0199999996, 0, 0.100000001, 0)
+Button.Size = UDim2.new(0.980000019, 0, 0, 70)
+Button.Font = Enum.Font.FredokaOne
+Button.Text = "Button"
+Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button.TextSize = 30.000
+Button.TextXAlignment = Enum.TextXAlignment.Left
 
-            -- Properties for Button
-            Button.Name = "Button"
-            Button.Parent = ButtonHolder
-            Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            Button.BackgroundTransparency = 1.000
-            Button.Size = UDim2.new(0.98, 0, 1, 0)
-            Button.Font = Enum.Font.FredokaOne
-            Button.Text = text
-            Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-            Button.TextSize = 30.000
-            Button.TextXAlignment = Enum.TextXAlignment.Left
+UICorner_13.CornerRadius = UDim.new(0, 10)
+UICorner_13.Parent = Button
 
-            UICorner_Button.CornerRadius = UDim.new(0, 10)
-            UICorner_Button.Parent = Button
-
-            UIStroke_Button.Parent = Button
-            UIStroke_Button.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_Button.Thickness = 2
+UIStrokeButton.Parent = Button
+UIStrokeButton.Color = Color3.fromRGB(0, 0, 0)
+UIStrokeButton.Thickness = 2
 
             Button.MouseButton1Click:Connect(callback)
         end
