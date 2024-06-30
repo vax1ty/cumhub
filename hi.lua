@@ -20,10 +20,10 @@ function UILibrary:CreateWindow(title)
     local UIStrokeMinimizeButton = Instance.new("UIStroke")
     local Title = Instance.new("TextLabel")
     local TabHolder = Instance.new("ScrollingFrame")
-    local UIListLayout = Instance.new("UIListLayout")
     local ContentHolder = Instance.new("Frame")
     local UICorner_5 = Instance.new("UICorner")
     local UIStrokeContentHolder = Instance.new("UIStroke")
+    local UIListLayout = Instance.new("UIListLayout")
 
     -- Properties for Window
     Confirmation.Name = "Confirmation"
@@ -110,13 +110,15 @@ function UILibrary:CreateWindow(title)
     TabHolder.Parent = MainFrame
     TabHolder.BackgroundColor3 = Color3.fromRGB(45, 45, 48)
     TabHolder.BackgroundTransparency = 1.000
-    TabHolder.Position = UDim2.new(0, 0, 0.0933333337, 0)
-    TabHolder.Size = UDim2.new(1, 0, 0.0616666675, 0)
+    TabHolder.Position = UDim2.new(0.025, 0, 0.0933333337, 0)
+    TabHolder.Size = UDim2.new(0.95, 0, 0.0616666675, 0)
     TabHolder.CanvasSize = UDim2.new(0, 0, 0, 0)
-    TabHolder.ScrollBarThickness = 4
+    TabHolder.ScrollBarThickness = 0
+    TabHolder.AutomaticCanvasSize = Enum.AutomaticSize.X
 
     UIListLayout.Parent = TabHolder
     UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+    UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
     UIListLayout.Padding = UDim.new(0, 5)
 
     ContentHolder.Name = "ContentHolder"
@@ -596,6 +598,15 @@ function UILibrary:CreateWindow(title)
 
         return tab
     end
+
+    -- Close and Minimize Functionality
+    CloseButton.MouseButton1Click:Connect(function()
+        Confirmation:Destroy()
+    end)
+
+    MinimizeButton.MouseButton1Click:Connect(function()
+        MainFrame.Visible = not MainFrame.Visible
+    end)
 
     return window
 end
