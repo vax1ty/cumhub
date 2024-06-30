@@ -184,39 +184,31 @@ function UILibrary:CreateWindow(title)
         end
 
         -- Functions to Add UI Elements
+        function tab:CreateButton(text, callback
 
-
-        function tab:CreateButton(text, callback)
-            local ButtonHolder = Instance.new("Frame")
+)
             local Button = Instance.new("TextButton")
             local UICorner_Button = Instance.new("UICorner")
             local UIStroke_Button = Instance.new("UIStroke")
 
-            -- Properties for Button Holder
-            ButtonHolder.Name = "ButtonHolder"
-            ButtonHolder.Parent = TabContent
-            ButtonHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            ButtonHolder.Size = UDim2.new(0.98, 0, 0, 70)
-            ButtonHolder.Position = UDim2.new(0.01, 0, 0.01, 0)
-
-            UICorner_Button.CornerRadius = UDim.new(0, 10)
-            UICorner_Button.Parent = ButtonHolder
-
-            UIStroke_Button.Parent = ButtonHolder
-            UIStroke_Button.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_Button.Thickness = 2
-
             -- Properties for Button
             Button.Name = "Button"
-            Button.Parent = ButtonHolder
-            Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            Button.BackgroundTransparency = 1.000
-            Button.Size = UDim2.new(0.98, 0, 1, 0)
+            Button.Parent = TabContent
+            Button.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
+            Button.Size = UDim2.new(0.98, 0, 0, 50)
+            Button.Position = UDim2.new(0.01, 0, 0.01, 0)
             Button.Font = Enum.Font.FredokaOne
             Button.Text = text
             Button.TextColor3 = Color3.fromRGB(255, 255, 255)
             Button.TextSize = 24.000
             Button.TextXAlignment = Enum.TextXAlignment.Left
+
+            UICorner_Button.CornerRadius = UDim.new(0, 10)
+            UICorner_Button.Parent = Button
+
+            UIStroke_Button.Parent = Button
+            UIStroke_Button.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_Button.Thickness = 2
 
             Button.MouseButton1Click:Connect(callback)
         end
@@ -369,16 +361,16 @@ function UILibrary:CreateWindow(title)
             Toggle.Name = "Toggle"
             Toggle.Parent = ToggleBar
             Toggle.BackgroundColor3 = initialState and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
-            Toggle.Position = initialState and UDim2.new(1
-
-, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5)
+            Toggle.Position = initialState and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5)
             Toggle.Size = UDim2.new(0, 37, 0, 37)
 
             UICorner_Toggle.CornerRadius = UDim.new(1, 0)
             UICorner_Toggle.Parent = Toggle
 
             UIStroke_Toggle.Parent = Toggle
-            UIStroke_Toggle.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_Toggle.Color =
+
+ Color3.fromRGB(0, 0, 0)
             UIStroke_Toggle.Thickness = 2
 
             -- Properties for Toggle Label
@@ -554,9 +546,7 @@ function UILibrary:CreateWindow(title)
                         end
                     else
                         for _, item in pairs(DropdownList:GetChildren()) do
-                            if
-
- item:IsA("TextButton") then
+                            if item:IsA("TextButton") then
                                 item.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
                                 SelectedItems[item.Text] = nil
                             end
@@ -571,7 +561,9 @@ function UILibrary:CreateWindow(title)
             end
 
             -- Populate Dropdown Items
-            for _, item in ipairs(items) do
+            for
+
+ _, item in ipairs(items) do
                 local itemFrame = createDropdownItem(item)
                 table.insert(itemFrames, itemFrame)
             end
