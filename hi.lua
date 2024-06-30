@@ -175,10 +175,10 @@ function UILibrary:CreateWindow(title)
         UICorner_Tab.CornerRadius = UDim.new(0, 10)
         UICorner_Tab.Parent = TabButton
 
-        UIStroke_Tab.Parent = TabButton
-        UIStroke_Tab.Color = Color
+        UI
 
-3.fromRGB(0, 0, 0)
+Stroke_Tab.Parent = TabButton
+        UIStroke_Tab.Color = Color3.fromRGB(0, 0, 0)
         UIStroke_Tab.Thickness = 2
 
         -- Properties for Tab Content
@@ -376,10 +376,10 @@ function UILibrary:CreateWindow(title)
             local UICorner_Toggle = Instance.new("UICorner")
             local UIStroke_Toggle = Instance.new("UIStroke")
 
-            -- Properties for Toggle Holder
-            ToggleHolder.Name = "Toggle
 
-Holder"
+
+            -- Properties for Toggle Holder
+            ToggleHolder.Name = "ToggleHolder"
             ToggleHolder.Parent = TabContent
             ToggleHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
             ToggleHolder.Size = UDim2.new(1, 0, 0, 40)
@@ -559,10 +559,10 @@ Holder"
 
                 DropdownItem.Name = itemText
                 DropdownItem.Parent = DropdownList
-                DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-                DropdownItem.Size = UDim2.new(1
+                DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45,
 
-, -10, 0, 30)
+ 45)
+                DropdownItem.Size = UDim2.new(1, -10, 0, 30)
                 DropdownItem.Font = Enum.Font.FredokaOne
                 DropdownItem.Text = itemText
                 DropdownItem.TextColor3 = Color3.fromRGB(255, 255, 255)
