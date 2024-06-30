@@ -274,7 +274,7 @@ function UILibrary:CreateWindow(title)
             SliderHolder.Name = "SliderHolder"
             SliderHolder.Parent = TabContent
             SliderHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            SliderHolder.Size = UDim2.new(1, 0, 0, 60)  -- Increased height for better visibility
+            SliderHolder.Size = UDim2.new(1, 0, 0, 60)
 
             UICorner_SliderHolder.CornerRadius = UDim.new(0, 10)
             UICorner_SliderHolder.Parent = SliderHolder
@@ -287,8 +287,8 @@ function UILibrary:CreateWindow(title)
             SliderBar.Name = "SliderBar"
             SliderBar.Parent = SliderHolder
             SliderBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-            SliderBar.Position = UDim2.new(0.1, 0, 0.5, -10)  -- Adjusted position
-            SliderBar.Size = UDim2.new(0.8, 0, 0.2, 0)  -- Adjusted size
+            SliderBar.Position = UDim2.new(0.1, 0, 0.5, -10)
+            SliderBar.Size = UDim2.new(0.8, 0, 0.2, 0)
 
             UICorner_SliderBar.CornerRadius = UDim.new(0, 99)
             UICorner_SliderBar.Parent = SliderBar
@@ -301,8 +301,8 @@ function UILibrary:CreateWindow(title)
             Slider.Name = "Slider"
             Slider.Parent = SliderBar
             Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
-            Slider.Position = UDim2.new(0, 0, 0.5, -10)  -- Adjusted position
-            Slider.Size = UDim2.new(0, 20, 0, 20)  -- Adjusted size
+            Slider.Position = UDim2.new(0, 0, 0.5, -10)
+            Slider.Size = UDim2.new(0, 20, 0, 20)
 
             UICorner_Slider.CornerRadius = UDim.new(1, 0)
             UICorner_Slider.Parent = Slider
@@ -635,12 +635,10 @@ function UILibrary:CreateWindow(title)
 
     -- Close and Minimize Functionality
     CloseButton.MouseButton1Click:Connect(function()
-        print("Close button clicked")
         Confirmation:Destroy()
     end)
 
     MinimizeButton.MouseButton1Click:Connect(function()
-        print("Minimize button clicked")
         MainFrame.Visible = not MainFrame.Visible
     end)
 
