@@ -25,8 +25,6 @@ function UILibrary:CreateWindow(title)
     local UIStrokeContentHolder = Instance.new("UIStroke")
     local UIListLayoutTabs = Instance.new("UIListLayout")
     local UIPaddingTabs = Instance.new("UIPadding")
-    local UIListLayoutContent = Instance.new("UIListLayout")
-    local UIPaddingContent = Instance.new("UIPadding")
 
     -- Properties for Window
     Confirmation.Name = "Confirmation"
@@ -144,18 +142,6 @@ function UILibrary:CreateWindow(title)
     UIStrokeContentHolder.Color = Color3.fromRGB(0, 0, 0)
     UIStrokeContentHolder.Thickness = 2
 
-    -- Adding UIPadding for spacing
-    UIPaddingContent.Parent = ContentHolder
-    UIPaddingContent.PaddingTop = UDim.new(0, 10)
-    UIPaddingContent.PaddingBottom = UDim.new(0, 10)
-    UIPaddingContent.PaddingLeft = UDim.new(0, 10)
-    UIPaddingContent.PaddingRight = UDim.new(0, 10)
-
-    -- Adding UIListLayout for vertical alignment and spacing
-    UIListLayoutContent.Parent = ContentHolder
-    UIListLayoutContent.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayoutContent.Padding = UDim.new(0, 5)
-
     -- Functions to Add Tabs and UI Elements
     function window:AddTab(tabName)
         local tab = {}
@@ -170,12 +156,10 @@ function UILibrary:CreateWindow(title)
         TabButton.Name = tabName
         TabButton.Parent = TabHolder
         TabButton.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
-        TabButton.Size = UDim2.new(0, 100, 0, 40)
+        TabButton.Size = UDim2.new(0, 100, 0, 30)
         TabButton.Font = Enum.Font.FredokaOne
         TabButton.Text = tabName
-        TabButton.TextColor3 = Color3.fromRGB(255, 255, 255
-
-)
+        TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         TabButton.TextSize = 24.000
         TabButton.AutomaticSize = Enum.AutomaticSize.X
 
@@ -190,7 +174,9 @@ function UILibrary:CreateWindow(title)
         TabContent.Name = tabName .. "_Content"
         TabContent.Parent = ContentHolder
         TabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        TabContent.Size = UDim2.new(1, 0, 1, 0)
+        TabContent.Size = UDim2.new(1
+
+, 0, 1, 0)
         TabContent.Visible = false
 
         -- Adding UIPadding and UIListLayout for Tab Content
@@ -374,9 +360,7 @@ function UILibrary:CreateWindow(title)
             local UICorner_ToggleBar = Instance.new("UICorner")
             local UIStroke_ToggleBar = Instance.new("UIStroke")
             local UICorner_Toggle = Instance.new("UICorner")
-            local UIStroke_Toggle = Instance.new("UI
-
-Stroke")
+            local UIStroke_Toggle = Instance.new("UIStroke")
 
             -- Properties for Toggle Holder
             ToggleHolder.Name = "ToggleHolder"
@@ -391,7 +375,9 @@ Stroke")
             UIStroke_ToggleHolder.Color = Color3.fromRGB(0, 0, 0)
             UIStroke_ToggleHolder.Thickness = 2
 
-            -- Properties for Toggle Bar
+            -- Properties for Toggle
+
+ Bar
             ToggleBar.Name = "ToggleBar"
             ToggleBar.Parent = ToggleHolder
             ToggleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -559,9 +545,7 @@ Stroke")
                 DropdownItem.Name = itemText
                 DropdownItem.Parent = DropdownList
                 DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-                DropdownItem.Size =
-
- UDim2.new(1, -10, 0, 30)
+                DropdownItem.Size = UDim2.new(1, -10, 0, 30)
                 DropdownItem.Font = Enum.Font.FredokaOne
                 DropdownItem.Text = itemText
                 DropdownItem.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -573,6 +557,8 @@ Stroke")
 
                 UIStroke_DropdownItem.Parent = DropdownItem
                 UIStroke_DropdownItem.Color = Color3.fromRGB(0, 0, 0)
+
+
                 UIStroke_DropdownItem.Thickness = 2
 
                 DropdownItem.MouseEnter:Connect(function()
