@@ -27,9 +27,11 @@ function UILibrary:CreateWindow(title)
     local UIPaddingTabs = Instance.new("UIPadding")
 
     -- Properties for Window
+    print("Setting properties for Confirmation")
     Confirmation.Name = "Confirmation"
     Confirmation.Parent = game.CoreGui
 
+    print("Setting properties for MainFrame")
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = Confirmation
     MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -47,6 +49,7 @@ function UILibrary:CreateWindow(title)
     UIStrokeMainFrame.Color = Color3.fromRGB(0, 0, 0)
     UIStrokeMainFrame.Thickness = 2
 
+    print("Setting properties for TopBar")
     TopBar.Name = "TopBar"
     TopBar.Parent = MainFrame
     TopBar.BackgroundColor3 = Color3.fromRGB(45, 45, 48)
@@ -59,6 +62,7 @@ function UILibrary:CreateWindow(title)
     UIStrokeTopBar.Color = Color3.fromRGB(0, 0, 0)
     UIStrokeTopBar.Thickness = 2
 
+    print("Setting properties for CloseButton")
     CloseButton.Name = "CloseButton"
     CloseButton.Parent = TopBar
     CloseButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
@@ -77,6 +81,7 @@ function UILibrary:CreateWindow(title)
     UIStrokeCloseButton.Color = Color3.fromRGB(0, 0, 0)
     UIStrokeCloseButton.Thickness = 2
 
+    print("Setting properties for MinimizeButton")
     MinimizeButton.Name = "MinimizeButton"
     MinimizeButton.Parent = TopBar
     MinimizeButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
@@ -95,6 +100,7 @@ function UILibrary:CreateWindow(title)
     UIStrokeMinimizeButton.Color = Color3.fromRGB(0, 0, 0)
     UIStrokeMinimizeButton.Thickness = 2
 
+    print("Setting properties for Title")
     Title.Name = "Title"
     Title.Parent = TopBar
     Title.BackgroundColor3 = Color3.fromRGB(45, 45, 48)
@@ -107,6 +113,7 @@ function UILibrary:CreateWindow(title)
     Title.TextXAlignment = Enum.TextXAlignment.Left
     Title.Position = UDim2.new(0.05, 0, 0, 0)
 
+    print("Setting properties for TabHolder")
     TabHolder.Name = "TabHolder"
     TabHolder.Parent = MainFrame
     TabHolder.BackgroundColor3 = Color3.fromRGB(45, 45, 48)
@@ -128,6 +135,7 @@ function UILibrary:CreateWindow(title)
     UIPaddingTabs.PaddingLeft = UDim.new(0, 10)
     UIPaddingTabs.PaddingRight = UDim.new(0, 10)
 
+    print("Setting properties for ContentHolder")
     ContentHolder.Name = "ContentHolder"
     ContentHolder.Parent = MainFrame
     ContentHolder.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -153,6 +161,7 @@ function UILibrary:CreateWindow(title)
         local UIPadding_TabContent = Instance.new("UIPadding")
 
         -- Properties for Tab Button
+        print("Creating Tab Button for tab:", tabName)
         TabButton.Name = tabName
         TabButton.Parent = TabHolder
         TabButton.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
@@ -167,16 +176,17 @@ function UILibrary:CreateWindow(title)
         UICorner_Tab.Parent = TabButton
 
         UIStroke_Tab.Parent = TabButton
-        UIStroke_Tab.Color = Color3.fromRGB(0, 0, 0)
+        UIStroke_Tab.Color = Color
+
+3.fromRGB(0, 0, 0)
         UIStroke_Tab.Thickness = 2
 
         -- Properties for Tab Content
+        print("Creating Tab Content for tab:", tabName)
         TabContent.Name = tabName .. "_Content"
         TabContent.Parent = ContentHolder
         TabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        TabContent.Size = UDim2.new(1
-
-, 0, 1, 0)
+        TabContent.Size = UDim2.new(1, 0, 1, 0)
         TabContent.Visible = false
 
         -- Adding UIPadding and UIListLayout for Tab Content
@@ -192,6 +202,7 @@ function UILibrary:CreateWindow(title)
 
         -- Show/Hide Tabs
         TabButton.MouseButton1Click:Connect(function()
+            print("TabButton Clicked:", tabName)
             for _, child in ipairs(ContentHolder:GetChildren()) do
                 if child:IsA("Frame") then
                     child.Visible = false
@@ -207,6 +218,7 @@ function UILibrary:CreateWindow(title)
 
         -- Functions to Add UI Elements
         function tab:CreateButton(text, callback)
+            print("Creating Button with text:", text)
             local ButtonHolder = Instance.new("Frame")
             local Button = Instance.new("TextButton")
             local UICorner_Button = Instance.new("UICorner")
@@ -248,6 +260,7 @@ function UILibrary:CreateWindow(title)
         end
 
         function tab:CreateSlider(text, min, max, callback)
+            print("Creating Slider with text:", text)
             local SliderHolder = Instance.new("Frame")
             local SliderBar = Instance.new("Frame")
             local Slider = Instance.new("Frame")
@@ -351,6 +364,7 @@ function UILibrary:CreateWindow(title)
         end
 
         function tab:CreateToggle(text, initialState, callback)
+            print("Creating Toggle with text:", text)
             local ToggleHolder = Instance.new("Frame")
             local ToggleBar = Instance.new("Frame")
             local Toggle = Instance.new("Frame")
@@ -363,7 +377,9 @@ function UILibrary:CreateWindow(title)
             local UIStroke_Toggle = Instance.new("UIStroke")
 
             -- Properties for Toggle Holder
-            ToggleHolder.Name = "ToggleHolder"
+            ToggleHolder.Name = "Toggle
+
+Holder"
             ToggleHolder.Parent = TabContent
             ToggleHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
             ToggleHolder.Size = UDim2.new(1, 0, 0, 40)
@@ -375,9 +391,7 @@ function UILibrary:CreateWindow(title)
             UIStroke_ToggleHolder.Color = Color3.fromRGB(0, 0, 0)
             UIStroke_ToggleHolder.Thickness = 2
 
-            -- Properties for Toggle
-
- Bar
+            -- Properties for Toggle Bar
             ToggleBar.Name = "ToggleBar"
             ToggleBar.Parent = ToggleHolder
             ToggleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -438,6 +452,7 @@ function UILibrary:CreateWindow(title)
         end
 
         function tab:CreateDropdown(text, items, multiSelect, callback)
+            print("Creating Dropdown with text:", text)
             local DropdownHolder = Instance.new("Frame")
             local DropdownButton = Instance.new("TextButton")
             local DropdownList = Instance.new("Frame")
@@ -545,7 +560,9 @@ function UILibrary:CreateWindow(title)
                 DropdownItem.Name = itemText
                 DropdownItem.Parent = DropdownList
                 DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-                DropdownItem.Size = UDim2.new(1, -10, 0, 30)
+                DropdownItem.Size = UDim2.new(1
+
+, -10, 0, 30)
                 DropdownItem.Font = Enum.Font.FredokaOne
                 DropdownItem.Text = itemText
                 DropdownItem.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -557,8 +574,6 @@ function UILibrary:CreateWindow(title)
 
                 UIStroke_DropdownItem.Parent = DropdownItem
                 UIStroke_DropdownItem.Color = Color3.fromRGB(0, 0, 0)
-
-
                 UIStroke_DropdownItem.Thickness = 2
 
                 DropdownItem.MouseEnter:Connect(function()
