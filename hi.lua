@@ -164,7 +164,9 @@ function UILibrary:CreateWindow(title)
         -- Properties for Tab Content
         TabContent.Name = tabName .. "_Content"
         TabContent.Parent = ContentHolder
-        TabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        TabContent.BackgroundColor3 = Color3.fromRGB(30,
+
+ 30, 30)
         TabContent.Size = UDim2.new(1, 0, 1, 0)
         TabContent.Visible = false
 
@@ -184,9 +186,7 @@ function UILibrary:CreateWindow(title)
         end
 
         -- Functions to Add UI Elements
-        function tab:CreateButton
-
-(text, callback)
+        function tab:CreateButton(text, callback)
             local ButtonHolder = Instance.new("Frame")
             local Button = Instance.new("TextButton")
             local UICorner_Button = Instance.new("UICorner")
@@ -361,7 +361,9 @@ function UILibrary:CreateWindow(title)
             -- Properties for Toggle Bar
             ToggleBar.Name = "ToggleBar"
             ToggleBar.Parent = ToggleHolder
-            ToggleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            ToggleBar.BackgroundColor3 = Color3.fromRGB(30, 
+
+30, 30)
             ToggleBar.Position = UDim2.new(0.75, 0, 0.5, -15)
             ToggleBar.Size = UDim2.new(0.2, 0, 0.5, 0)
 
@@ -373,9 +375,7 @@ function UILibrary:CreateWindow(title)
             UIStroke_ToggleBar.Thickness = 2
 
             -- Properties for Toggle
-            Toggle.Name = "Toggle
-
-"
+            Toggle.Name = "Toggle"
             Toggle.Parent = ToggleBar
             Toggle.BackgroundColor3 = initialState and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
             Toggle.Position = initialState and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5)
@@ -541,7 +541,9 @@ function UILibrary:CreateWindow(title)
                 UICorner_DropdownItem.Parent = DropdownItem
 
                 UIStroke_DropdownItem.Parent = DropdownItem
-                UIStroke_DropdownItem.Color = Color3.fromRGB(0, 0, 0)
+                UIStroke_DropdownItem.Color = Color3.fromRGB(0
+
+, 0, 0)
                 UIStroke_DropdownItem.Thickness = 2
 
                 DropdownItem.MouseEnter:Connect(function()
@@ -555,8 +557,6 @@ function UILibrary:CreateWindow(title)
                         if SelectedItems[DropdownItem.Text] then
                             SelectedItems[DropdownItem.Text] = nil
                             DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-
-
                         else
                             SelectedItems[DropdownItem.Text] = true
                             DropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
