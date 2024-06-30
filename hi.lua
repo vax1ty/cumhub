@@ -24,13 +24,12 @@ function UILibrary:CreateWindow(title)
     local UICorner_5 = Instance.new("UICorner")
     local UIStrokeContentHolder = Instance.new("UIStroke")
     local UIListLayout = Instance.new("UIListLayout")
+    local UIPadding = Instance.new("UIPadding")
 
     -- Properties for Window
-    print("Setting properties for Confirmation")
     Confirmation.Name = "Confirmation"
     Confirmation.Parent = game.CoreGui
 
-    print("Setting properties for MainFrame")
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = Confirmation
     MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -137,14 +136,27 @@ function UILibrary:CreateWindow(title)
     UIStrokeContentHolder.Color = Color3.fromRGB(0, 0, 0)
     UIStrokeContentHolder.Thickness = 2
 
+    -- Adding UIPadding for spacing
+    UIPadding.Parent = ContentHolder
+    UIPadding.PaddingTop = UDim.new(0, 10)
+    UIPadding.PaddingBottom = UDim.new(0, 10)
+    UIPadding.PaddingLeft = UDim.new(0, 10)
+    UIPadding.PaddingRight = UDim.new(0, 10)
+
+    -- Adding UIListLayout for vertical alignment and spacing
+    UIListLayout.Parent = ContentHolder
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout.Padding = UDim.new(0, 5)
+
     -- Functions to Add Tabs and UI Elements
     function window:AddTab(tabName)
         local tab = {}
-        print("Adding Tab: ", tabName)
         local TabButton = Instance.new("TextButton")
         local TabContent = Instance.new("Frame")
         local UICorner_Tab = Instance.new("UICorner")
         local UIStroke_Tab = Instance.new("UIStroke")
+        local UIListLayout_TabContent = Instance.new("UIListLayout")
+        local UIPadding_TabContent = Instance.new("UIPadding")
 
         -- Properties for Tab Button
         TabButton.Name = tabName
@@ -162,7 +174,9 @@ function UILibrary:CreateWindow(title)
 
         UIStroke_Tab.Parent = TabButton
         UIStroke_Tab.Color = Color3.fromRGB(0, 0, 0)
-        UIStroke_Tab.Thickness = 2
+        UIStroke_Tab.
+
+Thickness = 2
 
         -- Properties for Tab Content
         TabContent.Name = tabName .. "_Content"
@@ -171,9 +185,19 @@ function UILibrary:CreateWindow(title)
         TabContent.Size = UDim2.new(1, 0, 1, 0)
         TabContent.Visible = false
 
+        -- Adding UIPadding and UIListLayout for Tab Content
+        UIPadding_TabContent.Parent = TabContent
+        UIPadding_TabContent.PaddingTop = UDim.new(0, 10)
+        UIPadding_TabContent.PaddingBottom = UDim.new(0, 10)
+        UIPadding_TabContent.PaddingLeft = UDim.new(0, 10)
+        UIPadding_TabContent.PaddingRight = UDim.new(0, 10)
+
+        UIListLayout_TabContent.Parent = TabContent
+        UIListLayout_TabContent.SortOrder = Enum.SortOrder.LayoutOrder
+        UIListLayout_TabContent.Padding = UDim.new(0, 5)
+
         -- Show/Hide Tabs
         TabButton.MouseButton1Click:Connect(function()
-            print("TabButton Clicked: ", tabName)
             for _, child in ipairs(ContentHolder:GetChildren()) do
                 if child:IsA("Frame") then
                     child.Visible = false
@@ -183,9 +207,7 @@ function UILibrary:CreateWindow(title)
         end)
 
         -- Default to showing the first tab
-       
-
- if #ContentHolder:GetChildren() == 1 then
+        if #ContentHolder:GetChildren() == 1 then
             TabContent.Visible = true
         end
 
@@ -200,8 +222,7 @@ function UILibrary:CreateWindow(title)
             ButtonHolder.Name = "ButtonHolder"
             ButtonHolder.Parent = TabContent
             ButtonHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            ButtonHolder.Size = UDim2.new(0.98, 0, 0, 70)
-            ButtonHolder.Position = UDim2.new(0.01, 0, 0.01, 0)
+            ButtonHolder.Size = UDim2.new(1, 0, 0, 70)
 
             UICorner_Button.CornerRadius = UDim.new(0, 10)
             UICorner_Button.Parent = ButtonHolder
@@ -215,7 +236,7 @@ function UILibrary:CreateWindow(title)
             Button.Parent = ButtonHolder
             Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
             Button.BackgroundTransparency = 1.000
-            Button.Size = UDim2.new(0.98, 0, 1, 0)
+            Button.Size = UDim2.new(1, 0, 1, 0)
             Button.Font = Enum.Font.FredokaOne
             Button.Text = text
             Button.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -229,7 +250,6 @@ function UILibrary:CreateWindow(title)
             UIStroke_Button.Color = Color3.fromRGB(0, 0, 0)
             UIStroke_Button.Thickness = 2
 
-            print("Connecting Button Callback")
             Button.MouseButton1Click:Connect(callback)
         end
 
@@ -249,8 +269,7 @@ function UILibrary:CreateWindow(title)
             SliderHolder.Name = "SliderHolder"
             SliderHolder.Parent = TabContent
             SliderHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            SliderHolder.Size = UDim2.new(0.98, 0, 0, 70)
-            SliderHolder.Position = UDim2.new(0.01, 0, 0.12, 0)
+            SliderHolder.Size = UDim2.new(1, 0, 0, 70)
 
             UICorner_SliderHolder.CornerRadius = UDim.new(0, 10)
             UICorner_SliderHolder.Parent = SliderHolder
@@ -310,7 +329,6 @@ function UILibrary:CreateWindow(title)
                 callback(sliderValue)
             end
 
-            print("Connecting Slider Input Began")
             Slider.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     moveSlider(input)
@@ -354,10 +372,11 @@ function UILibrary:CreateWindow(title)
             ToggleHolder.Name = "ToggleHolder"
             ToggleHolder.Parent = TabContent
             ToggleHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            ToggleHolder.Size = UDim2.new(0.98, 0, 0, 70)
-            ToggleHolder.Position = UDim2.new(0.01, 0, 0.23, 0)
+            ToggleHolder.Size = UDim2.new(1, 0, 0, 70)
 
-            UICorner_ToggleHolder.CornerRadius = UDim.new(0, 10)
+            UICorner_ToggleHolder.CornerRadius = UDim.new(0, 10
+
+)
             UICorner_ToggleHolder.Parent = ToggleHolder
 
             UIStroke_ToggleHolder.Parent = ToggleHolder
@@ -374,9 +393,7 @@ function UILibrary:CreateWindow(title)
             UICorner_ToggleBar.CornerRadius = UDim.new(0, 99)
             UICorner_ToggleBar.Parent = ToggleBar
 
-            UIStroke_T
-
-oggleBar.Parent = ToggleBar
+            UIStroke_ToggleBar.Parent = ToggleBar
             UIStroke_ToggleBar.Color = Color3.fromRGB(0, 0, 0)
             UIStroke_ToggleBar.Thickness = 2
 
@@ -408,7 +425,6 @@ oggleBar.Parent = ToggleBar
             ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
             -- Toggle Functionality
-            local UserInputService = game:GetService("UserInputService")
             local toggleState = initialState
 
             local function setToggleState(state)
@@ -418,7 +434,6 @@ oggleBar.Parent = ToggleBar
                 callback(state)
             end
 
-            print("Connecting Toggle Input Began")
             ToggleBar.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     setToggleState(not toggleState)
@@ -446,8 +461,7 @@ oggleBar.Parent = ToggleBar
             DropdownHolder.Name = "DropdownHolder"
             DropdownHolder.Parent = TabContent
             DropdownHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            DropdownHolder.Size = UDim2.new(0.98, 0, 0, 70)
-            DropdownHolder.Position = UDim2.new(0.01, 0, 0.34, 0)
+            DropdownHolder.Size = UDim2.new(1, 0, 0, 70)
 
             UICorner_DropdownHolder.CornerRadius = UDim.new(0, 10)
             UICorner_DropdownHolder.Parent = DropdownHolder
@@ -544,7 +558,9 @@ oggleBar.Parent = ToggleBar
                 DropdownItem.TextSize = 24.000
                 DropdownItem.TextXAlignment = Enum.TextXAlignment.Left
 
-                UICorner_DropdownItem.CornerRadius = UDim.new(0, 10)
+                UICorner_Drop
+
+downItem.CornerRadius = UDim.new(0, 10)
                 UICorner_DropdownItem.Parent = DropdownItem
 
                 UIStroke_DropdownItem.Parent = DropdownItem
@@ -556,9 +572,7 @@ oggleBar.Parent = ToggleBar
                 end)
                 DropdownItem.MouseLeave:Connect(function()
                     DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-               
-
- end)
+                end)
                 DropdownItem.MouseButton1Click:Connect(function()
                     if multiSelect then
                         if SelectedItems[DropdownItem.Text] then
@@ -581,31 +595,46 @@ oggleBar.Parent = ToggleBar
                 return DropdownItem
             end
 
+            -- Populate Dropdown Items
             for _, item in ipairs(items) do
-                local dropdownItem = createDropdownItem(item)
-                table.insert(itemFrames, dropdownItem)
+                local itemFrame = createDropdownItem(item)
+                table.insert(itemFrames, itemFrame)
             end
 
-            print("Connecting Dropdown Button MouseButton1Click")
-            DropdownButton.MouseButton1Click:Connect(function()
-                DropdownList.Visible = not DropdownList.Visible
-                updateDropdown()
-            end)
-
-            SearchBar:GetPropertyChangedSignal("Text"):Connect(function()
-                local searchText = string.lower(SearchBar.Text)
-                for _, item in ipairs(itemFrames) do
-                    if string.find(string.lower(item.Name), searchText) then
-                        item.Visible = true
+            local function filterItems(searchText)
+                local yPos = 40  -- Starting Y position for items
+                for _, itemFrame in ipairs(itemFrames) do
+                    if string.find(string.lower(itemFrame.Text), string.lower(searchText)) then
+                        itemFrame.Position = UDim2.new(0, 5, 0, yPos)
+                        itemFrame.Visible = true
+                        yPos = yPos + 35
                     else
-                        item.Visible = false
+                        itemFrame.Visible = false
                     end
                 end
+                DropdownList.Size = UDim2.new(0.959999979, 0, 0, yPos + 5)
+            end
+
+            SearchBar.Changed:Connect(function()
+                filterItems(SearchBar.Text)
+            end)
+
+            DropdownButton.MouseButton1Click:Connect(function()
+                DropdownList.Visible = not DropdownList.Visible
             end)
         end
 
         return tab
     end
+
+    -- Close and Minimize Functionality
+    CloseButton.MouseButton1Click:Connect(function()
+        Confirmation:Destroy()
+    end)
+
+    MinimizeButton.MouseButton1Click:Connect(function()
+        MainFrame.Visible = not MainFrame.Visible
+    end)
 
     return window
 end
