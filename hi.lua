@@ -2,9 +2,7 @@ local UILibrary = {}
 
 -- Main UI Library Module
 function UILibrary:CreateWindow(title)
-    local window = {
-        tabs = {}
-    }
+    local window = {}
 
     -- Instances for Window
     local Confirmation = Instance.new("ScreenGui")
@@ -22,10 +20,10 @@ function UILibrary:CreateWindow(title)
     local UIStrokeMinimizeButton = Instance.new("UIStroke")
     local Title = Instance.new("TextLabel")
     local TabHolder = Instance.new("ScrollingFrame")
+    local UIListLayout = Instance.new("UIListLayout")
     local ContentHolder = Instance.new("Frame")
     local UICorner_5 = Instance.new("UICorner")
     local UIStrokeContentHolder = Instance.new("UIStroke")
-    local UIListLayout = Instance.new("UIListLayout")
 
     -- Properties for Window
     Confirmation.Name = "Confirmation"
@@ -115,12 +113,10 @@ function UILibrary:CreateWindow(title)
     TabHolder.Position = UDim2.new(0, 0, 0.0933333337, 0)
     TabHolder.Size = UDim2.new(1, 0, 0.0616666675, 0)
     TabHolder.CanvasSize = UDim2.new(0, 0, 0, 0)
-    TabHolder.ScrollBarThickness = 0
-    TabHolder.ScrollingEnabled = true
+    TabHolder.ScrollBarThickness = 4
 
     UIListLayout.Parent = TabHolder
     UIListLayout.FillDirection = Enum.FillDirection.Horizontal
-    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     UIListLayout.Padding = UDim.new(0, 5)
 
     ContentHolder.Name = "ContentHolder"
@@ -144,8 +140,6 @@ function UILibrary:CreateWindow(title)
         local TabContent = Instance.new("Frame")
         local UICorner_Tab = Instance.new("UICorner")
         local UIStroke_Tab = Instance.new("UIStroke")
-
-        table.insert(window.tabs, TabButton)
 
         -- Properties for Tab Button
         TabButton.Name = tabName
@@ -188,9 +182,7 @@ function UILibrary:CreateWindow(title)
         end
 
         -- Functions to Add UI Elements
-        function tab:
-
-CreateButton(text, callback)
+        function tab:CreateButton(text, callback)
             local ButtonHolder = Instance.new("Frame")
             local Button = Instance.new("TextButton")
             local UICorner_Button = Instance.new("UICorner")
@@ -377,9 +369,7 @@ CreateButton(text, callback)
             Toggle.Name = "Toggle"
             Toggle.Parent = ToggleBar
             Toggle.BackgroundColor3 = initialState and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
-            Toggle.Position = initialState and UDim2.new(1, -37, 0.5, -18.5) or U
-
-Dim2.new(0, 0, 0.5, -18.5)
+            Toggle.Position = initialState and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5)
             Toggle.Size = UDim2.new(0, 37, 0, 37)
 
             UICorner_Toggle.CornerRadius = UDim.new(1, 0)
@@ -565,9 +555,7 @@ Dim2.new(0, 0, 0.5, -18.5)
                                 item.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
                                 SelectedItems[item.Text] = nil
                             end
-                       
-
- end
+                        end
                         SelectedItems[DropdownItem.Text] = true
                         DropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
                     end
@@ -608,15 +596,6 @@ Dim2.new(0, 0, 0.5, -18.5)
 
         return tab
     end
-
-    -- Functionality for Close and Minimize Buttons
-    CloseButton.MouseButton1Click:Connect(function()
-        Confirmation:Destroy()
-    end)
-
-    MinimizeButton.MouseButton1Click:Connect(function()
-        MainFrame.Visible = not MainFrame.Visible
-    end)
 
     return window
 end
