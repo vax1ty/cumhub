@@ -161,12 +161,12 @@ function UILibrary:CreateWindow(title)
         local UIPadding_TabContent = Instance.new("UIPadding")
 
         -- Properties for Tab Button
-        print("Creating Tab Button for tab
-
-:", tabName)
+        print("Creating Tab Button for tab:", tabName)
         TabButton.Name = tabName
         TabButton.Parent = TabHolder
-        TabButton.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
+        TabButton.BackgroundColor3 = Color3.from
+
+RGB(48, 48, 53)
         TabButton.Size = UDim2.new(0, 100, 0, 30)
         TabButton.Font = Enum.Font.FredokaOne
         TabButton.Text = tabName
@@ -360,13 +360,13 @@ function UILibrary:CreateWindow(title)
                     moveSlider(input)
                     Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)  -- Change color to blue after dragging
                 end
-
-
             end)
         end
 
         function tab:CreateToggle(text, initialState, callback)
             print("Creating Toggle with text:", text)
+
+
             local ToggleHolder = Instance.new("Frame")
             local ToggleBar = Instance.new("Frame")
             local Toggle = Instance.new("Frame")
@@ -541,13 +541,13 @@ function UILibrary:CreateWindow(title)
 
             local function updateDropdown()
                 local selectedText = ""
-               
-
- for item, _ in pairs(SelectedItems) do
+                for item, _ in pairs(SelectedItems) do
                     if selectedText == "" then
                         selectedText = item
                     else
-                        selectedText = selectedText .. ", " .. item
+                       
+
+ selectedText = selectedText .. ", " .. item
                     end
                 end
                 DropdownButton.Text = selectedText == "" and text or selectedText
