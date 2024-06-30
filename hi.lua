@@ -173,9 +173,9 @@ function UILibrary:CreateWindow(title)
         TabButton.Size = UDim2.new(0, 100, 0, 40)
         TabButton.Font = Enum.Font.FredokaOne
         TabButton.Text = tabName
-        TabButton.Text
+        TabButton.TextColor3 = Color3.fromRGB(255, 255, 255
 
-Color3 = Color3.fromRGB(255, 255, 255)
+)
         TabButton.TextSize = 24.000
         TabButton.AutomaticSize = Enum.AutomaticSize.X
 
@@ -373,10 +373,10 @@ Color3 = Color3.fromRGB(255, 255, 255)
             local UIStroke_ToggleHolder = Instance.new("UIStroke")
             local UICorner_ToggleBar = Instance.new("UICorner")
             local UIStroke_ToggleBar = Instance.new("UIStroke")
-            local UICorner_Toggle = Instance.new
+            local UICorner_Toggle = Instance.new("UICorner")
+            local UIStroke_Toggle = Instance.new("UI
 
-("UICorner")
-            local UIStroke_Toggle = Instance.new("UIStroke")
+Stroke")
 
             -- Properties for Toggle Holder
             ToggleHolder.Name = "ToggleHolder"
@@ -558,10 +558,10 @@ Color3 = Color3.fromRGB(255, 255, 255)
 
                 DropdownItem.Name = itemText
                 DropdownItem.Parent = DropdownList
-                DropdownItem.BackgroundColor3 = Color3.from
+                DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+                DropdownItem.Size =
 
-RGB(45, 45, 45)
-                DropdownItem.Size = UDim2.new(1, -10, 0, 30)
+ UDim2.new(1, -10, 0, 30)
                 DropdownItem.Font = Enum.Font.FredokaOne
                 DropdownItem.Text = itemText
                 DropdownItem.TextColor3 = Color3.fromRGB(255, 255, 255)
