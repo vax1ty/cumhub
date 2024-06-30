@@ -27,7 +27,7 @@ function UILibrary:CreateWindow(title)
 
     -- Properties for Window
     Confirmation.Name = "Confirmation"
-    Confirmation.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    Confirmation.Parent = game.CoreGui
 
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = Confirmation
@@ -183,9 +183,9 @@ function UILibrary:CreateWindow(title)
             TabContent.Visible = true
         end
 
-        -- Functions to Add UI Elements
+        -- Functions to Add UI
 
-
+ Elements
         function tab:CreateButton(text, callback)
             local ButtonHolder = Instance.new("Frame")
             local Button = Instance.new("TextButton")
@@ -193,37 +193,37 @@ function UILibrary:CreateWindow(title)
             local UIStroke_Button = Instance.new("UIStroke")
 
             -- Properties for Button Holder
-Holder.Name = "ButtonHolder"
-ButtonHolder.Parent = ContentHolder
-ButtonHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-ButtonHolder.Position = UDim2.new(0.01, 0, 0.23, 0)
-ButtonHolder.Size = UDim2.new(0.98, 0, 0, 70)
+            ButtonHolder.Name = "ButtonHolder"
+            ButtonHolder.Parent = TabContent
+            ButtonHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            ButtonHolder.Size = UDim2.new(0.98, 0, 0, 70)
+            ButtonHolder.Position = UDim2.new(0.01, 0, 0.01, 0)
 
-UICorner_12.CornerRadius = UDim.new(0, 10)
-UICorner_12.Parent = ButtonHolder
-UIStrokeButtonHolder.Parent = ButtonHolder
-UIStrokeButtonHolder.Color = Color3.fromRGB(0, 0, 0)
-UIStrokeButtonHolder.Thickness = 2
+            UICorner_Button.CornerRadius = UDim.new(0, 10)
+            UICorner_Button.Parent = ButtonHolder
 
-Button.Name = "Button"
-Button.Parent = ButtonHolder
-Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-Button.BackgroundTransparency = 1.000
-Button.BorderSizePixel = 0
-Button.Position = UDim2.new(0.0199999996, 0, 0.100000001, 0)
-Button.Size = UDim2.new(0.980000019, 0, 0, 70)
-Button.Font = Enum.Font.FredokaOne
-Button.Text = "Button"
-Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-Button.TextSize = 30.000
-Button.TextXAlignment = Enum.TextXAlignment.Left
+            UIStroke_Button.Parent = ButtonHolder
+            UIStroke_Button.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_Button.Thickness = 2
 
-UICorner_13.CornerRadius = UDim.new(0, 10)
-UICorner_13.Parent = Button
+            -- Properties for Button
+            Button.Name = "Button"
+            Button.Parent = ButtonHolder
+            Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            Button.BackgroundTransparency = 1.000
+            Button.Size = UDim2.new(0.98, 0, 1, 0)
+            Button.Font = Enum.Font.FredokaOne
+            Button.Text = text
+            Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+            Button.TextSize = 30.000
+            Button.TextXAlignment = Enum.TextXAlignment.Left
 
-UIStrokeButton.Parent = Button
-UIStrokeButton.Color = Color3.fromRGB(0, 0, 0)
-UIStrokeButton.Thickness = 2
+            UICorner_Button.CornerRadius = UDim.new(0, 10)
+            UICorner_Button.Parent = Button
+
+            UIStroke_Button.Parent = Button
+            UIStroke_Button.Color = Color3.fromRGB(0, 0, 0)
+            UIStroke_Button.Thickness = 2
 
             Button.MouseButton1Click:Connect(callback)
         end
@@ -372,9 +372,9 @@ UIStrokeButton.Thickness = 2
             UIStroke_ToggleBar.Color = Color3.fromRGB(0, 0, 0)
             UIStroke_ToggleBar.Thickness = 2
 
-            -- Properties for Toggle
+            -- Properties for
 
-
+ Toggle
             Toggle.Name = "Toggle"
             Toggle.Parent = ToggleBar
             Toggle.BackgroundColor3 = initialState and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
@@ -554,46 +554,45 @@ UIStrokeButton.Thickness = 2
                     if multiSelect then
                         if SelectedItems[DropdownItem.Text] then
                             SelectedItems[DropdownItem.Text] = nil
-                            DropdownItem.BackgroundColor3 = Color3.fromRGB(45
+                            DropdownItem.BackgroundColor3 = Color3.fromRGB(
 
-, 45, 45)
+45, 45, 45)
                         else
                             SelectedItems[DropdownItem.Text] = true
                             DropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
                         end
                     else
-                        for _, item in pairs(DropdownList:GetChildren()) do
-                            if item:IsA("TextButton") then
-                                item.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-                                SelectedItems[item.Text] = nil
-                            end
+                        for _, item in pairs(itemFrames) do
+                            item.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+                            SelectedItems[item.Text] = nil
                         end
                         SelectedItems[DropdownItem.Text] = true
                         DropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
                     end
                     updateDropdown()
                 end)
-
-                table.insert(itemFrames, DropdownItem)
+                return DropdownItem
             end
 
-            for _, item in pairs(items) do
-                createDropdownItem(item)
+            for _, item in ipairs(items) do
+                local dropdownItem = createDropdownItem(item)
+                table.insert(itemFrames, dropdownItem)
             end
 
-            SearchBar.Changed:Connect(function()
-                local searchText = SearchBar.Text:lower()
-                for _, item in pairs(itemFrames) do
-                    if string.find(item.Text:lower(), searchText) then
+            DropdownButton.MouseButton1Click:Connect(function()
+                DropdownList.Visible = not DropdownList.Visible
+                updateDropdown()
+            end)
+
+            SearchBar:GetPropertyChangedSignal("Text"):Connect(function()
+                local searchText = string.lower(SearchBar.Text)
+                for _, item in ipairs(itemFrames) do
+                    if string.find(string.lower(item.Name), searchText) then
                         item.Visible = true
                     else
                         item.Visible = false
                     end
                 end
-            end)
-
-            DropdownButton.MouseButton1Click:Connect(function()
-                DropdownList.Visible = not DropdownList.Visible
             end)
         end
 
