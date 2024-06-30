@@ -2,7 +2,7 @@ local UILibrary = {}
 
 -- Main UI Library Module
 function UILibrary:CreateWindow(title)
-    local window = {}
+    local windowInstance = {}
 
     -- Instances for Window
     local Confirmation = Instance.new("ScreenGui")
@@ -151,7 +151,7 @@ function UILibrary:CreateWindow(title)
     UIStrokeContentHolder.Thickness = 2
 
     -- Functions to Add Tabs and UI Elements
-    function window:AddTab(tabName)
+    function windowInstance:AddTab(tabName)
         local tab = {}
         local TabButton = Instance.new("TextButton")
         local TabContent = Instance.new("Frame")
@@ -161,7 +161,9 @@ function UILibrary:CreateWindow(title)
         local UIPadding_TabContent = Instance.new("UIPadding")
 
         -- Properties for Tab Button
-        print("Creating Tab Button for tab:", tabName)
+        print("Creating Tab Button for tab
+
+:", tabName)
         TabButton.Name = tabName
         TabButton.Parent = TabHolder
         TabButton.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
@@ -175,9 +177,7 @@ function UILibrary:CreateWindow(title)
         UICorner_Tab.CornerRadius = UDim.new(0, 10)
         UICorner_Tab.Parent = TabButton
 
-        UI
-
-Stroke_Tab.Parent = TabButton
+        UIStroke_Tab.Parent = TabButton
         UIStroke_Tab.Color = Color3.fromRGB(0, 0, 0)
         UIStroke_Tab.Thickness = 2
 
@@ -360,6 +360,8 @@ Stroke_Tab.Parent = TabButton
                     moveSlider(input)
                     Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)  -- Change color to blue after dragging
                 end
+
+
             end)
         end
 
@@ -375,8 +377,6 @@ Stroke_Tab.Parent = TabButton
             local UIStroke_ToggleBar = Instance.new("UIStroke")
             local UICorner_Toggle = Instance.new("UICorner")
             local UIStroke_Toggle = Instance.new("UIStroke")
-
-
 
             -- Properties for Toggle Holder
             ToggleHolder.Name = "ToggleHolder"
@@ -541,7 +541,9 @@ Stroke_Tab.Parent = TabButton
 
             local function updateDropdown()
                 local selectedText = ""
-                for item, _ in pairs(SelectedItems) do
+               
+
+ for item, _ in pairs(SelectedItems) do
                     if selectedText == "" then
                         selectedText = item
                     else
@@ -559,9 +561,7 @@ Stroke_Tab.Parent = TabButton
 
                 DropdownItem.Name = itemText
                 DropdownItem.Parent = DropdownList
-                DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45,
-
- 45)
+                DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
                 DropdownItem.Size = UDim2.new(1, -10, 0, 30)
                 DropdownItem.Font = Enum.Font.FredokaOne
                 DropdownItem.Text = itemText
@@ -648,7 +648,7 @@ Stroke_Tab.Parent = TabButton
         MainFrame.Visible = not MainFrame.Visible
     end)
 
-    return window
+    return windowInstance
 end
 
 return UILibrary
