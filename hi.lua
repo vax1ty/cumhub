@@ -247,6 +247,7 @@ function UILibrary:CreateWindow(title)
 
         function tab:CreateSlider(text, min, max, callback)
             local SliderHolder = Instance.new("Frame")
+            local SliderLabel = Instance.new("TextLabel")
             local SliderBar = Instance.new("Frame")
             local Slider = Instance.new("Frame")
             local SliderValue = Instance.new("TextLabel")
@@ -261,7 +262,7 @@ function UILibrary:CreateWindow(title)
             SliderHolder.Name = "SliderHolder"
             SliderHolder.Parent = TabContent
             SliderHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            SliderHolder.Size = UDim2.new(1, 0, 0, 60)
+            SliderHolder.Size = UDim2.new(1, 0, 0, 70)  -- Adjusted height for better visibility
 
             UICorner_SliderHolder.CornerRadius = UDim.new(0, 10)
             UICorner_SliderHolder.Parent = SliderHolder
@@ -269,6 +270,17 @@ function UILibrary:CreateWindow(title)
             UIStroke_SliderHolder.Parent = SliderHolder
             UIStroke_SliderHolder.Color = Color3.fromRGB(0, 0, 0)
             UIStroke_SliderHolder.Thickness = 2
+
+            -- Properties for Slider Label
+            SliderLabel.Name = "SliderLabel"
+            SliderLabel.Parent = SliderHolder
+            SliderLabel.BackgroundTransparency = 1.000
+            SliderLabel.Position = UDim2.new(0.05, 0, 0, 0)
+            SliderLabel.Size = UDim2.new(0.9, 0, 0.4, 0)  -- Adjusted height for better visibility
+            SliderLabel.Font = Enum.Font.GothamBold
+            SliderLabel.Text = text
+            SliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            SliderLabel.TextSize = 20.000
 
             -- Properties for Slider Bar
             SliderBar.Name = "SliderBar"
