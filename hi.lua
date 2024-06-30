@@ -173,10 +173,10 @@ function UILibrary:CreateWindow(title)
         UICorner_Tab.Parent = TabButton
 
         UIStroke_Tab.Parent = TabButton
-        UIStroke_Tab.Color = Color3.fromRGB(0, 0, 0)
-        UIStroke_Tab.
+        UIStroke_Tab.Color = Color3.fromRGB(0, 0, 
 
-Thickness = 2
+0)
+        UIStroke_Tab.Thickness = 2
 
         -- Properties for Tab Content
         TabContent.Name = tabName .. "_Content"
@@ -222,7 +222,7 @@ Thickness = 2
             ButtonHolder.Name = "ButtonHolder"
             ButtonHolder.Parent = TabContent
             ButtonHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            ButtonHolder.Size = UDim2.new(1, 0, 0, 70)
+            ButtonHolder.Size = UDim2.new(1, 0, 0, 40)
 
             UICorner_Button.CornerRadius = UDim.new(0, 10)
             UICorner_Button.Parent = ButtonHolder
@@ -240,7 +240,7 @@ Thickness = 2
             Button.Font = Enum.Font.FredokaOne
             Button.Text = text
             Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-            Button.TextSize = 30.000
+            Button.TextSize = 24.000
             Button.TextXAlignment = Enum.TextXAlignment.Left
 
             UICorner_Button.CornerRadius = UDim.new(0, 10)
@@ -269,7 +269,7 @@ Thickness = 2
             SliderHolder.Name = "SliderHolder"
             SliderHolder.Parent = TabContent
             SliderHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            SliderHolder.Size = UDim2.new(1, 0, 0, 70)
+            SliderHolder.Size = UDim2.new(1, 0, 0, 40)
 
             UICorner_SliderHolder.CornerRadius = UDim.new(0, 10)
             UICorner_SliderHolder.Parent = SliderHolder
@@ -372,11 +372,11 @@ Thickness = 2
             ToggleHolder.Name = "ToggleHolder"
             ToggleHolder.Parent = TabContent
             ToggleHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            ToggleHolder.Size = UDim2.new(1, 0, 0, 70)
+            ToggleHolder.Size = UDim2.new(1, 0, 0, 40)
 
-            UICorner_ToggleHolder.CornerRadius = UDim.new(0, 10
+            UICorner_ToggleHolder.CornerRadius = U
 
-)
+Dim.new(0, 10)
             UICorner_ToggleHolder.Parent = ToggleHolder
 
             UIStroke_ToggleHolder.Parent = ToggleHolder
@@ -421,7 +421,7 @@ Thickness = 2
             ToggleLabel.Font = Enum.Font.FredokaOne
             ToggleLabel.Text = text
             ToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-            ToggleLabel.TextSize = 30.000
+            ToggleLabel.TextSize = 24.000
             ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
             -- Toggle Functionality
@@ -461,7 +461,7 @@ Thickness = 2
             DropdownHolder.Name = "DropdownHolder"
             DropdownHolder.Parent = TabContent
             DropdownHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            DropdownHolder.Size = UDim2.new(1, 0, 0, 70)
+            DropdownHolder.Size = UDim2.new(1, 0, 0, 40)
 
             UICorner_DropdownHolder.CornerRadius = UDim.new(0, 10)
             UICorner_DropdownHolder.Parent = DropdownHolder
@@ -477,11 +477,11 @@ Thickness = 2
             DropdownButton.BackgroundTransparency = 1.000
             DropdownButton.BorderSizePixel = 0
             DropdownButton.Position = UDim2.new(0.0199999996, 0, 0.100000001, 0)
-            DropdownButton.Size = UDim2.new(0.980000019, 0, 0, 70)
+            DropdownButton.Size = UDim2.new(0.980000019, 0, 0, 40)
             DropdownButton.Font = Enum.Font.FredokaOne
             DropdownButton.Text = text
             DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-            DropdownButton.TextSize = 30.000
+            DropdownButton.TextSize = 24.000
             DropdownButton.TextXAlignment = Enum.TextXAlignment.Left
 
             UICorner_DropdownButton.CornerRadius = UDim.new(0, 10)
@@ -558,9 +558,9 @@ Thickness = 2
                 DropdownItem.TextSize = 24.000
                 DropdownItem.TextXAlignment = Enum.TextXAlignment.Left
 
-                UICorner_Drop
 
-downItem.CornerRadius = UDim.new(0, 10)
+
+                UICorner_DropdownItem.CornerRadius = UDim.new(0, 10)
                 UICorner_DropdownItem.Parent = DropdownItem
 
                 UIStroke_DropdownItem.Parent = DropdownItem
