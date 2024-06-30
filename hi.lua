@@ -165,9 +165,7 @@ function UILibrary:CreateWindow(title)
         TabContent.Name = tabName .. "_Content"
         TabContent.Parent = ContentHolder
         TabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        TabContent.Size = UDim2.new(1, 0, 1
-
-, 0)
+        TabContent.Size = UDim2.new(1, 0, 1, 0)
         TabContent.Visible = false
 
         -- Show/Hide Tabs
@@ -186,6 +184,8 @@ function UILibrary:CreateWindow(title)
         end
 
         -- Functions to Add UI Elements
+
+
         function tab:CreateButton(text, callback)
             local ButtonHolder = Instance.new("Frame")
             local Button = Instance.new("TextButton")
@@ -215,15 +215,8 @@ function UILibrary:CreateWindow(title)
             Button.Font = Enum.Font.FredokaOne
             Button.Text = text
             Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-            Button.TextSize = 30.000
+            Button.TextSize = 24.000
             Button.TextXAlignment = Enum.TextXAlignment.Left
-
-            UICorner_Button.CornerRadius = UDim.new(0, 10)
-            UICorner_Button.Parent = Button
-
-            UIStroke_Button.Parent = Button
-            UIStroke_Button.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_Button.Thickness = 2
 
             Button.MouseButton1Click:Connect(callback)
         end
@@ -362,9 +355,7 @@ function UILibrary:CreateWindow(title)
             ToggleBar.Name = "ToggleBar"
             ToggleBar.Parent = ToggleHolder
             ToggleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-            ToggleBar.Position = UDim2.new(0.75, 0, 
-
-0.5, -15)
+            ToggleBar.Position = UDim2.new(0.75, 0, 0.5, -15)
             ToggleBar.Size = UDim2.new(0.2, 0, 0.5, 0)
 
             UICorner_ToggleBar.CornerRadius = UDim.new(0, 99)
@@ -378,7 +369,9 @@ function UILibrary:CreateWindow(title)
             Toggle.Name = "Toggle"
             Toggle.Parent = ToggleBar
             Toggle.BackgroundColor3 = initialState and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
-            Toggle.Position = initialState and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5)
+            Toggle.Position = initialState and UDim2.new(1
+
+, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5)
             Toggle.Size = UDim2.new(0, 37, 0, 37)
 
             UICorner_Toggle.CornerRadius = UDim.new(1, 0)
@@ -398,7 +391,7 @@ function UILibrary:CreateWindow(title)
             ToggleLabel.Font = Enum.Font.FredokaOne
             ToggleLabel.Text = text
             ToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-            ToggleLabel.TextSize = 30.000
+            ToggleLabel.TextSize = 24.000
             ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
             -- Toggle Functionality
@@ -544,9 +537,7 @@ function UILibrary:CreateWindow(title)
                 UIStroke_DropdownItem.Color = Color3.fromRGB(0, 0, 0)
                 UIStroke_DropdownItem.Thickness = 2
 
-                DropdownItem
-
-.MouseEnter:Connect(function()
+                DropdownItem.MouseEnter:Connect(function()
                     DropdownItem.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
                 end)
                 DropdownItem.MouseLeave:Connect(function()
@@ -563,7 +554,9 @@ function UILibrary:CreateWindow(title)
                         end
                     else
                         for _, item in pairs(DropdownList:GetChildren()) do
-                            if item:IsA("TextButton") then
+                            if
+
+ item:IsA("TextButton") then
                                 item.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
                                 SelectedItems[item.Text] = nil
                             end
