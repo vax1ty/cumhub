@@ -26,9 +26,11 @@ function UILibrary:CreateWindow(title)
     local UIListLayout = Instance.new("UIListLayout")
 
     -- Properties for Window
+    print("Setting properties for Confirmation")
     Confirmation.Name = "Confirmation"
     Confirmation.Parent = game.CoreGui
 
+    print("Setting properties for MainFrame")
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = Confirmation
     MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -138,6 +140,7 @@ function UILibrary:CreateWindow(title)
     -- Functions to Add Tabs and UI Elements
     function window:AddTab(tabName)
         local tab = {}
+        print("Adding Tab: ", tabName)
         local TabButton = Instance.new("TextButton")
         local TabContent = Instance.new("Frame")
         local UICorner_Tab = Instance.new("UICorner")
@@ -170,6 +173,7 @@ function UILibrary:CreateWindow(title)
 
         -- Show/Hide Tabs
         TabButton.MouseButton1Click:Connect(function()
+            print("TabButton Clicked: ", tabName)
             for _, child in ipairs(ContentHolder:GetChildren()) do
                 if child:IsA("Frame") then
                     child.Visible = false
@@ -179,13 +183,13 @@ function UILibrary:CreateWindow(title)
         end)
 
         -- Default to showing the first tab
-        if #ContentHolder:GetChildren() == 1 then
+       
+
+ if #ContentHolder:GetChildren() == 1 then
             TabContent.Visible = true
         end
 
-        -- Functions to Add UI
-
- Elements
+        -- Functions to Add UI Elements
         function tab:CreateButton(text, callback)
             local ButtonHolder = Instance.new("Frame")
             local Button = Instance.new("TextButton")
@@ -225,6 +229,7 @@ function UILibrary:CreateWindow(title)
             UIStroke_Button.Color = Color3.fromRGB(0, 0, 0)
             UIStroke_Button.Thickness = 2
 
+            print("Connecting Button Callback")
             Button.MouseButton1Click:Connect(callback)
         end
 
@@ -305,6 +310,7 @@ function UILibrary:CreateWindow(title)
                 callback(sliderValue)
             end
 
+            print("Connecting Slider Input Began")
             Slider.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     moveSlider(input)
@@ -368,13 +374,13 @@ function UILibrary:CreateWindow(title)
             UICorner_ToggleBar.CornerRadius = UDim.new(0, 99)
             UICorner_ToggleBar.Parent = ToggleBar
 
-            UIStroke_ToggleBar.Parent = ToggleBar
+            UIStroke_T
+
+oggleBar.Parent = ToggleBar
             UIStroke_ToggleBar.Color = Color3.fromRGB(0, 0, 0)
             UIStroke_ToggleBar.Thickness = 2
 
-            -- Properties for
-
- Toggle
+            -- Properties for Toggle
             Toggle.Name = "Toggle"
             Toggle.Parent = ToggleBar
             Toggle.BackgroundColor3 = initialState and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
@@ -412,6 +418,7 @@ function UILibrary:CreateWindow(title)
                 callback(state)
             end
 
+            print("Connecting Toggle Input Began")
             ToggleBar.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     setToggleState(not toggleState)
@@ -549,14 +556,14 @@ function UILibrary:CreateWindow(title)
                 end)
                 DropdownItem.MouseLeave:Connect(function()
                     DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-                end)
+               
+
+ end)
                 DropdownItem.MouseButton1Click:Connect(function()
                     if multiSelect then
                         if SelectedItems[DropdownItem.Text] then
                             SelectedItems[DropdownItem.Text] = nil
-                            DropdownItem.BackgroundColor3 = Color3.fromRGB(
-
-45, 45, 45)
+                            DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
                         else
                             SelectedItems[DropdownItem.Text] = true
                             DropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
@@ -579,6 +586,7 @@ function UILibrary:CreateWindow(title)
                 table.insert(itemFrames, dropdownItem)
             end
 
+            print("Connecting Dropdown Button MouseButton1Click")
             DropdownButton.MouseButton1Click:Connect(function()
                 DropdownList.Visible = not DropdownList.Visible
                 updateDropdown()
