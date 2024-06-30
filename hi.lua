@@ -172,10 +172,10 @@ function UILibrary:CreateWindow(title)
         TabButton.TextSize = 24.000
         TabButton.AutomaticSize = Enum.AutomaticSize.X
 
-        UICorner_Tab.CornerRadius = UDim.new(0, 10)
-        UICorner_Tab
+        UICorner_Tab.CornerRadius = U
 
-.Parent = TabButton
+Dim.new(0, 10)
+        UICorner_Tab.Parent = TabButton
 
         UIStroke_Tab.Parent = TabButton
         UIStroke_Tab.Color = Color3.fromRGB(0, 0, 0)
@@ -279,7 +279,7 @@ function UILibrary:CreateWindow(title)
             SliderHolder.Name = "SliderHolder"
             SliderHolder.Parent = TabContent
             SliderHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            SliderHolder.Size = UDim2.new(1, 0, 0, 40)
+            SliderHolder.Size = UDim2.new(1, 0, 0, 60)  -- Adjust height to prevent overlapping
 
             UICorner_SliderHolder.CornerRadius = UDim.new(0, 10)
             UICorner_SliderHolder.Parent = SliderHolder
@@ -292,8 +292,8 @@ function UILibrary:CreateWindow(title)
             SliderBar.Name = "SliderBar"
             SliderBar.Parent = SliderHolder
             SliderBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-            SliderBar.Position = UDim2.new(0.02, 0, 0.5, -5)
-            SliderBar.Size = UDim2.new(0.96, 0, 0.3, 0)
+            SliderBar.Position = UDim2.new(0.1, 0, 0.6, 0)
+            SliderBar.Size = UDim2.new(0.8, 0, 0.2, 0)  -- Adjust size for better visibility
 
             UICorner_SliderBar.CornerRadius = UDim.new(0, 99)
             UICorner_SliderBar.Parent = SliderBar
@@ -306,8 +306,8 @@ function UILibrary:CreateWindow(title)
             Slider.Name = "Slider"
             Slider.Parent = SliderBar
             Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
-            Slider.Position = UDim2.new(0, 0, 0.5, -20)
-            Slider.Size = UDim2.new(0, 44, 0, 40)
+            Slider.Position = UDim2.new(0, 0, 0.5, -10)
+            Slider.Size = UDim2.new(0, 20, 0, 20)  -- Adjust size for better visibility
 
             UICorner_Slider.CornerRadius = UDim.new(1, 0)
             UICorner_Slider.Parent = Slider
@@ -332,8 +332,8 @@ function UILibrary:CreateWindow(title)
 
             local function moveSlider(input)
                 local posX = math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1)
-                local offset = 22  -- Half the width of the slider to ensure it doesn't go off the frame
-                Slider.Position = UDim2.new(posX, -offset, 0.5, -20)
+                local offset = Slider.AbsoluteSize.X / 2
+                Slider.Position = UDim2.new(posX, -offset, 0.5, -10)
                 local sliderValue = math.floor(min + (max - min) * posX)
                 SliderValue.Text = tostring(sliderValue)
                 callback(sliderValue)
@@ -342,7 +342,7 @@ function UILibrary:CreateWindow(title)
             Slider.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     moveSlider(input)
-                    Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)  -- Change color to blue after dragging
+                    Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
                     local moveConnection, releaseConnection
                     moveConnection = UserInputService.InputChanged:Connect(function(input)
                         if input.UserInputType == Enum.UserInputType.MouseMovement then
@@ -361,7 +361,7 @@ function UILibrary:CreateWindow(title)
             SliderBar.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     moveSlider(input)
-                    Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)  -- Change color to blue after dragging
+                    Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
                 end
             end)
         end
@@ -375,10 +375,10 @@ function UILibrary:CreateWindow(title)
             local UICorner_ToggleHolder = Instance.new("UICorner")
             local UIStroke_ToggleHolder = Instance.new("UIStroke")
             local UICorner_ToggleBar = Instance.new("UICorner")
-            local UIStroke_ToggleBar = Instance.new("UIStroke")
-            local UICorner_T
+            local UIStroke_ToggleBar = Instance.new("UI
 
-oggle = Instance.new("UICorner")
+Stroke")
+            local UICorner_Toggle = Instance.new("UICorner")
             local UIStroke_Toggle = Instance.new("UIStroke")
 
             -- Properties for Toggle Holder
@@ -560,10 +560,10 @@ oggle = Instance.new("UICorner")
                 local UICorner_DropdownItem = Instance.new("UICorner")
                 local UIStroke_DropdownItem = Instance.new("UIStroke")
 
-                DropdownItem.Name = itemText
-                DropdownItem.Parent
+                DropdownItem.Name
 
- = DropdownList
+ = itemText
+                DropdownItem.Parent = DropdownList
                 DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
                 DropdownItem.Size = UDim2.new(1, -10, 0, 30)
                 DropdownItem.Font = Enum.Font.FredokaOne
