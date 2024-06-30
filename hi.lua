@@ -164,10 +164,10 @@ function UILibrary:CreateWindow(title)
         -- Properties for Tab Content
         TabContent.Name = tabName .. "_Content"
         TabContent.Parent = ContentHolder
-        TabContent.BackgroundColor3 = Color3.fromRGB(30,
+        TabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        TabContent.Size = UDim2.new(1, 0, 1
 
- 30, 30)
-        TabContent.Size = UDim2.new(1, 0, 1, 0)
+, 0)
         TabContent.Visible = false
 
         -- Show/Hide Tabs
@@ -361,10 +361,10 @@ function UILibrary:CreateWindow(title)
             -- Properties for Toggle Bar
             ToggleBar.Name = "ToggleBar"
             ToggleBar.Parent = ToggleHolder
-            ToggleBar.BackgroundColor3 = Color3.fromRGB(30, 
+            ToggleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            ToggleBar.Position = UDim2.new(0.75, 0, 
 
-30, 30)
-            ToggleBar.Position = UDim2.new(0.75, 0, 0.5, -15)
+0.5, -15)
             ToggleBar.Size = UDim2.new(0.2, 0, 0.5, 0)
 
             UICorner_ToggleBar.CornerRadius = UDim.new(0, 99)
@@ -541,12 +541,12 @@ function UILibrary:CreateWindow(title)
                 UICorner_DropdownItem.Parent = DropdownItem
 
                 UIStroke_DropdownItem.Parent = DropdownItem
-                UIStroke_DropdownItem.Color = Color3.fromRGB(0
-
-, 0, 0)
+                UIStroke_DropdownItem.Color = Color3.fromRGB(0, 0, 0)
                 UIStroke_DropdownItem.Thickness = 2
 
-                DropdownItem.MouseEnter:Connect(function()
+                DropdownItem
+
+.MouseEnter:Connect(function()
                     DropdownItem.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
                 end)
                 DropdownItem.MouseLeave:Connect(function()
