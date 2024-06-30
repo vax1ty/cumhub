@@ -23,8 +23,10 @@ function UILibrary:CreateWindow(title)
     local ContentHolder = Instance.new("Frame")
     local UICorner_5 = Instance.new("UICorner")
     local UIStrokeContentHolder = Instance.new("UIStroke")
-    local UIListLayout = Instance.new("UIListLayout")
-    local UIPadding = Instance.new("UIPadding")
+    local UIListLayoutTabs = Instance.new("UIListLayout")
+    local UIPaddingTabs = Instance.new("UIPadding")
+    local UIListLayoutContent = Instance.new("UIListLayout")
+    local UIPaddingContent = Instance.new("UIPadding")
 
     -- Properties for Window
     Confirmation.Name = "Confirmation"
@@ -117,10 +119,16 @@ function UILibrary:CreateWindow(title)
     TabHolder.ScrollBarThickness = 0
     TabHolder.AutomaticCanvasSize = Enum.AutomaticSize.X
 
-    UIListLayout.Parent = TabHolder
-    UIListLayout.FillDirection = Enum.FillDirection.Horizontal
-    UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
-    UIListLayout.Padding = UDim.new(0, 5)
+    UIListLayoutTabs.Parent = TabHolder
+    UIListLayoutTabs.FillDirection = Enum.FillDirection.Horizontal
+    UIListLayoutTabs.HorizontalAlignment = Enum.HorizontalAlignment.Left
+    UIListLayoutTabs.Padding = UDim.new(0, 5)
+
+    UIPaddingTabs.Parent = TabHolder
+    UIPaddingTabs.PaddingTop = UDim.new(0, 10)
+    UIPaddingTabs.PaddingBottom = UDim.new(0, 10)
+    UIPaddingTabs.PaddingLeft = UDim.new(0, 10)
+    UIPaddingTabs.PaddingRight = UDim.new(0, 10)
 
     ContentHolder.Name = "ContentHolder"
     ContentHolder.Parent = MainFrame
@@ -137,16 +145,16 @@ function UILibrary:CreateWindow(title)
     UIStrokeContentHolder.Thickness = 2
 
     -- Adding UIPadding for spacing
-    UIPadding.Parent = ContentHolder
-    UIPadding.PaddingTop = UDim.new(0, 10)
-    UIPadding.PaddingBottom = UDim.new(0, 10)
-    UIPadding.PaddingLeft = UDim.new(0, 10)
-    UIPadding.PaddingRight = UDim.new(0, 10)
+    UIPaddingContent.Parent = ContentHolder
+    UIPaddingContent.PaddingTop = UDim.new(0, 10)
+    UIPaddingContent.PaddingBottom = UDim.new(0, 10)
+    UIPaddingContent.PaddingLeft = UDim.new(0, 10)
+    UIPaddingContent.PaddingRight = UDim.new(0, 10)
 
     -- Adding UIListLayout for vertical alignment and spacing
-    UIListLayout.Parent = ContentHolder
-    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayout.Padding = UDim.new(0, 5)
+    UIListLayoutContent.Parent = ContentHolder
+    UIListLayoutContent.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayoutContent.Padding = UDim.new(0, 5)
 
     -- Functions to Add Tabs and UI Elements
     function window:AddTab(tabName)
@@ -162,10 +170,12 @@ function UILibrary:CreateWindow(title)
         TabButton.Name = tabName
         TabButton.Parent = TabHolder
         TabButton.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
-        TabButton.Size = UDim2.new(0, 100, 0, 30)
+        TabButton.Size = UDim2.new(0, 100, 0, 40)
         TabButton.Font = Enum.Font.FredokaOne
         TabButton.Text = tabName
-        TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        TabButton.Text
+
+Color3 = Color3.fromRGB(255, 255, 255)
         TabButton.TextSize = 24.000
         TabButton.AutomaticSize = Enum.AutomaticSize.X
 
@@ -173,9 +183,7 @@ function UILibrary:CreateWindow(title)
         UICorner_Tab.Parent = TabButton
 
         UIStroke_Tab.Parent = TabButton
-        UIStroke_Tab.Color = Color3.fromRGB(0, 0, 
-
-0)
+        UIStroke_Tab.Color = Color3.fromRGB(0, 0, 0)
         UIStroke_Tab.Thickness = 2
 
         -- Properties for Tab Content
@@ -365,7 +373,9 @@ function UILibrary:CreateWindow(title)
             local UIStroke_ToggleHolder = Instance.new("UIStroke")
             local UICorner_ToggleBar = Instance.new("UICorner")
             local UIStroke_ToggleBar = Instance.new("UIStroke")
-            local UICorner_Toggle = Instance.new("UICorner")
+            local UICorner_Toggle = Instance.new
+
+("UICorner")
             local UIStroke_Toggle = Instance.new("UIStroke")
 
             -- Properties for Toggle Holder
@@ -374,9 +384,7 @@ function UILibrary:CreateWindow(title)
             ToggleHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
             ToggleHolder.Size = UDim2.new(1, 0, 0, 40)
 
-            UICorner_ToggleHolder.CornerRadius = U
-
-Dim.new(0, 10)
+            UICorner_ToggleHolder.CornerRadius = UDim.new(0, 10)
             UICorner_ToggleHolder.Parent = ToggleHolder
 
             UIStroke_ToggleHolder.Parent = ToggleHolder
@@ -550,15 +558,15 @@ Dim.new(0, 10)
 
                 DropdownItem.Name = itemText
                 DropdownItem.Parent = DropdownList
-                DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+                DropdownItem.BackgroundColor3 = Color3.from
+
+RGB(45, 45, 45)
                 DropdownItem.Size = UDim2.new(1, -10, 0, 30)
                 DropdownItem.Font = Enum.Font.FredokaOne
                 DropdownItem.Text = itemText
                 DropdownItem.TextColor3 = Color3.fromRGB(255, 255, 255)
                 DropdownItem.TextSize = 24.000
                 DropdownItem.TextXAlignment = Enum.TextXAlignment.Left
-
-
 
                 UICorner_DropdownItem.CornerRadius = UDim.new(0, 10)
                 UICorner_DropdownItem.Parent = DropdownItem
@@ -583,15 +591,18 @@ Dim.new(0, 10)
                             DropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
                         end
                     else
-                        for _, item in pairs(itemFrames) do
-                            item.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-                            SelectedItems[item.Text] = nil
+                        for _, item in pairs(DropdownList:GetChildren()) do
+                            if item:IsA("TextButton") then
+                                item.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+                                SelectedItems[item.Text] = nil
+                            end
                         end
                         SelectedItems[DropdownItem.Text] = true
                         DropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
                     end
                     updateDropdown()
                 end)
+
                 return DropdownItem
             end
 
