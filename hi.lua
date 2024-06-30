@@ -164,9 +164,7 @@ function UILibrary:CreateWindow(title)
         print("Creating Tab Button for tab:", tabName)
         TabButton.Name = tabName
         TabButton.Parent = TabHolder
-        TabButton.BackgroundColor3 = Color3.from
-
-RGB(48, 48, 53)
+        TabButton.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
         TabButton.Size = UDim2.new(0, 100, 0, 30)
         TabButton.Font = Enum.Font.FredokaOne
         TabButton.Text = tabName
@@ -175,7 +173,9 @@ RGB(48, 48, 53)
         TabButton.AutomaticSize = Enum.AutomaticSize.X
 
         UICorner_Tab.CornerRadius = UDim.new(0, 10)
-        UICorner_Tab.Parent = TabButton
+        UICorner_Tab
+
+.Parent = TabButton
 
         UIStroke_Tab.Parent = TabButton
         UIStroke_Tab.Color = Color3.fromRGB(0, 0, 0)
@@ -256,7 +256,10 @@ RGB(48, 48, 53)
             UIStroke_Button.Color = Color3.fromRGB(0, 0, 0)
             UIStroke_Button.Thickness = 2
 
-            Button.MouseButton1Click:Connect(callback)
+            Button.MouseButton1Click:Connect(function()
+                print("Button clicked:", text)
+                callback()
+            end)
         end
 
         function tab:CreateSlider(text, min, max, callback)
@@ -365,8 +368,6 @@ RGB(48, 48, 53)
 
         function tab:CreateToggle(text, initialState, callback)
             print("Creating Toggle with text:", text)
-
-
             local ToggleHolder = Instance.new("Frame")
             local ToggleBar = Instance.new("Frame")
             local Toggle = Instance.new("Frame")
@@ -375,7 +376,9 @@ RGB(48, 48, 53)
             local UIStroke_ToggleHolder = Instance.new("UIStroke")
             local UICorner_ToggleBar = Instance.new("UICorner")
             local UIStroke_ToggleBar = Instance.new("UIStroke")
-            local UICorner_Toggle = Instance.new("UICorner")
+            local UICorner_T
+
+oggle = Instance.new("UICorner")
             local UIStroke_Toggle = Instance.new("UIStroke")
 
             -- Properties for Toggle Holder
@@ -545,9 +548,7 @@ RGB(48, 48, 53)
                     if selectedText == "" then
                         selectedText = item
                     else
-                       
-
- selectedText = selectedText .. ", " .. item
+                        selectedText = selectedText .. ", " .. item
                     end
                 end
                 DropdownButton.Text = selectedText == "" and text or selectedText
@@ -560,7 +561,9 @@ RGB(48, 48, 53)
                 local UIStroke_DropdownItem = Instance.new("UIStroke")
 
                 DropdownItem.Name = itemText
-                DropdownItem.Parent = DropdownList
+                DropdownItem.Parent
+
+ = DropdownList
                 DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
                 DropdownItem.Size = UDim2.new(1, -10, 0, 30)
                 DropdownItem.Font = Enum.Font.FredokaOne
@@ -641,10 +644,12 @@ RGB(48, 48, 53)
 
     -- Close and Minimize Functionality
     CloseButton.MouseButton1Click:Connect(function()
+        print("Close button clicked")
         Confirmation:Destroy()
     end)
 
     MinimizeButton.MouseButton1Click:Connect(function()
+        print("Minimize button clicked")
         MainFrame.Visible = not MainFrame.Visible
     end)
 
