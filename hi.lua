@@ -184,7 +184,9 @@ function UILibrary:CreateWindow(title)
         end
 
         -- Functions to Add UI Elements
-        function tab:CreateButton(text, callback)
+        function tab:CreateButton
+
+(text, callback)
             local ButtonHolder = Instance.new("Frame")
             local Button = Instance.new("TextButton")
             local UICorner_Button = Instance.new("UICorner")
@@ -195,6 +197,7 @@ function UILibrary:CreateWindow(title)
             ButtonHolder.Parent = TabContent
             ButtonHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
             ButtonHolder.Size = UDim2.new(0.98, 0, 0, 70)
+            ButtonHolder.Position = UDim2.new(0.01, 0, 0.01, 0)
 
             UICorner_Button.CornerRadius = UDim.new(0, 10)
             UICorner_Button.Parent = ButtonHolder
@@ -242,6 +245,7 @@ function UILibrary:CreateWindow(title)
             SliderHolder.Parent = TabContent
             SliderHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
             SliderHolder.Size = UDim2.new(0.98, 0, 0, 70)
+            SliderHolder.Position = UDim2.new(0.01, 0, 0.12, 0)
 
             UICorner_SliderHolder.CornerRadius = UDim.new(0, 10)
             UICorner_SliderHolder.Parent = SliderHolder
@@ -345,6 +349,7 @@ function UILibrary:CreateWindow(title)
             ToggleHolder.Parent = TabContent
             ToggleHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
             ToggleHolder.Size = UDim2.new(0.98, 0, 0, 70)
+            ToggleHolder.Position = UDim2.new(0.01, 0, 0.23, 0)
 
             UICorner_ToggleHolder.CornerRadius = UDim.new(0, 10)
             UICorner_ToggleHolder.Parent = ToggleHolder
@@ -368,7 +373,9 @@ function UILibrary:CreateWindow(title)
             UIStroke_ToggleBar.Thickness = 2
 
             -- Properties for Toggle
-            Toggle.Name = "Toggle"
+            Toggle.Name = "Toggle
+
+"
             Toggle.Parent = ToggleBar
             Toggle.BackgroundColor3 = initialState and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
             Toggle.Position = initialState and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5)
@@ -433,6 +440,7 @@ function UILibrary:CreateWindow(title)
             DropdownHolder.Parent = TabContent
             DropdownHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
             DropdownHolder.Size = UDim2.new(0.98, 0, 0, 70)
+            DropdownHolder.Position = UDim2.new(0.01, 0, 0.34, 0)
 
             UICorner_DropdownHolder.CornerRadius = UDim.new(0, 10)
             UICorner_DropdownHolder.Parent = DropdownHolder
@@ -547,6 +555,8 @@ function UILibrary:CreateWindow(title)
                         if SelectedItems[DropdownItem.Text] then
                             SelectedItems[DropdownItem.Text] = nil
                             DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+
+
                         else
                             SelectedItems[DropdownItem.Text] = true
                             DropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
