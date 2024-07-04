@@ -173,7 +173,9 @@ function UILibrary:CreateWindow(title)
         -- Properties for Tab Content
         TabContent.Name = tabName .. "_Content"
         TabContent.Parent = ContentHolder
-        TabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        TabContent.BackgroundColor3 = Color3.fromRGB(30
+
+, 30, 30)
         TabContent.Size = UDim2.new(1, 0, 1, 0)
         TabContent.Visible = false
 
@@ -214,7 +216,7 @@ function UILibrary:CreateWindow(title)
             ButtonHolder.Name = "ButtonHolder"
             ButtonHolder.Parent = TabContent
             ButtonHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            ButtonHolder.Size = UDim2.new(1, 0, 0, 50)  -- Adjusted height for better visibility
+            ButtonHolder.Size = UDim2.new(1, 0, 0, 60)  -- Adjusted height for better visibility
 
             UICorner_Button.CornerRadius = UDim.new(0, 10)
             UICorner_Button.Parent = ButtonHolder
@@ -234,13 +236,6 @@ function UILibrary:CreateWindow(title)
             Button.TextColor3 = Color3.fromRGB(255, 255, 255)
             Button.TextSize = 24.000
             Button.TextXAlignment = Enum.TextXAlignment.Left
-
-            UICorner_Button.CornerRadius = UDim.new(0, 10)
-            UICorner_Button.Parent = Button
-
-            UIStroke_Button.Parent = Button
-            UIStroke_Button.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_Button.Thickness = 2
 
             Button.MouseButton1Click:Connect(callback)
         end
@@ -262,7 +257,7 @@ function UILibrary:CreateWindow(title)
             SliderHolder.Name = "SliderHolder"
             SliderHolder.Parent = TabContent
             SliderHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            SliderHolder.Size = UDim2.new(1, 0, 0, 70)  -- Adjusted height for better visibility
+            SliderHolder.Size = UDim2.new(1, 0, 0, 80)  -- Adjusted height for better visibility
 
             UICorner_SliderHolder.CornerRadius = UDim.new(0, 10)
             UICorner_SliderHolder.Parent = SliderHolder
@@ -376,7 +371,9 @@ function UILibrary:CreateWindow(title)
             ToggleHolder.Name = "ToggleHolder"
             ToggleHolder.Parent = TabContent
             ToggleHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            ToggleHolder.Size = UDim2.new(1, 0, 0, 50)  -- Adjusted height for better visibility
+            ToggleHolder.Size = U
+
+Dim2.new(1, 0, 0, 50)  -- Adjusted height for better visibility
 
             UICorner_ToggleHolder.CornerRadius = UDim.new(0, 10)
             UICorner_ToggleHolder.Parent = ToggleHolder
