@@ -177,8 +177,6 @@ function UILibrary:CreateWindow(title)
         TabContent.Size = UDim2.new(1, 0, 1, 0)
         TabContent.Visible = false
 
-
-
         -- Adding UIPadding and UIListLayout for Tab Content
         UIPadding_TabContent.Parent = TabContent
         UIPadding_TabContent.PaddingTop = UDim.new(0, 10)
@@ -373,9 +371,7 @@ function UILibrary:CreateWindow(title)
                     moveConnection = UserInputService.InputChanged:Connect(function(input)
                         if input.UserInputType == Enum.UserInputType.MouseMovement then
                             moveSlider(input)
-                       
-
- end
+                        end
                     end)
                     releaseConnection = UserInputService.InputEnded:Connect(function(input)
                         if input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -681,3 +677,4 @@ function UILibrary:CreateWindow(title)
 end
 
 return UILibrary
+
