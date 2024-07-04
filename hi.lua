@@ -173,9 +173,7 @@ function UILibrary:CreateWindow(title)
         -- Properties for Tab Content
         TabContent.Name = tabName .. "_Content"
         TabContent.Parent = ContentHolder
-        TabContent.BackgroundColor3 = Color3.fromRGB(30
-
-, 30, 30)
+        TabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         TabContent.Size = UDim2.new(1, 0, 1, 0)
         TabContent.Visible = false
 
@@ -188,7 +186,7 @@ function UILibrary:CreateWindow(title)
 
         UIListLayout_TabContent.Parent = TabContent
         UIListLayout_TabContent.SortOrder = Enum.SortOrder.LayoutOrder
-        UIListLayout_TabContent.Padding = UDim.new(0, 5)
+        UIListLayout_TabContent.Padding = UDim.new(0, 10)
 
         -- Show/Hide Tabs
         TabButton.MouseButton1Click:Connect(function()
@@ -371,9 +369,9 @@ function UILibrary:CreateWindow(title)
             ToggleHolder.Name = "ToggleHolder"
             ToggleHolder.Parent = TabContent
             ToggleHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            ToggleHolder.Size = U
+            ToggleHolder.Size = UDim2.new(1, 0, 0, 50) 
 
-Dim2.new(1, 0, 0, 50)  -- Adjusted height for better visibility
+ -- Adjusted height for better visibility
 
             UICorner_ToggleHolder.CornerRadius = UDim.new(0, 10)
             UICorner_ToggleHolder.Parent = ToggleHolder
@@ -460,7 +458,7 @@ Dim2.new(1, 0, 0, 50)  -- Adjusted height for better visibility
             DropdownHolder.Name = "DropdownHolder"
             DropdownHolder.Parent = TabContent
             DropdownHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            DropdownHolder.Size = UDim2.new(1, 0, 0, 50)  -- Adjusted height for better visibility
+            DropdownHolder.Size = UDim2.new(1, 0, 0, 60)  -- Adjusted height for better visibility
 
             UICorner_DropdownHolder.CornerRadius = UDim.new(0, 10)
             UICorner_DropdownHolder.Parent = DropdownHolder
