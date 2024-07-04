@@ -174,10 +174,10 @@ function UILibrary:CreateWindow(title)
         TabContent.Name = tabName .. "_Content"
         TabContent.Parent = ContentHolder
         TabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        TabContent.Size = UDim2.new(1, 0, 1, 0)
+        TabContent.Size = UDim2
+
+.new(1, 0, 1, 0)
         TabContent.Visible = false
-
-
 
         -- Adding UIPadding and UIListLayout for Tab Content
         UIPadding_TabContent.Parent = TabContent
@@ -551,10 +551,10 @@ function UILibrary:CreateWindow(title)
                 DropdownItem.Parent = DropdownList
                 DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
                 DropdownItem.Size = UDim2.new(1, -10, 0, 30)
+
+
                 DropdownItem.Font = Enum.Font.FredokaOne
                 DropdownItem.Text = itemText
-
-
                 DropdownItem.TextColor3 = Color3.fromRGB(255, 255, 255)
                 DropdownItem.TextSize = 24.000
                 DropdownItem.TextXAlignment = Enum.TextXAlignment.Left
