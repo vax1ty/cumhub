@@ -177,9 +177,9 @@ function UILibrary:CreateWindow(title)
         TabContent.Size = UDim2.new(1, 0, 1, 0)
         TabContent.Visible = false
 
-       
 
- -- Adding UIPadding and UIListLayout for Tab Content
+
+        -- Adding UIPadding and UIListLayout for Tab Content
         UIPadding_TabContent.Parent = TabContent
         UIPadding_TabContent.PaddingTop = UDim.new(0, 10)
         UIPadding_TabContent.PaddingBottom = UDim.new(0, 10)
@@ -244,12 +244,14 @@ function UILibrary:CreateWindow(title)
             local SliderHolder = Instance.new("Frame")
             local SliderLabel = Instance.new("TextLabel")
             local SliderBar = Instance.new("Frame")
+            local SliderFill = Instance.new("Frame")
             local Slider = Instance.new("Frame")
             local SliderValue = Instance.new("TextLabel")
             local UICorner_SliderHolder = Instance.new("UICorner")
             local UIStroke_SliderHolder = Instance.new("UIStroke")
             local UICorner_SliderBar = Instance.new("UICorner")
             local UIStroke_SliderBar = Instance.new("UIStroke")
+            local UICorner_SliderFill = Instance.new("UICorner")
             local UICorner_Slider = Instance.new("UICorner")
             local UIStroke_Slider = Instance.new("UIStroke")
 
@@ -292,6 +294,15 @@ function UILibrary:CreateWindow(title)
             UIStroke_SliderBar.Color = Color3.fromRGB(0, 0, 0)
             UIStroke_SliderBar.Thickness = 2
 
+            -- Properties for Slider Fill
+            SliderFill.Name = "SliderFill"
+            SliderFill.Parent = SliderBar
+            SliderFill.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
+            SliderFill.Size = UDim2.new(0, 0, 1, 0)
+
+            UICorner_SliderFill.CornerRadius = UDim.new(0, 99)
+            UICorner_SliderFill.Parent = SliderFill
+
             -- Properties for Slider
             Slider.Name = "Slider"
             Slider.Parent = SliderBar
@@ -326,9 +337,9 @@ function UILibrary:CreateWindow(title)
                 local posX = math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1)
                 local offset = Slider.AbsoluteSize.X / 2
                 Slider.Position = UDim2.new(posX, -offset, 0.5, -10)
+                SliderFill.Size = UDim2.new(posX, 0, 1, 0)
                 local sliderValue = math.floor(min + (max - min) * posX)
                 SliderValue.Text = tostring(sliderValue)
-                SliderBar.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
                 callback(sliderValue)
             end
 
@@ -362,7 +373,9 @@ function UILibrary:CreateWindow(title)
                     moveConnection = UserInputService.InputChanged:Connect(function(input)
                         if input.UserInputType == Enum.UserInputType.MouseMovement then
                             moveSlider(input)
-                        end
+                       
+
+ end
                     end)
                     releaseConnection = UserInputService.InputEnded:Connect(function(input)
                         if input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -384,8 +397,6 @@ function UILibrary:CreateWindow(title)
                 end
             end)
         end
-
-
 
         function tab:CreateToggle(text, initialState, callback)
             local ToggleHolder = Instance.new("Frame")
@@ -561,9 +572,7 @@ function UILibrary:CreateWindow(title)
 
             local function updateDropdown()
                 local selectedText = ""
-               
-
- for item, _ in pairs(SelectedItems) do
+                for item, _ in pairs(SelectedItems) do
                     if selectedText == "" then
                         selectedText = item
                     else
