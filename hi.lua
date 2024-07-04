@@ -175,7 +175,9 @@ function UILibrary:CreateWindow(title)
         TabContent.Parent = ContentHolder
         TabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         TabContent.Size = UDim2.new(1, 0, 1, 0)
-        TabContent.Visible = false
+        TabContent
+
+.Visible = false
 
         -- Adding UIPadding and UIListLayout for Tab Content
         UIPadding_TabContent.Parent = TabContent
@@ -274,13 +276,14 @@ function UILibrary:CreateWindow(title)
             SliderLabel.Text = text
             SliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
             SliderLabel.TextSize = 20.000
+            SliderLabel.TextXAlignment = Enum.TextXAlignment.Left
 
             -- Properties for Slider Bar
             SliderBar.Name = "SliderBar"
             SliderBar.Parent = SliderHolder
             SliderBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-            SliderBar.Position = UDim2.new(0.1, 0, 0.5, -10)
-            SliderBar.Size = UDim2.new(0.8, 0, 0.2, 0)
+            SliderBar.Position = UDim2.new(0.05, 0, 0.5, -10)
+            SliderBar.Size = UDim2.new(0.9, 0, 0.2, 0)
 
             UICorner_SliderBar.CornerRadius = UDim.new(0, 99)
             UICorner_SliderBar.Parent = SliderBar
@@ -308,12 +311,13 @@ function UILibrary:CreateWindow(title)
             SliderValue.Parent = SliderHolder
             SliderValue.AnchorPoint = Vector2.new(0.5, 0.5)
             SliderValue.BackgroundTransparency = 1.000
-            SliderValue.Position = UDim2.new(0.85, 0, 0.5, 0)
+            SliderValue.Position = UDim2.new(0.95, 0, 0.5, 0)
             SliderValue.Size = UDim2.new(0.1, 0, 0.5, 0)
             SliderValue.Font = Enum.Font.GothamBold
             SliderValue.Text = tostring(min)
             SliderValue.TextColor3 = Color3.fromRGB(255, 255, 255)
             SliderValue.TextSize = 24.000
+            SliderValue.TextXAlignment = Enum.TextXAlignment.Right
 
             local UserInputService = game:GetService("UserInputService")
 
@@ -369,9 +373,9 @@ function UILibrary:CreateWindow(title)
             ToggleHolder.Name = "ToggleHolder"
             ToggleHolder.Parent = TabContent
             ToggleHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            ToggleHolder.Size = UDim2.new(1, 0, 0, 50) 
+            ToggleHolder.Size = UDim2.new(1
 
- -- Adjusted height for better visibility
+, 0, 0, 50)  -- Adjusted height for better visibility
 
             UICorner_ToggleHolder.CornerRadius = UDim.new(0, 10)
             UICorner_ToggleHolder.Parent = ToggleHolder
