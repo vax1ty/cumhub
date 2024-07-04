@@ -281,7 +281,7 @@ function UILibrary:CreateWindow(title)
             -- Properties for Slider Bar
             SliderBar.Name = "SliderBar"
             SliderBar.Parent = SliderHolder
-            SliderBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            SliderBar.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
             SliderBar.Position = UDim2.new(0.05, 0, 0.5, -10)
             SliderBar.Size = UDim2.new(0.9, 0, 0.2, 0)
 
@@ -373,9 +373,7 @@ function UILibrary:CreateWindow(title)
             ToggleHolder.Name = "ToggleHolder"
             ToggleHolder.Parent = TabContent
             ToggleHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            ToggleHolder.Size = UDim2.new(1, 0, 0
-
-, 50)  -- Adjusted height for better visibility
+            ToggleHolder.Size = UDim2.new(1, 0, 0, 50)  -- Adjusted height for better visibility
 
             UICorner_ToggleHolder.CornerRadius = UDim.new(0, 10)
             UICorner_ToggleHolder.Parent = ToggleHolder
@@ -387,7 +385,7 @@ function UILibrary:CreateWindow(title)
             -- Properties for Toggle Bar
             ToggleBar.Name = "ToggleBar"
             ToggleBar.Parent = ToggleHolder
-            ToggleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            ToggleBar.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
             ToggleBar.Position = UDim2.new(0.75, 0, 0.5, -15)
             ToggleBar.Size = UDim2.new(0.2, 0, 0.5, 0)
 
