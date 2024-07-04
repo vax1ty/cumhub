@@ -174,9 +174,9 @@ function UILibrary:CreateWindow(title)
         TabContent.Name = tabName .. "_Content"
         TabContent.Parent = ContentHolder
         TabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        TabContent.Size = UDim2.new(1, 0, 1,
+        TabContent.Size = UDim2.new(1, 0, 1
 
- 0)
+, 0)
         TabContent.Visible = false
 
         -- Adding UIPadding and UIListLayout for Tab Content
@@ -246,7 +246,7 @@ function UILibrary:CreateWindow(title)
             local SliderBar = Instance.new("Frame")
             local SliderFill = Instance.new("Frame")
             local Slider = Instance.new("Frame")
-            local SliderValue = Instance.new("TextLabel")
+            local SliderValue = Instance.new("TextBox")
             local UICorner_SliderHolder = Instance.new("UICorner")
             local UIStroke_SliderHolder = Instance.new("UIStroke")
             local UICorner_SliderBar = Instance.new("UICorner")
@@ -329,6 +329,7 @@ function UILibrary:CreateWindow(title)
             SliderValue.TextColor3 = Color3.fromRGB(255, 255, 255)
             SliderValue.TextSize = 24.000
             SliderValue.TextXAlignment = Enum.TextXAlignment.Right
+            SliderValue.ClearTextOnFocus = false
 
             local UserInputService = game:GetService("UserInputService")
             local dragging = false
@@ -373,8 +374,6 @@ function UILibrary:CreateWindow(title)
                     moveConnection = UserInputService.InputChanged:Connect(function(input)
                         if input.UserInputType == Enum.UserInputType.MouseMovement then
                             moveSlider(input)
-
-
                         end
                     end)
                     releaseConnection = UserInputService.InputEnded:Connect(function(input)
@@ -393,6 +392,20 @@ function UILibrary:CreateWindow(title)
                         MainFrame.Active = false
                     else
                         MainFrame.Active = true
+                    end
+                end
+            end)
+
+            SliderValue.FocusLost:Connect(function(enterPressed)
+                if enterPressed then
+                    local value = tonumber(SliderValue.Text)
+                    if value and value >= min and value <= max then
+                        local posX = (value - min) / (max - min)
+                        Slider.Position = UDim2.new(posX, -Slider.AbsoluteSize.X / 2, 0.5, -10)
+                        SliderFill.Size = UDim2.new(posX, 0, 1, 0)
+                        callback(value)
+                    else
+                        SliderValue.Text = tostring(min)
                     end
                 end
             end)
