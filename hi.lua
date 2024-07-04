@@ -174,12 +174,12 @@ function UILibrary:CreateWindow(title)
         TabContent.Name = tabName .. "_Content"
         TabContent.Parent = ContentHolder
         TabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        TabContent.Size = UDim2
-
-.new(1, 0, 1, 0)
+        TabContent.Size = UDim2.new(1, 0, 1, 0)
         TabContent.Visible = false
 
-        -- Adding UIPadding and UIListLayout for Tab Content
+       
+
+ -- Adding UIPadding and UIListLayout for Tab Content
         UIPadding_TabContent.Parent = TabContent
         UIPadding_TabContent.PaddingTop = UDim.new(0, 10)
         UIPadding_TabContent.PaddingBottom = UDim.new(0, 10)
@@ -272,10 +272,10 @@ function UILibrary:CreateWindow(title)
             SliderLabel.BackgroundTransparency = 1.000
             SliderLabel.Position = UDim2.new(0.05, 0, 0, 0)
             SliderLabel.Size = UDim2.new(0.9, 0, 0.4, 0)  -- Adjusted height for better visibility
-            SliderLabel.Font = Enum.Font.GothamBold
+            SliderLabel.Font = Enum.Font.FredokaOne
             SliderLabel.Text = text
             SliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-            SliderLabel.TextSize = 20.000
+            SliderLabel.TextSize = 24.000
             SliderLabel.TextXAlignment = Enum.TextXAlignment.Left
 
             -- Properties for Slider Bar
@@ -313,13 +313,14 @@ function UILibrary:CreateWindow(title)
             SliderValue.BackgroundTransparency = 1.000
             SliderValue.Position = UDim2.new(0.95, 0, 0.5, 0)
             SliderValue.Size = UDim2.new(0.1, 0, 0.5, 0)
-            SliderValue.Font = Enum.Font.GothamBold
+            SliderValue.Font = Enum.Font.FredokaOne
             SliderValue.Text = tostring(min)
             SliderValue.TextColor3 = Color3.fromRGB(255, 255, 255)
             SliderValue.TextSize = 24.000
             SliderValue.TextXAlignment = Enum.TextXAlignment.Right
 
             local UserInputService = game:GetService("UserInputService")
+            local dragging = false
 
             local function moveSlider(input)
                 local posX = math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1)
@@ -327,11 +328,13 @@ function UILibrary:CreateWindow(title)
                 Slider.Position = UDim2.new(posX, -offset, 0.5, -10)
                 local sliderValue = math.floor(min + (max - min) * posX)
                 SliderValue.Text = tostring(sliderValue)
+                SliderBar.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
                 callback(sliderValue)
             end
 
             Slider.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    dragging = true
                     moveSlider(input)
                     Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
                     local moveConnection, releaseConnection
@@ -342,6 +345,7 @@ function UILibrary:CreateWindow(title)
                     end)
                     releaseConnection = UserInputService.InputEnded:Connect(function(input)
                         if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                            dragging = false
                             moveConnection:Disconnect()
                             releaseConnection:Disconnect()
                         end
@@ -351,11 +355,37 @@ function UILibrary:CreateWindow(title)
 
             SliderBar.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    dragging = true
                     moveSlider(input)
                     Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
+                    local moveConnection, releaseConnection
+                    moveConnection = UserInputService.InputChanged:Connect(function(input)
+                        if input.UserInputType == Enum.UserInputType.MouseMovement then
+                            moveSlider(input)
+                        end
+                    end)
+                    releaseConnection = UserInputService.InputEnded:Connect(function(input)
+                        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                            dragging = false
+                            moveConnection:Disconnect()
+                            releaseConnection:Disconnect()
+                        end
+                    end)
+                end
+            end)
+
+            MainFrame.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    if dragging then
+                        MainFrame.Active = false
+                    else
+                        MainFrame.Active = true
+                    end
                 end
             end)
         end
+
+
 
         function tab:CreateToggle(text, initialState, callback)
             local ToggleHolder = Instance.new("Frame")
@@ -531,7 +561,9 @@ function UILibrary:CreateWindow(title)
 
             local function updateDropdown()
                 local selectedText = ""
-                for item, _ in pairs(SelectedItems) do
+               
+
+ for item, _ in pairs(SelectedItems) do
                     if selectedText == "" then
                         selectedText = item
                     else
@@ -551,8 +583,6 @@ function UILibrary:CreateWindow(title)
                 DropdownItem.Parent = DropdownList
                 DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
                 DropdownItem.Size = UDim2.new(1, -10, 0, 30)
-
-
                 DropdownItem.Font = Enum.Font.FredokaOne
                 DropdownItem.Text = itemText
                 DropdownItem.TextColor3 = Color3.fromRGB(255, 255, 255)
