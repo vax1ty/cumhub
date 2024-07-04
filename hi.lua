@@ -175,9 +175,9 @@ function UILibrary:CreateWindow(title)
         TabContent.Parent = ContentHolder
         TabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         TabContent.Size = UDim2.new(1, 0, 1, 0)
-        TabContent
+        TabContent.Visible = false
 
-.Visible = false
+
 
         -- Adding UIPadding and UIListLayout for Tab Content
         UIPadding_TabContent.Parent = TabContent
@@ -309,7 +309,7 @@ function UILibrary:CreateWindow(title)
             -- Properties for Slider Value
             SliderValue.Name = "SliderValue"
             SliderValue.Parent = SliderHolder
-            SliderValue.AnchorPoint = Vector2.new(0.5, 0.5)
+            SliderValue.AnchorPoint = Vector2.new(1, 0.5)
             SliderValue.BackgroundTransparency = 1.000
             SliderValue.Position = UDim2.new(0.95, 0, 0.5, 0)
             SliderValue.Size = UDim2.new(0.1, 0, 0.5, 0)
@@ -373,9 +373,9 @@ function UILibrary:CreateWindow(title)
             ToggleHolder.Name = "ToggleHolder"
             ToggleHolder.Parent = TabContent
             ToggleHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            ToggleHolder.Size = UDim2.new(1
+            ToggleHolder.Size = UDim2.new(1, 0, 0
 
-, 0, 0, 50)  -- Adjusted height for better visibility
+, 50)  -- Adjusted height for better visibility
 
             UICorner_ToggleHolder.CornerRadius = UDim.new(0, 10)
             UICorner_ToggleHolder.Parent = ToggleHolder
@@ -555,6 +555,8 @@ function UILibrary:CreateWindow(title)
                 DropdownItem.Size = UDim2.new(1, -10, 0, 30)
                 DropdownItem.Font = Enum.Font.FredokaOne
                 DropdownItem.Text = itemText
+
+
                 DropdownItem.TextColor3 = Color3.fromRGB(255, 255, 255)
                 DropdownItem.TextSize = 24.000
                 DropdownItem.TextXAlignment = Enum.TextXAlignment.Left
