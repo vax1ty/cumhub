@@ -22,6 +22,17 @@ local function createShadow(parent, offset, color, transparency)
     return shadow
 end
 
+-- Function to create a gradient background
+local function createGradient(parent)
+    local gradient = Instance.new("UIGradient")
+    gradient.Parent = parent
+    gradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(35, 35, 35)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(60, 60, 60))
+    }
+    return gradient
+end
+
 -- Function to create a button
 local function createButton(parent, text, size, position, callback)
     local button = Instance.new("TextButton")
@@ -36,7 +47,14 @@ local function createButton(parent, text, size, position, callback)
     button.TextSize = 24
     button.MouseButton1Click:Connect(callback)
     createUICorner(button, 10)
+    createGradient(button)
     createShadow(button, 5, Color3.fromRGB(0, 0, 0), 0.6)
+    button.MouseEnter:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+    end)
+    button.MouseLeave:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    end)
     return button
 end
 
@@ -59,6 +77,7 @@ function UILibrary:CreateWindow(title)
     mainFrame.Draggable = true
     createUICorner(mainFrame, 10)
     createShadow(mainFrame, 10, Color3.fromRGB(0, 0, 0), 0.7)
+    createGradient(mainFrame)
 
     local topBar = Instance.new("Frame")
     topBar.Name = "TopBar"
@@ -67,6 +86,7 @@ function UILibrary:CreateWindow(title)
     topBar.Size = UDim2.new(1, 0, 0, 50)
     createUICorner(topBar, 10)
     createShadow(topBar, 5, Color3.fromRGB(0, 0, 0), 0.6)
+    createGradient(topBar)
 
     local titleLabel = Instance.new("TextLabel")
     titleLabel.Name = "Title"
@@ -136,6 +156,13 @@ function UILibrary:CreateWindow(title)
         tabButton.AutomaticSize = Enum.AutomaticSize.X
         createUICorner(tabButton, 10)
         createShadow(tabButton, 5, Color3.fromRGB(0, 0, 0), 0.6)
+        createGradient(tabButton)
+        tabButton.MouseEnter:Connect(function()
+            tabButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        end)
+        tabButton.MouseLeave:Connect(function()
+            tabButton.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
+        end)
 
         local tabContent = Instance.new("Frame")
         tabContent.Name = tabName .. "_Content"
@@ -157,7 +184,9 @@ function UILibrary:CreateWindow(title)
         uiListLayoutTabContent.Padding = UDim.new(0, 10)
 
         tabButton.MouseButton1Click:Connect(function()
-            for _, child in ipairs(contentHolder:GetChildren()) do
+            for _,
+
+ child in ipairs(contentHolder:GetChildren()) do
                 if child:IsA("Frame") then
                     child.Visible = false
                 end
@@ -178,12 +207,11 @@ function UILibrary:CreateWindow(title)
             buttonHolder.Size = UDim2.new(1, 0, 0, 60)
             createUICorner(buttonHolder, 10)
             createShadow(buttonHolder, 5, Color3.fromRGB(0, 0, 0), 0.6)
+            createGradient(buttonHolder)
 
             local button = Instance.new("TextButton")
             button.Name = "Button"
-            button.Parent
-
- = buttonHolder
+            button.Parent = buttonHolder
             button.BackgroundTransparency = 1
             button.Size = UDim2.new(1, 0, 1, 0)
             button.Font = Enum.Font.FredokaOne
@@ -202,6 +230,7 @@ function UILibrary:CreateWindow(title)
             sliderHolder.Size = UDim2.new(1, 0, 0, 80)
             createUICorner(sliderHolder, 10)
             createShadow(sliderHolder, 5, Color3.fromRGB(0, 0, 0), 0.6)
+            createGradient(sliderHolder)
 
             local sliderLabel = Instance.new("TextLabel")
             sliderLabel.Name = "SliderLabel"
@@ -332,6 +361,7 @@ function UILibrary:CreateWindow(title)
             toggleHolder.Size = UDim2.new(1, 0, 0, 50)
             createUICorner(toggleHolder, 10)
             createShadow(toggleHolder, 5, Color3.fromRGB(0, 0, 0), 0.6)
+            createGradient(toggleHolder)
 
             local toggleBar = Instance.new("Frame")
             toggleBar.Name = "ToggleBar"
@@ -346,7 +376,9 @@ function UILibrary:CreateWindow(title)
             toggle.Name = "Toggle"
             toggle.Parent = toggleBar
             toggle.BackgroundColor3 = initialState and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
-            toggle.Position = initialState and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5)
+            toggle.Position = initialState and UDim2.new(1, -37, 0.5, -18.5
+
+) or UDim2.new(0, 0, 0.5, -18.5)
             toggle.Size = UDim2.new(0, 37, 0, 37)
             createUICorner(toggle, 1)
             createShadow(toggle, 5, Color3.fromRGB(0, 0, 0), 0.6)
@@ -362,8 +394,6 @@ function UILibrary:CreateWindow(title)
             toggleLabel.Text = text
             toggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
             toggleLabel.TextSize = 24
-
-
             toggleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
             local toggleState = initialState
@@ -392,6 +422,7 @@ function UILibrary:CreateWindow(title)
             dropdownHolder.Size = UDim2.new(1, 0, 0, 60)
             createUICorner(dropdownHolder, 10)
             createShadow(dropdownHolder, 5, Color3.fromRGB(0, 0, 0), 0.6)
+            createGradient(dropdownHolder)
 
             local dropdownButton = Instance.new("TextButton")
             dropdownButton.Name = "DropdownButton"
