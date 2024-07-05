@@ -15,8 +15,8 @@ local function createShadow(parent, offset, color, transparency)
     shadow.BackgroundColor3 = color
     shadow.BackgroundTransparency = transparency
     shadow.BorderSizePixel = 0
-    shadow.Size = parent.Size
-    shadow.Position = UDim2.new(0, offset, 0, offset)
+    shadow.Size = parent.Size + UDim2.new(0, offset * 2, 0, offset * 2)
+    shadow.Position = UDim2.new(0, -offset, 0, -offset)
     shadow.ZIndex = parent.ZIndex - 1
     shadow.AnchorPoint = parent.AnchorPoint
     return shadow
@@ -179,13 +179,13 @@ function UILibrary:CreateWindow(title)
             createUICorner(buttonHolder, 10)
             createShadow(buttonHolder, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
-            local button = Instance.new("TextButton")
+            local button = Instance.new("TextButton
+
+")
             button.Name = "Button"
             button.Parent = buttonHolder
             button.BackgroundTransparency = 1
-            button.Size = UDim2.new(1, 
-
-0, 1, 0)
+            button.Size = UDim2.new(1, 0, 1, 0)
             button.Font = Enum.Font.FredokaOne
             button.Text = text
             button.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -360,15 +360,15 @@ function UILibrary:CreateWindow(title)
             toggleLabel.Size = UDim2.new(0.6, -20, 0.8, -20)
             toggleLabel.Font = Enum.Font.FredokaOne
             toggleLabel.Text = text
-            toggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            toggleLabel.TextColor3 = Color3.fromRGB(255, 255,
+
+ 255)
             toggleLabel.TextSize = 24
             toggleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
             local toggleState = initialState
 
-            local
-
- function setToggleState(state)
+            local function setToggleState(state)
                 toggleState = state
                 toggle.BackgroundColor3 = state and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
                 toggle:TweenPosition(state and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5), "Out", "Sine", 0.2, true)
