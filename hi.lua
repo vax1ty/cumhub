@@ -179,11 +179,11 @@ function UILibrary:CreateWindow(title)
             createUICorner(buttonHolder, 10)
             createShadow(buttonHolder, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
-            local button = Instance.new("TextButton
-
-")
+            local button = Instance.new("TextButton")
             button.Name = "Button"
-            button.Parent = buttonHolder
+            button.Parent
+
+ = buttonHolder
             button.BackgroundTransparency = 1
             button.Size = UDim2.new(1, 0, 1, 0)
             button.Font = Enum.Font.FredokaOne
@@ -360,10 +360,10 @@ function UILibrary:CreateWindow(title)
             toggleLabel.Size = UDim2.new(0.6, -20, 0.8, -20)
             toggleLabel.Font = Enum.Font.FredokaOne
             toggleLabel.Text = text
-            toggleLabel.TextColor3 = Color3.fromRGB(255, 255,
-
- 255)
+            toggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
             toggleLabel.TextSize = 24
+
+
             toggleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
             local toggleState = initialState
