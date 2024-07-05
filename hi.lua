@@ -1,20 +1,25 @@
 local UILibrary = {}
 
--- Utility function to create a UI Stroke
-local function createUIStroke(parent, color, thickness)
-    local stroke = Instance.new("UIStroke")
-    stroke.Parent = parent
-    stroke.Color = color
-    stroke.Thickness = thickness
-    return stroke
-end
-
 -- Utility function to create a UI Corner
 local function createUICorner(parent, radius)
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, radius)
     corner.Parent = parent
     return corner
+end
+
+-- Utility function to create a shadow effect
+local function createShadow(parent, offset, color, transparency)
+    local shadow = Instance.new("Frame")
+    shadow.Parent = parent
+    shadow.BackgroundColor3 = color
+    shadow.BackgroundTransparency = transparency
+    shadow.BorderSizePixel = 0
+    shadow.Size = parent.Size
+    shadow.Position = UDim2.new(0, offset, 0, offset)
+    shadow.ZIndex = parent.ZIndex - 1
+    shadow.AnchorPoint = parent.AnchorPoint
+    return shadow
 end
 
 -- Function to create a button
@@ -31,7 +36,7 @@ local function createButton(parent, text, size, position, callback)
     button.TextSize = 24
     button.MouseButton1Click:Connect(callback)
     createUICorner(button, 10)
-    createUIStroke(button, Color3.fromRGB(0, 0, 0), 2)
+    createShadow(button, 5, Color3.fromRGB(0, 0, 0), 0.6)
     return button
 end
 
@@ -53,7 +58,7 @@ function UILibrary:CreateWindow(title)
     mainFrame.Active = true
     mainFrame.Draggable = true
     createUICorner(mainFrame, 10)
-    createUIStroke(mainFrame, Color3.fromRGB(0, 0, 0), 2)
+    createShadow(mainFrame, 10, Color3.fromRGB(0, 0, 0), 0.7)
 
     local topBar = Instance.new("Frame")
     topBar.Name = "TopBar"
@@ -61,7 +66,7 @@ function UILibrary:CreateWindow(title)
     topBar.BackgroundColor3 = Color3.fromRGB(45, 45, 48)
     topBar.Size = UDim2.new(1, 0, 0, 50)
     createUICorner(topBar, 10)
-    createUIStroke(topBar, Color3.fromRGB(0, 0, 0), 2)
+    createShadow(topBar, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
     local titleLabel = Instance.new("TextLabel")
     titleLabel.Name = "Title"
@@ -113,7 +118,7 @@ function UILibrary:CreateWindow(title)
     contentHolder.Position = UDim2.new(0.025, 0, 0.2, 0)
     contentHolder.Size = UDim2.new(0.935, 0, 0.8, 0)
     createUICorner(contentHolder, 10)
-    createUIStroke(contentHolder, Color3.fromRGB(0, 0, 0), 2)
+    createShadow(contentHolder, 10, Color3.fromRGB(0, 0, 0), 0.7)
 
     -- Function to add tabs
     function windowInstance:AddTab(tabName)
@@ -130,7 +135,7 @@ function UILibrary:CreateWindow(title)
         tabButton.TextSize = 24
         tabButton.AutomaticSize = Enum.AutomaticSize.X
         createUICorner(tabButton, 10)
-        createUIStroke(tabButton, Color3.fromRGB(0, 0, 0), 2)
+        createShadow(tabButton, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
         local tabContent = Instance.new("Frame")
         tabContent.Name = tabName .. "_Content"
@@ -172,13 +177,15 @@ function UILibrary:CreateWindow(title)
             buttonHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
             buttonHolder.Size = UDim2.new(1, 0, 0, 60)
             createUICorner(buttonHolder, 10)
-            createUIStroke(buttonHolder, Color3.fromRGB(0, 0, 0), 2)
+            createShadow(buttonHolder, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
             local button = Instance.new("TextButton")
             button.Name = "Button"
             button.Parent = buttonHolder
             button.BackgroundTransparency = 1
-            button.Size = UDim2.new(1, 0, 1, 0)
+            button.Size = UDim2.new(1, 
+
+0, 1, 0)
             button.Font = Enum.Font.FredokaOne
             button.Text = text
             button.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -189,14 +196,12 @@ function UILibrary:CreateWindow(title)
 
         function tab:CreateSlider(text, min, max, callback)
             local sliderHolder = Instance.new("Frame")
-           
-
- sliderHolder.Name = "SliderHolder"
+            sliderHolder.Name = "SliderHolder"
             sliderHolder.Parent = tabContent
             sliderHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
             sliderHolder.Size = UDim2.new(1, 0, 0, 80)
             createUICorner(sliderHolder, 10)
-            createUIStroke(sliderHolder, Color3.fromRGB(0, 0, 0), 2)
+            createShadow(sliderHolder, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
             local sliderLabel = Instance.new("TextLabel")
             sliderLabel.Name = "SliderLabel"
@@ -217,7 +222,7 @@ function UILibrary:CreateWindow(title)
             sliderBar.Position = UDim2.new(0.05, 0, 0.5, -10)
             sliderBar.Size = UDim2.new(0.9, 0, 0.2, 0)
             createUICorner(sliderBar, 99)
-            createUIStroke(sliderBar, Color3.fromRGB(0, 0, 0), 2)
+            createShadow(sliderBar, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
             local sliderFill = Instance.new("Frame")
             sliderFill.Name = "SliderFill"
@@ -233,7 +238,7 @@ function UILibrary:CreateWindow(title)
             slider.Position = UDim2.new(0, 0, 0.5, -10)
             slider.Size = UDim2.new(0, 20, 0, 20)
             createUICorner(slider, 1)
-            createUIStroke(slider, Color3.fromRGB(0, 0, 0), 2)
+            createShadow(slider, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
             local sliderValue = Instance.new("TextBox")
             sliderValue.Name = "SliderValue"
@@ -326,7 +331,7 @@ function UILibrary:CreateWindow(title)
             toggleHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
             toggleHolder.Size = UDim2.new(1, 0, 0, 50)
             createUICorner(toggleHolder, 10)
-            createUIStroke(toggleHolder, Color3.fromRGB(0, 0, 0), 2)
+            createShadow(toggleHolder, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
             local toggleBar = Instance.new("Frame")
             toggleBar.Name = "ToggleBar"
@@ -335,7 +340,7 @@ function UILibrary:CreateWindow(title)
             toggleBar.Position = UDim2.new(0.75, 0, 0.5, -15)
             toggleBar.Size = UDim2.new(0.2, 0, 0.5, 0)
             createUICorner(toggleBar, 99)
-            createUIStroke(toggleBar, Color3.fromRGB(0, 0, 0), 2)
+            createShadow(toggleBar, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
             local toggle = Instance.new("Frame")
             toggle.Name = "Toggle"
@@ -344,7 +349,7 @@ function UILibrary:CreateWindow(title)
             toggle.Position = initialState and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5)
             toggle.Size = UDim2.new(0, 37, 0, 37)
             createUICorner(toggle, 1)
-            createUIStroke(toggle, Color3.fromRGB(0, 0, 0), 2)
+            createShadow(toggle, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
             local toggleLabel = Instance.new("TextLabel")
             toggleLabel.Name = "ToggleLabel"
@@ -361,16 +366,16 @@ function UILibrary:CreateWindow(title)
 
             local toggleState = initialState
 
-            local function setToggleState(state)
+            local
+
+ function setToggleState(state)
                 toggleState = state
                 toggle.BackgroundColor3 = state and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
                 toggle:TweenPosition(state and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5), "Out", "Sine", 0.2, true)
                 callback(state)
             end
 
-            toggleBar.InputBegan:Connect(function(input
-
-)
+            toggleBar.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     setToggleState(not toggleState)
                 end
@@ -386,7 +391,7 @@ function UILibrary:CreateWindow(title)
             dropdownHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
             dropdownHolder.Size = UDim2.new(1, 0, 0, 60)
             createUICorner(dropdownHolder, 10)
-            createUIStroke(dropdownHolder, Color3.fromRGB(0, 0, 0), 2)
+            createShadow(dropdownHolder, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
             local dropdownButton = Instance.new("TextButton")
             dropdownButton.Name = "DropdownButton"
@@ -402,7 +407,7 @@ function UILibrary:CreateWindow(title)
             dropdownButton.TextSize = 24
             dropdownButton.TextXAlignment = Enum.TextXAlignment.Left
             createUICorner(dropdownButton, 10)
-            createUIStroke(dropdownButton, Color3.fromRGB(0, 0, 0), 2)
+            createShadow(dropdownButton, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
             local dropdownList = Instance.new("Frame")
             dropdownList.Name = "DropdownList"
@@ -413,7 +418,7 @@ function UILibrary:CreateWindow(title)
             dropdownList.Size = UDim2.new(0.96, 0, 0, 150)
             dropdownList.Visible = false
             createUICorner(dropdownList, 10)
-            createUIStroke(dropdownList, Color3.fromRGB(0, 0, 0), 2)
+            createShadow(dropdownList, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
             local searchBar = Instance.new("TextBox")
             searchBar.Name = "SearchBar"
@@ -427,7 +432,7 @@ function UILibrary:CreateWindow(title)
             searchBar.TextColor3 = Color3.fromRGB(255, 255, 255)
             searchBar.TextSize = 24
             createUICorner(searchBar, 10)
-            createUIStroke(searchBar, Color3.fromRGB(0, 0, 0), 2)
+            createShadow(searchBar, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
             local SelectedItems = {}
             local itemFrames = {}
@@ -457,7 +462,7 @@ function UILibrary:CreateWindow(title)
                 dropdownItem.TextSize = 24
                 dropdownItem.TextXAlignment = Enum.TextXAlignment.Left
                 createUICorner(dropdownItem, 10)
-                createUIStroke(dropdownItem, Color3.fromRGB(0, 0, 0), 2)
+                createShadow(dropdownItem, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
                 dropdownItem.MouseEnter:Connect(function()
                     dropdownItem.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
