@@ -1,354 +1,272 @@
 local UILibrary = {}
 
--- Main UI Library Module
+-- Utility function to create a UI Stroke
+local function createUIStroke(parent, color, thickness)
+    local stroke = Instance.new("UIStroke")
+    stroke.Parent = parent
+    stroke.Color = color
+    stroke.Thickness = thickness
+    return stroke
+end
+
+-- Utility function to create a UI Corner
+local function createUICorner(parent, radius)
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, radius)
+    corner.Parent = parent
+    return corner
+end
+
+-- Function to create a button
+local function createButton(parent, text, size, position, callback)
+    local button = Instance.new("TextButton")
+    button.Parent = parent
+    button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    button.BorderSizePixel = 0
+    button.Position = position
+    button.Size = size
+    button.Font = Enum.Font.GothamBold
+    button.Text = text
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.TextSize = 24
+    button.MouseButton1Click:Connect(callback)
+    createUICorner(button, 10)
+    createUIStroke(button, Color3.fromRGB(0, 0, 0), 2)
+    return button
+end
+
+-- Function to create the main window
 function UILibrary:CreateWindow(title)
     local windowInstance = {}
 
-    -- Instances for Window
-    local Confirmation = Instance.new("ScreenGui")
-    local MainFrame = Instance.new("Frame")
-    local UICorner = Instance.new("UICorner")
-    local UIStrokeMainFrame = Instance.new("UIStroke")
-    local TopBar = Instance.new("Frame")
-    local UICorner_2 = Instance.new("UICorner")
-    local UIStrokeTopBar = Instance.new("UIStroke")
-    local CloseButton = Instance.new("TextButton")
-    local UICorner_3 = Instance.new("UICorner")
-    local UIStrokeCloseButton = Instance.new("UIStroke")
-    local MinimizeButton = Instance.new("TextButton")
-    local UICorner_4 = Instance.new("UICorner")
-    local UIStrokeMinimizeButton = Instance.new("UIStroke")
-    local Title = Instance.new("TextLabel")
-    local TabHolder = Instance.new("ScrollingFrame")
-    local ContentHolder = Instance.new("Frame")
-    local UICorner_5 = Instance.new("UICorner")
-    local UIStrokeContentHolder = Instance.new("UIStroke")
-    local UIListLayoutTabs = Instance.new("UIListLayout")
-    local UIPaddingTabs = Instance.new("UIPadding")
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "Confirmation"
+    gui.Parent = game.CoreGui
 
-    -- Properties for Window
-    Confirmation.Name = "Confirmation"
-    Confirmation.Parent = game.CoreGui
+    local mainFrame = Instance.new("Frame")
+    mainFrame.Name = "MainFrame"
+    mainFrame.Parent = gui
+    mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    mainFrame.Size = UDim2.new(0, 602, 0, 673)
+    mainFrame.Active = true
+    mainFrame.Draggable = true
+    createUICorner(mainFrame, 10)
+    createUIStroke(mainFrame, Color3.fromRGB(0, 0, 0), 2)
 
-    MainFrame.Name = "MainFrame"
-    MainFrame.Parent = Confirmation
-    MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-    MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    MainFrame.BorderSizePixel = 0
-    MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-    MainFrame.Size = UDim2.new(0, 602, 0, 673)
-    MainFrame.Active = true
-    MainFrame.Draggable = true
+    local topBar = Instance.new("Frame")
+    topBar.Name = "TopBar"
+    topBar.Parent = mainFrame
+    topBar.BackgroundColor3 = Color3.fromRGB(45, 45, 48)
+    topBar.Size = UDim2.new(1, 0, 0, 50)
+    createUICorner(topBar, 10)
+    createUIStroke(topBar, Color3.fromRGB(0, 0, 0), 2)
 
-    UICorner.CornerRadius = UDim.new(0, 10)
-    UICorner.Parent = MainFrame
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Name = "Title"
+    titleLabel.Parent = topBar
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Size = UDim2.new(0.8, 0, 1, 0)
+    titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.Text = title
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    titleLabel.TextSize = 24
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.Position = UDim2.new(0.05, 0, 0, 0)
 
-    UIStrokeMainFrame.Parent = MainFrame
-    UIStrokeMainFrame.Color = Color3.fromRGB(0, 0, 0)
-    UIStrokeMainFrame.Thickness = 2
+    local closeButton = createButton(topBar, "X", UDim2.new(0, 40, 0, 40), UDim2.new(1, -45, 0, 5), function()
+        gui:Destroy()
+    end)
 
-    TopBar.Name = "TopBar"
-    TopBar.Parent = MainFrame
-    TopBar.BackgroundColor3 = Color3.fromRGB(45, 45, 48)
-    TopBar.Size = UDim2.new(1, 0, 0, 50)
+    local minimizeButton = createButton(topBar, "-", UDim2.new(0, 40, 0, 40), UDim2.new(1, -90, 0, 5), function()
+        mainFrame.Visible = not mainFrame.Visible
+    end)
 
-    UICorner_2.CornerRadius = UDim.new(0, 10)
-    UICorner_2.Parent = TopBar
+    local tabHolder = Instance.new("ScrollingFrame")
+    tabHolder.Name = "TabHolder"
+    tabHolder.Parent = mainFrame
+    tabHolder.BackgroundTransparency = 1
+    tabHolder.Position = UDim2.new(0.025, 0, 0.093, 0)
+    tabHolder.Size = UDim2.new(0.95, 0, 0.0617, 0)
+    tabHolder.CanvasSize = UDim2.new(0, 0, 0, 0)
+    tabHolder.ScrollBarThickness = 0
+    tabHolder.AutomaticCanvasSize = Enum.AutomaticSize.X
 
-    UIStrokeTopBar.Parent = TopBar
-    UIStrokeTopBar.Color = Color3.fromRGB(0, 0, 0)
-    UIStrokeTopBar.Thickness = 2
+    local uiListLayoutTabs = Instance.new("UIListLayout")
+    uiListLayoutTabs.Parent = tabHolder
+    uiListLayoutTabs.FillDirection = Enum.FillDirection.Horizontal
+    uiListLayoutTabs.HorizontalAlignment = Enum.HorizontalAlignment.Left
+    uiListLayoutTabs.Padding = UDim.new(0, 5)
 
-    CloseButton.Name = "CloseButton"
-    CloseButton.Parent = TopBar
-    CloseButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    CloseButton.BorderSizePixel = 0
-    CloseButton.Position = UDim2.new(1, -45, 0, 5)
-    CloseButton.Size = UDim2.new(0, 40, 0, 40)
-    CloseButton.Font = Enum.Font.GothamBold
-    CloseButton.Text = "X"
-    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    CloseButton.TextSize = 24.000
+    local uiPaddingTabs = Instance.new("UIPadding")
+    uiPaddingTabs.Parent = tabHolder
+    uiPaddingTabs.PaddingTop = UDim.new(0, 10)
+    uiPaddingTabs.PaddingBottom = UDim.new(0, 10)
+    uiPaddingTabs.PaddingLeft = UDim.new(0, 10)
+    uiPaddingTabs.PaddingRight = UDim.new(0, 10)
 
-    UICorner_3.CornerRadius = UDim.new(0, 10)
-    UICorner_3.Parent = CloseButton
+    local contentHolder = Instance.new("Frame")
+    contentHolder.Name = "ContentHolder"
+    contentHolder.Parent = mainFrame
+    contentHolder.BackgroundTransparency = 1
+    contentHolder.Position = UDim2.new(0.025, 0, 0.2, 0)
+    contentHolder.Size = UDim2.new(0.935, 0, 0.8, 0)
+    createUICorner(contentHolder, 10)
+    createUIStroke(contentHolder, Color3.fromRGB(0, 0, 0), 2)
 
-    UIStrokeCloseButton.Parent = CloseButton
-    UIStrokeCloseButton.Color = Color3.fromRGB(0, 0, 0)
-    UIStrokeCloseButton.Thickness = 2
-
-    MinimizeButton.Name = "MinimizeButton"
-    MinimizeButton.Parent = TopBar
-    MinimizeButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    MinimizeButton.BorderSizePixel = 0
-    MinimizeButton.Position = UDim2.new(1, -90, 0, 5)
-    MinimizeButton.Size = UDim2.new(0, 40, 0, 40)
-    MinimizeButton.Font = Enum.Font.GothamBold
-    MinimizeButton.Text = "-"
-    MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    MinimizeButton.TextSize = 24.000
-
-    UICorner_4.CornerRadius = UDim.new(0, 10)
-    UICorner_4.Parent = MinimizeButton
-
-    UIStrokeMinimizeButton.Parent = MinimizeButton
-    UIStrokeMinimizeButton.Color = Color3.fromRGB(0, 0, 0)
-    UIStrokeMinimizeButton.Thickness = 2
-
-    Title.Name = "Title"
-    Title.Parent = TopBar
-    Title.BackgroundColor3 = Color3.fromRGB(45, 45, 48)
-    Title.BackgroundTransparency = 1.000
-    Title.Size = UDim2.new(0.8, 0, 1, 0)
-    Title.Font = Enum.Font.GothamBold
-    Title.Text = title
-    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Title.TextSize = 24.000
-    Title.TextXAlignment = Enum.TextXAlignment.Left
-    Title.Position = UDim2.new(0.05, 0, 0, 0)
-
-    TabHolder.Name = "TabHolder"
-    TabHolder.Parent = MainFrame
-    TabHolder.BackgroundColor3 = Color3.fromRGB(45, 45, 48)
-    TabHolder.BackgroundTransparency = 1.000
-    TabHolder.Position = UDim2.new(0.025, 0, 0.0933333337, 0)
-    TabHolder.Size = UDim2.new(0.95, 0, 0.0616666675, 0)
-    TabHolder.CanvasSize = UDim2.new(0, 0, 0, 0)
-    TabHolder.ScrollBarThickness = 0
-    TabHolder.AutomaticCanvasSize = Enum.AutomaticSize.X
-
-    UIListLayoutTabs.Parent = TabHolder
-    UIListLayoutTabs.FillDirection = Enum.FillDirection.Horizontal
-    UIListLayoutTabs.HorizontalAlignment = Enum.HorizontalAlignment.Left
-    UIListLayoutTabs.Padding = UDim.new(0, 5)
-
-    UIPaddingTabs.Parent = TabHolder
-    UIPaddingTabs.PaddingTop = UDim.new(0, 10)
-    UIPaddingTabs.PaddingBottom = UDim.new(0, 10)
-    UIPaddingTabs.PaddingLeft = UDim.new(0, 10)
-    UIPaddingTabs.PaddingRight = UDim.new(0, 10)
-
-    ContentHolder.Name = "ContentHolder"
-    ContentHolder.Parent = MainFrame
-    ContentHolder.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    ContentHolder.BackgroundTransparency = 1.000
-    ContentHolder.Position = UDim2.new(0.0250000004, 0, 0.200000003, 0)
-    ContentHolder.Size = UDim2.new(0.935000002, 0, 0.800000012, 0)
-
-    UICorner_5.CornerRadius = UDim.new(0, 10)
-    UICorner_5.Parent = ContentHolder
-
-    UIStrokeContentHolder.Parent = ContentHolder
-    UIStrokeContentHolder.Color = Color3.fromRGB(0, 0, 0)
-    UIStrokeContentHolder.Thickness = 2
-
-    -- Functions to Add Tabs and UI Elements
+    -- Function to add tabs
     function windowInstance:AddTab(tabName)
         local tab = {}
-        local TabButton = Instance.new("TextButton")
-        local TabContent = Instance.new("Frame")
-        local UICorner_Tab = Instance.new("UICorner")
-        local UIStroke_Tab = Instance.new("UIStroke")
-        local UIListLayout_TabContent = Instance.new("UIListLayout")
-        local UIPadding_TabContent = Instance.new("UIPadding")
 
-        -- Properties for Tab Button
-        TabButton.Name = tabName
-        TabButton.Parent = TabHolder
-        TabButton.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
-        TabButton.Size = UDim2.new(0, 100, 0, 30)
-        TabButton.Font = Enum.Font.FredokaOne
-        TabButton.Text = tabName
-        TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-        TabButton.TextSize = 24.000
-        TabButton.AutomaticSize = Enum.AutomaticSize.X
+        local tabButton = Instance.new("TextButton")
+        tabButton.Name = tabName
+        tabButton.Parent = tabHolder
+        tabButton.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
+        tabButton.Size = UDim2.new(0, 100, 0, 30)
+        tabButton.Font = Enum.Font.FredokaOne
+        tabButton.Text = tabName
+        tabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        tabButton.TextSize = 24
+        tabButton.AutomaticSize = Enum.AutomaticSize.X
+        createUICorner(tabButton, 10)
+        createUIStroke(tabButton, Color3.fromRGB(0, 0, 0), 2)
 
-        UICorner_Tab.CornerRadius = UDim.new(0, 10)
-        UICorner_Tab.Parent = TabButton
+        local tabContent = Instance.new("Frame")
+        tabContent.Name = tabName .. "_Content"
+        tabContent.Parent = contentHolder
+        tabContent.BackgroundTransparency = 1
+        tabContent.Size = UDim2.new(1, 0, 1, 0)
+        tabContent.Visible = false
 
-        UIStroke_Tab.Parent = TabButton
-        UIStroke_Tab.Color = Color3.fromRGB(0, 0, 0)
-        UIStroke_Tab.Thickness = 2
+        local uiPaddingTabContent = Instance.new("UIPadding")
+        uiPaddingTabContent.Parent = tabContent
+        uiPaddingTabContent.PaddingTop = UDim.new(0, 10)
+        uiPaddingTabContent.PaddingBottom = UDim.new(0, 10)
+        uiPaddingTabContent.PaddingLeft = UDim.new(0, 10)
+        uiPaddingTabContent.PaddingRight = UDim.new(0, 10)
 
-        -- Properties for Tab Content
-        TabContent.Name = tabName .. "_Content"
-        TabContent.Parent = ContentHolder
-        TabContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        TabContent.Size = UDim2.new(1, 0, 1
+        local uiListLayoutTabContent = Instance.new("UIListLayout")
+        uiListLayoutTabContent.Parent = tabContent
+        uiListLayoutTabContent.SortOrder = Enum.SortOrder.LayoutOrder
+        uiListLayoutTabContent.Padding = UDim.new(0, 10)
 
-, 0)
-        TabContent.Visible = false
-
-        -- Adding UIPadding and UIListLayout for Tab Content
-        UIPadding_TabContent.Parent = TabContent
-        UIPadding_TabContent.PaddingTop = UDim.new(0, 10)
-        UIPadding_TabContent.PaddingBottom = UDim.new(0, 10)
-        UIPadding_TabContent.PaddingLeft = UDim.new(0, 10)
-        UIPadding_TabContent.PaddingRight = UDim.new(0, 10)
-
-        UIListLayout_TabContent.Parent = TabContent
-        UIListLayout_TabContent.SortOrder = Enum.SortOrder.LayoutOrder
-        UIListLayout_TabContent.Padding = UDim.new(0, 10)
-
-        -- Show/Hide Tabs
-        TabButton.MouseButton1Click:Connect(function()
-            for _, child in ipairs(ContentHolder:GetChildren()) do
+        tabButton.MouseButton1Click:Connect(function()
+            for _, child in ipairs(contentHolder:GetChildren()) do
                 if child:IsA("Frame") then
                     child.Visible = false
                 end
             end
-            TabContent.Visible = true
+            tabContent.Visible = true
         end)
 
-        -- Default to showing the first tab
-        if #ContentHolder:GetChildren() == 1 then
-            TabContent.Visible = true
+        if #contentHolder:GetChildren() == 1 then
+            tabContent.Visible = true
         end
 
-        -- Functions to Add UI Elements
+        -- Functions to create UI elements within a tab
         function tab:CreateButton(text, callback)
-            local ButtonHolder = Instance.new("Frame")
-            local Button = Instance.new("TextButton")
-            local UICorner_Button = Instance.new("UICorner")
-            local UIStroke_Button = Instance.new("UIStroke")
+            local buttonHolder = Instance.new("Frame")
+            buttonHolder.Name = "ButtonHolder"
+            buttonHolder.Parent = tabContent
+            buttonHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            buttonHolder.Size = UDim2.new(1, 0, 0, 60)
+            createUICorner(buttonHolder, 10)
+            createUIStroke(buttonHolder, Color3.fromRGB(0, 0, 0), 2)
 
-            -- Properties for Button Holder
-            ButtonHolder.Name = "ButtonHolder"
-            ButtonHolder.Parent = TabContent
-            ButtonHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            ButtonHolder.Size = UDim2.new(1, 0, 0, 60)  -- Adjusted height for better visibility
-
-            UICorner_Button.CornerRadius = UDim.new(0, 10)
-            UICorner_Button.Parent = ButtonHolder
-
-            UIStroke_Button.Parent = ButtonHolder
-            UIStroke_Button.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_Button.Thickness = 2
-
-            -- Properties for Button
-            Button.Name = "Button"
-            Button.Parent = ButtonHolder
-            Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            Button.BackgroundTransparency = 1.000
-            Button.Size = UDim2.new(1, 0, 1, 0)
-            Button.Font = Enum.Font.FredokaOne
-            Button.Text = text
-            Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-            Button.TextSize = 24.000
-            Button.TextXAlignment = Enum.TextXAlignment.Left
-
-            Button.MouseButton1Click:Connect(callback)
+            local button = Instance.new("TextButton")
+            button.Name = "Button"
+            button.Parent = buttonHolder
+            button.BackgroundTransparency = 1
+            button.Size = UDim2.new(1, 0, 1, 0)
+            button.Font = Enum.Font.FredokaOne
+            button.Text = text
+            button.TextColor3 = Color3.fromRGB(255, 255, 255)
+            button.TextSize = 24
+            button.TextXAlignment = Enum.TextXAlignment.Left
+            button.MouseButton1Click:Connect(callback)
         end
 
         function tab:CreateSlider(text, min, max, callback)
-            local SliderHolder = Instance.new("Frame")
-            local SliderLabel = Instance.new("TextLabel")
-            local SliderBar = Instance.new("Frame")
-            local SliderFill = Instance.new("Frame")
-            local Slider = Instance.new("Frame")
-            local SliderValue = Instance.new("TextBox")
-            local UICorner_SliderHolder = Instance.new("UICorner")
-            local UIStroke_SliderHolder = Instance.new("UIStroke")
-            local UICorner_SliderBar = Instance.new("UICorner")
-            local UIStroke_SliderBar = Instance.new("UIStroke")
-            local UICorner_SliderFill = Instance.new("UICorner")
-            local UICorner_Slider = Instance.new("UICorner")
-            local UIStroke_Slider = Instance.new("UIStroke")
+            local sliderHolder = Instance.new("Frame")
+           
 
-            -- Properties for Slider Holder
-            SliderHolder.Name = "SliderHolder"
-            SliderHolder.Parent = TabContent
-            SliderHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            SliderHolder.Size = UDim2.new(1, 0, 0, 80)  -- Adjusted height for better visibility
+ sliderHolder.Name = "SliderHolder"
+            sliderHolder.Parent = tabContent
+            sliderHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            sliderHolder.Size = UDim2.new(1, 0, 0, 80)
+            createUICorner(sliderHolder, 10)
+            createUIStroke(sliderHolder, Color3.fromRGB(0, 0, 0), 2)
 
-            UICorner_SliderHolder.CornerRadius = UDim.new(0, 10)
-            UICorner_SliderHolder.Parent = SliderHolder
+            local sliderLabel = Instance.new("TextLabel")
+            sliderLabel.Name = "SliderLabel"
+            sliderLabel.Parent = sliderHolder
+            sliderLabel.BackgroundTransparency = 1
+            sliderLabel.Position = UDim2.new(0.05, 0, 0, 0)
+            sliderLabel.Size = UDim2.new(0.9, 0, 0.4, 0)
+            sliderLabel.Font = Enum.Font.FredokaOne
+            sliderLabel.Text = text
+            sliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            sliderLabel.TextSize = 24
+            sliderLabel.TextXAlignment = Enum.TextXAlignment.Left
 
-            UIStroke_SliderHolder.Parent = SliderHolder
-            UIStroke_SliderHolder.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_SliderHolder.Thickness = 2
+            local sliderBar = Instance.new("Frame")
+            sliderBar.Name = "SliderBar"
+            sliderBar.Parent = sliderHolder
+            sliderBar.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
+            sliderBar.Position = UDim2.new(0.05, 0, 0.5, -10)
+            sliderBar.Size = UDim2.new(0.9, 0, 0.2, 0)
+            createUICorner(sliderBar, 99)
+            createUIStroke(sliderBar, Color3.fromRGB(0, 0, 0), 2)
 
-            -- Properties for Slider Label
-            SliderLabel.Name = "SliderLabel"
-            SliderLabel.Parent = SliderHolder
-            SliderLabel.BackgroundTransparency = 1.000
-            SliderLabel.Position = UDim2.new(0.05, 0, 0, 0)
-            SliderLabel.Size = UDim2.new(0.9, 0, 0.4, 0)  -- Adjusted height for better visibility
-            SliderLabel.Font = Enum.Font.FredokaOne
-            SliderLabel.Text = text
-            SliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-            SliderLabel.TextSize = 24.000
-            SliderLabel.TextXAlignment = Enum.TextXAlignment.Left
+            local sliderFill = Instance.new("Frame")
+            sliderFill.Name = "SliderFill"
+            sliderFill.Parent = sliderBar
+            sliderFill.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
+            sliderFill.Size = UDim2.new(0, 0, 1, 0)
+            createUICorner(sliderFill, 99)
 
-            -- Properties for Slider Bar
-            SliderBar.Name = "SliderBar"
-            SliderBar.Parent = SliderHolder
-            SliderBar.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
-            SliderBar.Position = UDim2.new(0.05, 0, 0.5, -10)
-            SliderBar.Size = UDim2.new(0.9, 0, 0.2, 0)
+            local slider = Instance.new("Frame")
+            slider.Name = "Slider"
+            slider.Parent = sliderBar
+            slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
+            slider.Position = UDim2.new(0, 0, 0.5, -10)
+            slider.Size = UDim2.new(0, 20, 0, 20)
+            createUICorner(slider, 1)
+            createUIStroke(slider, Color3.fromRGB(0, 0, 0), 2)
 
-            UICorner_SliderBar.CornerRadius = UDim.new(0, 99)
-            UICorner_SliderBar.Parent = SliderBar
-
-            UIStroke_SliderBar.Parent = SliderBar
-            UIStroke_SliderBar.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_SliderBar.Thickness = 2
-
-            -- Properties for Slider Fill
-            SliderFill.Name = "SliderFill"
-            SliderFill.Parent = SliderBar
-            SliderFill.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
-            SliderFill.Size = UDim2.new(0, 0, 1, 0)
-
-            UICorner_SliderFill.CornerRadius = UDim.new(0, 99)
-            UICorner_SliderFill.Parent = SliderFill
-
-            -- Properties for Slider
-            Slider.Name = "Slider"
-            Slider.Parent = SliderBar
-            Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
-            Slider.Position = UDim2.new(0, 0, 0.5, -10)
-            Slider.Size = UDim2.new(0, 20, 0, 20)
-
-            UICorner_Slider.CornerRadius = UDim.new(1, 0)
-            UICorner_Slider.Parent = Slider
-
-            UIStroke_Slider.Parent = Slider
-            UIStroke_Slider.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_Slider.Thickness = 2
-
-            -- Properties for Slider Value
-            SliderValue.Name = "SliderValue"
-            SliderValue.Parent = SliderHolder
-            SliderValue.AnchorPoint = Vector2.new(1, 0)
-            SliderValue.BackgroundTransparency = 1.000
-            SliderValue.Position = UDim2.new(1, -5, 0, 0)
-            SliderValue.Size = UDim2.new(0, 50, 0.4, 0)
-            SliderValue.Font = Enum.Font.FredokaOne
-            SliderValue.Text = tostring(min)
-            SliderValue.TextColor3 = Color3.fromRGB(255, 255, 255)
-            SliderValue.TextSize = 24.000
-            SliderValue.TextXAlignment = Enum.TextXAlignment.Right
-            SliderValue.ClearTextOnFocus = false
+            local sliderValue = Instance.new("TextBox")
+            sliderValue.Name = "SliderValue"
+            sliderValue.Parent = sliderHolder
+            sliderValue.AnchorPoint = Vector2.new(1, 0)
+            sliderValue.BackgroundTransparency = 1
+            sliderValue.Position = UDim2.new(1, -5, 0, 0)
+            sliderValue.Size = UDim2.new(0, 50, 0.4, 0)
+            sliderValue.Font = Enum.Font.FredokaOne
+            sliderValue.Text = tostring(min)
+            sliderValue.TextColor3 = Color3.fromRGB(255, 255, 255)
+            sliderValue.TextSize = 24
+            sliderValue.TextXAlignment = Enum.TextXAlignment.Right
+            sliderValue.ClearTextOnFocus = false
 
             local UserInputService = game:GetService("UserInputService")
             local dragging = false
 
             local function moveSlider(input)
-                local posX = math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1)
-                local offset = Slider.AbsoluteSize.X / 2
-                Slider.Position = UDim2.new(posX, -offset, 0.5, -10)
-                SliderFill.Size = UDim2.new(posX, 0, 1, 0)
+                local posX = math.clamp((input.Position.X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
+                local offset = slider.AbsoluteSize.X / 2
+                slider.Position = UDim2.new(posX, -offset, 0.5, -10)
+                sliderFill.Size = UDim2.new(posX, 0, 1, 0)
                 local sliderValue = math.floor(min + (max - min) * posX)
-                SliderValue.Text = tostring(sliderValue)
+                sliderValue.Text = tostring(sliderValue)
                 callback(sliderValue)
             end
 
-            Slider.InputBegan:Connect(function(input)
+            slider.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     dragging = true
                     moveSlider(input)
-                    Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
+                    slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
                     local moveConnection, releaseConnection
                     moveConnection = UserInputService.InputChanged:Connect(function(input)
                         if input.UserInputType == Enum.UserInputType.MouseMovement then
@@ -365,11 +283,11 @@ function UILibrary:CreateWindow(title)
                 end
             end)
 
-            SliderBar.InputBegan:Connect(function(input)
+            sliderBar.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     dragging = true
                     moveSlider(input)
-                    Slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
+                    slider.BackgroundColor3 = Color3.fromRGB(0, 71, 255)
                     local moveConnection, releaseConnection
                     moveConnection = UserInputService.InputChanged:Connect(function(input)
                         if input.UserInputType == Enum.UserInputType.MouseMovement then
@@ -386,108 +304,73 @@ function UILibrary:CreateWindow(title)
                 end
             end)
 
-            MainFrame.InputBegan:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                    if dragging then
-                        MainFrame.Active = false
-                    else
-                        MainFrame.Active = true
-                    end
-                end
-            end)
-
-            SliderValue.FocusLost:Connect(function(enterPressed)
+            sliderValue.FocusLost:Connect(function(enterPressed)
                 if enterPressed then
-                    local value = tonumber(SliderValue.Text)
+                    local value = tonumber(sliderValue.Text)
                     if value and value >= min and value <= max then
                         local posX = (value - min) / (max - min)
-                        Slider.Position = UDim2.new(posX, -Slider.AbsoluteSize.X / 2, 0.5, -10)
-                        SliderFill.Size = UDim2.new(posX, 0, 1, 0)
+                        slider.Position = UDim2.new(posX, -slider.AbsoluteSize.X / 2, 0.5, -10)
+                        sliderFill.Size = UDim2.new(posX, 0, 1, 0)
                         callback(value)
                     else
-                        SliderValue.Text = tostring(min)
+                        sliderValue.Text = tostring(min)
                     end
                 end
             end)
         end
 
         function tab:CreateToggle(text, initialState, callback)
-            local ToggleHolder = Instance.new("Frame")
-            local ToggleBar = Instance.new("Frame")
-            local Toggle = Instance.new("Frame")
-            local ToggleLabel = Instance.new("TextLabel")
-            local UICorner_ToggleHolder = Instance.new("UICorner")
-            local UIStroke_ToggleHolder = Instance.new("UIStroke")
-            local UICorner_ToggleBar = Instance.new("UICorner")
-            local UIStroke_ToggleBar = Instance.new("UIStroke")
-            local UICorner_Toggle = Instance.new("UICorner")
-            local UIStroke_Toggle = Instance.new("UIStroke")
+            local toggleHolder = Instance.new("Frame")
+            toggleHolder.Name = "ToggleHolder"
+            toggleHolder.Parent = tabContent
+            toggleHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            toggleHolder.Size = UDim2.new(1, 0, 0, 50)
+            createUICorner(toggleHolder, 10)
+            createUIStroke(toggleHolder, Color3.fromRGB(0, 0, 0), 2)
 
-            -- Properties for Toggle Holder
-            ToggleHolder.Name = "ToggleHolder"
-            ToggleHolder.Parent = TabContent
-            ToggleHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            ToggleHolder.Size = UDim2.new(1, 0, 0, 50)  -- Adjusted height for better visibility
+            local toggleBar = Instance.new("Frame")
+            toggleBar.Name = "ToggleBar"
+            toggleBar.Parent = toggleHolder
+            toggleBar.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
+            toggleBar.Position = UDim2.new(0.75, 0, 0.5, -15)
+            toggleBar.Size = UDim2.new(0.2, 0, 0.5, 0)
+            createUICorner(toggleBar, 99)
+            createUIStroke(toggleBar, Color3.fromRGB(0, 0, 0), 2)
 
-            UICorner_ToggleHolder.CornerRadius = UDim.new(0, 10)
-            UICorner_ToggleHolder.Parent = ToggleHolder
+            local toggle = Instance.new("Frame")
+            toggle.Name = "Toggle"
+            toggle.Parent = toggleBar
+            toggle.BackgroundColor3 = initialState and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
+            toggle.Position = initialState and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5)
+            toggle.Size = UDim2.new(0, 37, 0, 37)
+            createUICorner(toggle, 1)
+            createUIStroke(toggle, Color3.fromRGB(0, 0, 0), 2)
 
-            UIStroke_ToggleHolder.Parent = ToggleHolder
-            UIStroke_ToggleHolder.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_ToggleHolder.Thickness = 2
+            local toggleLabel = Instance.new("TextLabel")
+            toggleLabel.Name = "ToggleLabel"
+            toggleLabel.Parent = toggleHolder
+            toggleLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+            toggleLabel.BackgroundTransparency = 1
+            toggleLabel.Position = UDim2.new(0.3, 0, 0.5, 0)
+            toggleLabel.Size = UDim2.new(0.6, -20, 0.8, -20)
+            toggleLabel.Font = Enum.Font.FredokaOne
+            toggleLabel.Text = text
+            toggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            toggleLabel.TextSize = 24
+            toggleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
-            -- Properties for Toggle Bar
-            ToggleBar.Name = "ToggleBar"
-            ToggleBar.Parent = ToggleHolder
-            ToggleBar.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
-            ToggleBar.Position = UDim2.new(0.75, 0, 0.5, -15)
-            ToggleBar.Size = UDim2.new(0.2, 0, 0.5, 0)
-
-            UICorner_ToggleBar.CornerRadius = UDim.new(0, 99)
-            UICorner_ToggleBar.Parent = ToggleBar
-
-            UIStroke_ToggleBar.Parent = ToggleBar
-            UIStroke_ToggleBar.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_ToggleBar.Thickness = 2
-
-            -- Properties for Toggle
-            Toggle.Name = "Toggle"
-            Toggle.Parent = ToggleBar
-            Toggle.BackgroundColor3 = initialState and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
-            Toggle.Position = initialState and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5)
-            Toggle.Size = UDim2.new(0, 37, 0, 37)
-
-            UICorner_Toggle.CornerRadius = UDim.new(1, 0)
-            UICorner_Toggle.Parent = Toggle
-
-            UIStroke_Toggle.Parent = Toggle
-            UIStroke_Toggle.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_Toggle.Thickness = 2
-
-            -- Properties for Toggle Label
-            ToggleLabel.Name = "ToggleLabel"
-            ToggleLabel.Parent = ToggleHolder
-            ToggleLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-            ToggleLabel.BackgroundTransparency = 1.000
-            ToggleLabel.Position = UDim2.new(0.3, 0, 0.5, 0)
-            ToggleLabel.Size = UDim2.new(0.6, -20, 0.8, -20)
-            ToggleLabel.Font = Enum.Font.FredokaOne
-            ToggleLabel.Text = text
-            ToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-            ToggleLabel.TextSize = 24.000
-            ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
-
-            -- Toggle Functionality
             local toggleState = initialState
 
             local function setToggleState(state)
                 toggleState = state
-                Toggle.BackgroundColor3 = state and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
-                Toggle:TweenPosition(state and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5), "Out", "Sine", 0.2, true)
+                toggle.BackgroundColor3 = state and Color3.fromRGB(0, 71, 255) or Color3.fromRGB(35, 35, 35)
+                toggle:TweenPosition(state and UDim2.new(1, -37, 0.5, -18.5) or UDim2.new(0, 0, 0.5, -18.5), "Out", "Sine", 0.2, true)
                 callback(state)
             end
 
-            ToggleBar.InputBegan:Connect(function(input)
+            toggleBar.InputBegan:Connect(function(input
+
+)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     setToggleState(not toggleState)
                 end
@@ -497,89 +380,55 @@ function UILibrary:CreateWindow(title)
         end
 
         function tab:CreateDropdown(text, items, multiSelect, callback)
-            local DropdownHolder = Instance.new("Frame")
-            local DropdownButton = Instance.new("TextButton")
-            local DropdownList = Instance.new("Frame")
-            local SearchBar = Instance.new("TextBox")
-            local UICorner_DropdownHolder = Instance.new("UICorner")
-            local UIStroke_DropdownHolder = Instance.new("UIStroke")
-            local UICorner_DropdownButton = Instance.new("UICorner")
-            local UIStroke_DropdownButton = Instance.new("UIStroke")
-            local UICorner_DropdownList = Instance.new("UICorner")
-            local UIStroke_DropdownList = Instance.new("UIStroke")
-            local UICorner_SearchBar = Instance.new("UICorner")
-            local UIStroke_SearchBar = Instance.new("UIStroke")
+            local dropdownHolder = Instance.new("Frame")
+            dropdownHolder.Name = "DropdownHolder"
+            dropdownHolder.Parent = tabContent
+            dropdownHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            dropdownHolder.Size = UDim2.new(1, 0, 0, 60)
+            createUICorner(dropdownHolder, 10)
+            createUIStroke(dropdownHolder, Color3.fromRGB(0, 0, 0), 2)
 
-            -- Properties for Dropdown Holder
-            DropdownHolder.Name = "DropdownHolder"
-            DropdownHolder.Parent = TabContent
-            DropdownHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            DropdownHolder.Size = UDim2.new(1, 0, 0, 60)  -- Adjusted height for better visibility
+            local dropdownButton = Instance.new("TextButton")
+            dropdownButton.Name = "DropdownButton"
+            dropdownButton.Parent = dropdownHolder
+            dropdownButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            dropdownButton.BackgroundTransparency = 1
+            dropdownButton.BorderSizePixel = 0
+            dropdownButton.Position = UDim2.new(0.02, 0, 0.1, 0)
+            dropdownButton.Size = UDim2.new(0.98, 0, 0, 50)
+            dropdownButton.Font = Enum.Font.FredokaOne
+            dropdownButton.Text = text
+            dropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+            dropdownButton.TextSize = 24
+            dropdownButton.TextXAlignment = Enum.TextXAlignment.Left
+            createUICorner(dropdownButton, 10)
+            createUIStroke(dropdownButton, Color3.fromRGB(0, 0, 0), 2)
 
-            UICorner_DropdownHolder.CornerRadius = UDim.new(0, 10)
-            UICorner_DropdownHolder.Parent = DropdownHolder
+            local dropdownList = Instance.new("Frame")
+            dropdownList.Name = "DropdownList"
+            dropdownList.Parent = dropdownHolder
+            dropdownList.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            dropdownList.ClipsDescendants = true
+            dropdownList.Position = UDim2.new(0.02, 0, 0.8, 0)
+            dropdownList.Size = UDim2.new(0.96, 0, 0, 150)
+            dropdownList.Visible = false
+            createUICorner(dropdownList, 10)
+            createUIStroke(dropdownList, Color3.fromRGB(0, 0, 0), 2)
 
-            UIStroke_DropdownHolder.Parent = DropdownHolder
-            UIStroke_DropdownHolder.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_DropdownHolder.Thickness = 2
+            local searchBar = Instance.new("TextBox")
+            searchBar.Name = "SearchBar"
+            searchBar.Parent = dropdownList
+            searchBar.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+            searchBar.Position = UDim2.new(0, 5, 0, 5)
+            searchBar.Size = UDim2.new(1, -10, 0, 30)
+            searchBar.Font = Enum.Font.FredokaOne
+            searchBar.PlaceholderText = "Search..."
+            searchBar.Text = ""
+            searchBar.TextColor3 = Color3.fromRGB(255, 255, 255)
+            searchBar.TextSize = 24
+            createUICorner(searchBar, 10)
+            createUIStroke(searchBar, Color3.fromRGB(0, 0, 0), 2)
 
-            -- Properties for Dropdown Button
-            DropdownButton.Name = "DropdownButton"
-            DropdownButton.Parent = DropdownHolder
-            DropdownButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            DropdownButton.BackgroundTransparency = 1.000
-            DropdownButton.BorderSizePixel = 0
-            DropdownButton.Position = UDim2.new(0.0199999996, 0, 0.100000001, 0)
-            DropdownButton.Size = UDim2.new(0.980000019, 0, 0, 50)  -- Adjusted height for better visibility
-            DropdownButton.Font = Enum.Font.FredokaOne
-            DropdownButton.Text = text
-            DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-            DropdownButton.TextSize = 24.000
-            DropdownButton.TextXAlignment = Enum.TextXAlignment.Left
-
-            UICorner_DropdownButton.CornerRadius = UDim.new(0, 10)
-            UICorner_DropdownButton.Parent = DropdownButton
-
-            UIStroke_DropdownButton.Parent = DropdownButton
-            UIStroke_DropdownButton.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_DropdownButton.Thickness = 2
-
-            -- Properties for Dropdown List
-            DropdownList.Name = "DropdownList"
-            DropdownList.Parent = DropdownHolder
-            DropdownList.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            DropdownList.ClipsDescendants = true
-            DropdownList.Position = UDim2.new(0.0199999996, 0, 0.800000012, 0)
-            DropdownList.Size = UDim2.new(0.959999979, 0, 0, 150)
-            DropdownList.Visible = false
-
-            UICorner_DropdownList.CornerRadius = UDim.new(0, 10)
-            UICorner_DropdownList.Parent = DropdownList
-
-            UIStroke_DropdownList.Parent = DropdownList
-            UIStroke_DropdownList.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_DropdownList.Thickness = 2
-
-            -- Properties for Search Bar
-            SearchBar.Name = "SearchBar"
-            SearchBar.Parent = DropdownList
-            SearchBar.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-            SearchBar.Position = UDim2.new(0, 5, 0, 5)
-            SearchBar.Size = UDim2.new(1, -10, 0, 30)
-            SearchBar.Font = Enum.Font.FredokaOne
-            SearchBar.PlaceholderText = "Search..."
-            SearchBar.Text = ""
-            SearchBar.TextColor3 = Color3.fromRGB(255, 255, 255)
-            SearchBar.TextSize = 24.000
-
-            UICorner_SearchBar.CornerRadius = UDim.new(0, 10)
-            UICorner_SearchBar.Parent = SearchBar
-
-            UIStroke_SearchBar.Parent = SearchBar
-            UIStroke_SearchBar.Color = Color3.fromRGB(0, 0, 0)
-            UIStroke_SearchBar.Thickness = 2
-
-            -- Dropdown Items
             local SelectedItems = {}
             local itemFrames = {}
 
@@ -592,71 +441,62 @@ function UILibrary:CreateWindow(title)
                         selectedText = selectedText .. ", " .. item
                     end
                 end
-                DropdownButton.Text = selectedText == "" and text or selectedText
+                dropdownButton.Text = selectedText == "" and text or selectedText
                 callback(SelectedItems)
             end
 
             local function createDropdownItem(itemText)
-                local DropdownItem = Instance.new("TextButton")
-                local UICorner_DropdownItem = Instance.new("UICorner")
-                local UIStroke_DropdownItem = Instance.new("UIStroke")
+                local dropdownItem = Instance.new("TextButton")
+                dropdownItem.Name = itemText
+                dropdownItem.Parent = dropdownList
+                dropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+                dropdownItem.Size = UDim2.new(1, -10, 0, 30)
+                dropdownItem.Font = Enum.Font.FredokaOne
+                dropdownItem.Text = itemText
+                dropdownItem.TextColor3 = Color3.fromRGB(255, 255, 255)
+                dropdownItem.TextSize = 24
+                dropdownItem.TextXAlignment = Enum.TextXAlignment.Left
+                createUICorner(dropdownItem, 10)
+                createUIStroke(dropdownItem, Color3.fromRGB(0, 0, 0), 2)
 
-                DropdownItem.Name = itemText
-                DropdownItem.Parent = DropdownList
-                DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-                DropdownItem.Size = UDim2.new(1, -10, 0, 30)
-                DropdownItem.Font = Enum.Font.FredokaOne
-                DropdownItem.Text = itemText
-                DropdownItem.TextColor3 = Color3.fromRGB(255, 255, 255)
-                DropdownItem.TextSize = 24.000
-                DropdownItem.TextXAlignment = Enum.TextXAlignment.Left
-
-                UICorner_DropdownItem.CornerRadius = UDim.new(0, 10)
-                UICorner_DropdownItem.Parent = DropdownItem
-
-                UIStroke_DropdownItem.Parent = DropdownItem
-                UIStroke_DropdownItem.Color = Color3.fromRGB(0, 0, 0)
-                UIStroke_DropdownItem.Thickness = 2
-
-                DropdownItem.MouseEnter:Connect(function()
-                    DropdownItem.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                dropdownItem.MouseEnter:Connect(function()
+                    dropdownItem.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
                 end)
-                DropdownItem.MouseLeave:Connect(function()
-                    DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+                dropdownItem.MouseLeave:Connect(function()
+                    dropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
                 end)
-                DropdownItem.MouseButton1Click:Connect(function()
+                dropdownItem.MouseButton1Click:Connect(function()
                     if multiSelect then
-                        if SelectedItems[DropdownItem.Text] then
-                            SelectedItems[DropdownItem.Text] = nil
-                            DropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+                        if SelectedItems[dropdownItem.Text] then
+                            SelectedItems[dropdownItem.Text] = nil
+                            dropdownItem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
                         else
-                            SelectedItems[DropdownItem.Text] = true
-                            DropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+                            SelectedItems[dropdownItem.Text] = true
+                            dropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
                         end
                     else
-                        for _, item in pairs(DropdownList:GetChildren()) do
+                        for _, item in pairs(dropdownList:GetChildren()) do
                             if item:IsA("TextButton") then
                                 item.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
                                 SelectedItems[item.Text] = nil
                             end
                         end
-                        SelectedItems[DropdownItem.Text] = true
-                        DropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+                        SelectedItems[dropdownItem.Text] = true
+                        dropdownItem.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
                     end
                     updateDropdown()
                 end)
 
-                return DropdownItem
+                return dropdownItem
             end
 
-            -- Populate Dropdown Items
             for _, item in ipairs(items) do
                 local itemFrame = createDropdownItem(item)
                 table.insert(itemFrames, itemFrame)
             end
 
             local function filterItems(searchText)
-                local yPos = 40  -- Starting Y position for items
+                local yPos = 40
                 for _, itemFrame in ipairs(itemFrames) do
                     if string.find(string.lower(itemFrame.Text), string.lower(searchText)) then
                         itemFrame.Position = UDim2.new(0, 5, 0, yPos)
@@ -666,29 +506,20 @@ function UILibrary:CreateWindow(title)
                         itemFrame.Visible = false
                     end
                 end
-                DropdownList.Size = UDim2.new(0.959999979, 0, 0, yPos + 5)
+                dropdownList.Size = UDim2.new(0.96, 0, 0, yPos + 5)
             end
 
-            SearchBar.Changed:Connect(function()
-                filterItems(SearchBar.Text)
+            searchBar.Changed:Connect(function()
+                filterItems(searchBar.Text)
             end)
 
-            DropdownButton.MouseButton1Click:Connect(function()
-                DropdownList.Visible = not DropdownList.Visible
+            dropdownButton.MouseButton1Click:Connect(function()
+                dropdownList.Visible = not dropdownList.Visible
             end)
         end
 
         return tab
     end
-
-    -- Close and Minimize Functionality
-    CloseButton.MouseButton1Click:Connect(function()
-        Confirmation:Destroy()
-    end)
-
-    MinimizeButton.MouseButton1Click:Connect(function()
-        MainFrame.Visible = not MainFrame.Visible
-    end)
 
     return windowInstance
 end
