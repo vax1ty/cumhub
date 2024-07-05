@@ -63,7 +63,7 @@ function UILibrary:CreateWindow(title)
     local windowInstance = {}
 
     local gui = Instance.new("ScreenGui")
-    gui.Name = "Confirmation"
+    gui.Name = "UILibrary"
     gui.Parent = game.CoreGui
 
     local mainFrame = Instance.new("Frame")
@@ -175,12 +175,12 @@ function UILibrary:CreateWindow(title)
         uiPaddingTabContent.Parent = tabContent
         uiPaddingTabContent.PaddingTop = UDim.new(0, 10)
         uiPaddingTabContent.PaddingBottom = UDim.new(0, 10)
-        uiPaddingTabContent.PaddingLeft = U
-
-Dim.new(0, 10)
+        uiPaddingTabContent.PaddingLeft = UDim.new(0, 10)
         uiPaddingTabContent.PaddingRight = UDim.new(0, 10)
 
-        local uiListLayoutTabContent = Instance.new("UIListLayout")
+        local uiList
+
+LayoutTabContent = Instance.new("UIListLayout")
         uiListLayoutTabContent.Parent = tabContent
         uiListLayoutTabContent.SortOrder = Enum.SortOrder.LayoutOrder
         uiListLayoutTabContent.Padding = UDim.new(0, 10)
@@ -366,11 +366,11 @@ Dim.new(0, 10)
             local toggleBar = Instance.new("Frame")
             toggleBar.Name = "ToggleBar"
             toggleBar.Parent = toggleHolder
-            toggleBar.BackgroundColor3 = Color3.fromRGB(48, 48,
-
- 53)
+            toggleBar.BackgroundColor3 = Color3.fromRGB(48, 48, 53)
             toggleBar.Position = UDim2.new(0.75, 0, 0.5, -15)
-            toggleBar.Size = UDim2.new(0.2, 0, 0.5, 0)
+           
+
+ toggleBar.Size = UDim2.new(0.2, 0, 0.5, 0)
             createUICorner(toggleBar, 99)
             createShadow(toggleBar, 5, Color3.fromRGB(0, 0, 0), 0.6)
 
@@ -552,8 +552,6 @@ Dim.new(0, 10)
             dropdownButton.MouseButton1Click:Connect(function()
                 dropdownList.Visible = not dropdownList.Visible
             end)
-
-
         end
 
         return tab
